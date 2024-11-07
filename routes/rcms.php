@@ -18,6 +18,7 @@ use App\Http\Controllers\rcms\ManagementReviewController;
 use App\Http\Controllers\rcms\RootCauseController;
 use App\Http\Controllers\RiskManagementController;
 use App\Http\Controllers\rcms\DeviationController;
+use App\Http\Controllers\rcms\MarketComplaintController;
 use App\Models\EffectivenessCheck;
 use Illuminate\Support\Facades\Route;
 
@@ -186,7 +187,20 @@ Route::group(['prefix' => 'rcms'], function () {
              Route::get('deviationparentchildReport/{id}', [DeviationController::class, 'parentchildReport'])->name('deviationparentchildReport');
              Route::get('DeviationFamily/{id}', [DeviationController::class, 'deviationfamilyReport'])->name('DeviationFamily');
              
+//=======================market complaint START =======
+// Route::view('marketcomplaintkp', 'frontend.marketcomplaint.marketcomplaint');
+        Route::get('marketcomplaintcreate', [MarketComplaintController::class, 'marketcomplaint']);
+        Route::post('marketcomplaintstore', [MarketComplaintController::class, 'store'])->name('marketcomplaintstore');
+        Route::get('marketcomplaintshow/{id}', [MarketComplaintController::class, 'marketshow'])->name('marketshow');
+        Route::post('marketcomplaintupdate/{id}', [MarketComplaintController::class, 'update'])->name('marketcomplaintupdate');
+        Route::get('MarketComplaintSingleReport/{id}', [MarketComplaintController::class, 'singleReport'])->name('MarketComplaintSingleReport');
+        Route::post('MarketComplaint/stage/{id}', [MarketComplaintController::class, 'MC_send_stage'])->name('MC_send_stage');
+        Route::get('MarketComplaintAuditTrial/{id}', [MarketComplaintController::class, 'AuditTrial'])->name('MarketcomplaintAuditTrial');
 
+
+
+
+//====================MARKET compalint end 
 
 
              
