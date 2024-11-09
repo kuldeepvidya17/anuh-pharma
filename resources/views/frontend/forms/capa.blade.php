@@ -115,18 +115,66 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="RLS Record Number">Record Number</label>
+                                        {{-- <label for="RLS Record Number">Record Number</label>
+                                        <input disabled type="text" name="record_number"
+                                            value="{{ Helpers::getDivisionName(session()->get('division')) }}/CAPA/{{ date('Y') }}/{{ $record_number }}"> --}}
+
+                                        {{-- <div class="static">QMS-EMEA/CAPA/{{ date('Y') }}/{{ $record_number }}</div> --}}
+                                        <label for="RLS Record Number">CAPA No.</label>
                                         <input disabled type="text" name="record_number"
                                             value="{{ Helpers::getDivisionName(session()->get('division')) }}/CAPA/{{ date('Y') }}/{{ $record_number }}">
-                                        {{-- <div class="static">QMS-EMEA/CAPA/{{ date('Y') }}/{{ $record_number }}</div> --}}
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="Division Code">Site/Location Code</label>
+                                        {{-- <label for="Division Code">Site/Location Code</label>
                                         <input readonly type="text" name="division_code"
                                             value="{{ Helpers::getDivisionName(session()->get('division')) }}">
-                                        <input type="hidden" name="division_id" value="{{ session()->get('division') }}">
+                                        <input type="hidden" name="division_id" value="{{ session()->get('division') }}"> --}}
+                                        <div class="col-lg-12">
+                                            <div class="group-input">
+                                                <label for="Initiator Group">Department</label>
+                                                <select name="initiator_Group" id="initiator_group">
+                                                    <option value="">-- Select --</option>
+                                                    <option value="CQA" @if (old('initiator_Group') == 'CQA') selected @endif>
+                                                        Corporate Quality Assurance</option>
+                                                    <option value="QAB" @if (old('initiator_Group') == 'QAB') selected @endif>Quality
+                                                        Assurance Biopharma</option>
+                                                    <option value="CQC" @if (old('initiator_Group') == 'CQA') selected @endif>Central
+                                                        Quality Control</option>
+                                                    <option value="CQC" @if (old('initiator_Group') == 'CQC') selected @endif>
+                                                        Manufacturing</option>
+                                                    <option value="PSG" @if (old('initiator_Group') == 'PSG') selected @endif>Plasma
+                                                        Sourcing Group</option>
+                                                    <option value="CS" @if (old('initiator_Group') == 'CS') selected @endif>
+                                                        Central
+                                                        Stores</option>
+                                                    <option value="ITG" @if (old('initiator_Group') == 'ITG') selected @endif>
+                                                        Information Technology Group</option>
+                                                    <option value="MM" @if (old('initiator_Group') == 'MM') selected @endif>
+                                                        Molecular Medicine</option>
+                                                    <option value="CL" @if (old('initiator_Group') == 'CL') selected @endif>
+                                                        Central
+                                                        Laboratory</option>
+                                                    <option value="TT" @if (old('initiator_Group') == 'TT') selected @endif>Tech
+                                                        Team</option>
+                                                    <option value="QA" @if (old('initiator_Group') == 'QA') selected @endif>
+                                                        Quality Assurance</option>
+                                                    <option value="QM" @if (old('initiator_Group') == 'QM') selected @endif>
+                                                        Quality Management</option>
+                                                    <option value="IA" @if (old('initiator_Group') == 'IA') selected @endif>IT
+                                                        Administration</option>
+                                                    <option value="ACC" @if (old('initiator_Group') == 'ACC') selected @endif>
+                                                        Accounting</option>
+                                                    <option value="LOG" @if (old('initiator_Group') == 'LOG') selected @endif>
+                                                        Logistics</option>
+                                                    <option value="SM" @if (old('initiator_Group') == 'SM') selected @endif>
+                                                        Senior Management</option>
+                                                    <option value="BA" @if (old('initiator_Group') == 'BA') selected @endif>
+                                                        Business Administration</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         {{-- <div class="static">QMS-North America</div> --}}
                                     </div>
                                 </div>
@@ -140,12 +188,12 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="Date Due">Date of Initiation</label>
+                                        <label for="Date Due">Date</label>
                                         <input disabled type="text" value="{{ date('d-M-Y') }}" name="intiation_date">
                                         <input type="hidden" value="{{ date('Y-m-d') }}" name="intiation_date">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <div class="group-input">
                                         <label for="search">
                                             Assigned To <span class="text-danger"></span>
@@ -160,7 +208,7 @@
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
                                 <!-- <div class="col-md-6 new-date-data-field">
                                     <div class="group-input input-date ">
                                         <label for="due-date">Due Date<span class="text-danger">*</span></label>
@@ -176,7 +224,7 @@
                                 </div> -->
                                 <div class="col-lg-6 new-date-data-field">
                                     <div class="group-input input-date">
-                                        <label for="Date Due"> Due Date</label>
+                                        <label for="Date Due">Proposed Date of Completion</label>
                                          <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small></div>
                                         <div class="calenderauditee">
                                             <input type="text" id="due_date" readonly
@@ -186,7 +234,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                {{-- <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="Initiator Group">Initiator Group</label>
                                         <select name="initiator_Group" id="initiator_group">
@@ -236,7 +284,7 @@
                                         <input type="text" name="initiator_group_code" id="initiator_group_code"
                                             value="" >
                                     </div>
-                                </div>
+                                </div> --}}
                                 {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Short Description">Short Description<span
@@ -254,7 +302,7 @@
                                     </div>
                                 </div>  
                                     <p id="docnameError" style="color:red">**Short Description is required</p>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="severity-level">Severity Level</label>
                                         <span class="text-primary">Severity levels in a QMS record gauge issue seriousness, guiding priority for corrective actions. Ranging from low to high, they ensure quality standards and mitigate critical risks.</span>
@@ -265,8 +313,8 @@
                                             <option value="critical">Critical</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
+                                </div> --}}
+                                {{-- <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="Initiator Group">Initiated Through</label>
                                         <div><small class="text-primary">Please select related information</small></div>
@@ -285,7 +333,47 @@
                                             <option value="others">Others</option>
                                         </select>
                                     </div>
+                                </div> --}}
+                                {{-- <div class="col-lg-6">
+                                    <div class="group-input">
+                                        <label for="Initiator Group">Source of CAPA</label>
+                                        <div><small class="text-primary">Please select related information</small></div>
+                                        <select name="initiated_through"
+                                            onchange="otherController(this.value, 'others', 'initiated_through_req')">
+                                            <option value="">Enter Your Selection Here</option>
+                                            <option value="internal_audit">Internal Audit</option>
+                                            <option value="external_audit">External Audit</option>
+                                            <option value="recall">Recall</option>
+                                            <option value="return">Return</option>
+                                            <option value="deviation">Deviation</option>
+                                            <option value="complaint">Complaint</option>
+                                            <option value="regulatory">Regulatory</option>
+                                            <option value="lab-incident">Lab Incident</option>
+                                            <option value="improvement">Improvement</option>
+                                            <option value="others">Others</option>
+                                        </select>
+                                    </div>
+                                </div> --}}
+
+                                <div class="col-lg-6">
+                                    <div class="group-input">
+                                        <label for="Initiator Group">Source of CAPA</label>
+                                        <div><small class="text-primary">Please select related information</small></div>
+                                        <select name="initiated_through"
+                                            onchange="otherController(this.value, 'others', 'initiated_through_req')">
+                                            <option value="">Enter Your Selection Here</option>
+                                            <option value="deviation">Deviation</option>
+                                            <option value="Self_Inspection ">Self Inspection</option>
+                                            <option value="market_complaint">Market Complaint </option>
+                                            <option value="oot">OOT</option>
+                                            <option value="External_Regulatory">External / Regulatory Audit Observation</option>
+                                            <option value="oos">OOS</option>
+                                            <option value="Input_from_Employees">Input from the Employees</option>
+                                            <option value="others">Others</option>
+                                        </select>
+                                    </div>
                                 </div>
+
                                 <div class="col-lg-6">
                                     <div class="group-input" id="initiated_through_req">
                                         <label for="initiated_through">Others<span
@@ -293,7 +381,265 @@
                                         <textarea name="initiated_through_req"></textarea>
                                     </div>
                                 </div>
+
                                 <div class="col-lg-6">
+                                    <div class="group-input" id="initiated_through_req">
+                                        <label for="initiated_through">Source Document Name / No
+                                               </label>
+                                        <textarea name="problem_descriptions"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 sub-head">
+                                    Proposed Corrective Action 
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Material Details">
+                                            Proposed Corrective Action<button type="button" name="ann"
+                                                id="material">+</button>
+                                        </label>
+                                        <table class="table table-bordered" id="material_details" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No</th>
+                                                    <th>Action</th>
+                                                    <th>Responsibility (Department)</th>
+                                                    <th>Target date</th>
+                                                    <th>Completion date</th>
+                                                    <th>Implementation verified by QA</th>
+                                                    {{-- <th>Remark</th> --}}
+                                                    {{-- <th>Batch Status</th> --}}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                            <tbody>
+                                                <td><input disabled type="text" name="serial_number[]" value="1">
+                                                </td>
+                                                {{-- <td> <select name="material_name[]" id="material_name">
+                                                        <option value="">-- Select value --</option>
+                                                        <option value="PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/">
+                                                            PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/
+                                                        </option>
+                                                        <option value="BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION">
+                                                            BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION
+                                                        </option>
+                                                        <option value="CAFFEINECITRATEORALSOLUTION USP 60MG/3ML">
+                                                            CAFFEINECITRATEORALSOLUTION USP 60MG/3ML
+                                                        </option>
+                                                        <option value="BRIMONIDINE TART. OPH SOL 0.1%W/V (CB)">BRIMONIDINE
+                                                            TART. OPH SOL 0.1%W/V (CB)
+                                                        </option>
+                                                        <option value="DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO">
+                                                            DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO
+                                                        </option>
+                                                    </select></td>
+                                                <td>
+                                                    <select name="material_batch_no[]" id="batch_no">
+                                                        <option value="">select value</option>
+                                                        <option value="DCAU0030">DCAU0030</option>
+                                                        <option value="BDZH0007">BDZH0007</option>
+                                                        <option value="BDZH0006">BDZH0006</option>
+                                                        <option value="BJJH0004A">BJJH0004A</option>
+                                                        <option value="DCAU0036">DCAU0036</option>
+                                                    </select>
+                                                </td> --}}
+                                                <td><input type="text" name="action[]"></td>
+                                                <td><input type="text" name="responsibility[]"></td>
+
+                                                
+                                                <td><input type="date" name="material_mfg_date[]"></td>
+                                                <td><input type="date" name="material_expiry_date[]"></td> 
+                                              
+                                                
+                                                <td><input type="text" name="Implementation_verified_by[]"></td>
+                                                {{-- <td><input type="text" name="Implementation_verified_by[]"></td>
+                                                <td>
+                                                    <select name="material_batch_status[]" id="batch_status">
+                                                        <option value="">-- Select value --</option>
+                                                        <option value="Hold">Hold</option>
+                                                        <option value="Release">Release</option>
+                                                        <option value="quarantine">Quarantine</option>
+                                                    </select>
+                                                </td> --}}
+                                            </tbody> 
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-12 sub-head">
+                                    Proposed Preventive Action 
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Material Details">
+                                            Proposed Preventive Action<button type="button" name="ann"
+                                                id="material">+</button>
+                                        </label>
+                                        <table class="table table-bordered" id="material_details" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No</th>
+                                                    <th>Action</th>
+                                                    <th>Responsibility (Department)</th>
+                                                    <th>Target date</th>
+                                                    <th>Completion date</th>
+                                                    <th>Implementation verified by QA</th>
+                                                    {{-- <th>Remark</th> --}}
+                                                    {{-- <th>Batch Status</th> --}}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                            <tbody>
+                                                <td><input disabled type="text" name="serial_number[]" value="1">
+                                                </td>
+                                                {{-- <td> <select name="material_name[]" id="material_name">
+                                                        <option value="">-- Select value --</option>
+                                                        <option value="PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/">
+                                                            PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/
+                                                        </option>
+                                                        <option value="BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION">
+                                                            BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION
+                                                        </option>
+                                                        <option value="CAFFEINECITRATEORALSOLUTION USP 60MG/3ML">
+                                                            CAFFEINECITRATEORALSOLUTION USP 60MG/3ML
+                                                        </option>
+                                                        <option value="BRIMONIDINE TART. OPH SOL 0.1%W/V (CB)">BRIMONIDINE
+                                                            TART. OPH SOL 0.1%W/V (CB)
+                                                        </option>
+                                                        <option value="DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO">
+                                                            DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO
+                                                        </option>
+                                                    </select></td>
+                                                <td>
+                                                    <select name="material_batch_no[]" id="batch_no">
+                                                        <option value="">select value</option>
+                                                        <option value="DCAU0030">DCAU0030</option>
+                                                        <option value="BDZH0007">BDZH0007</option>
+                                                        <option value="BDZH0006">BDZH0006</option>
+                                                        <option value="BJJH0004A">BJJH0004A</option>
+                                                        <option value="DCAU0036">DCAU0036</option>
+                                                    </select>
+                                                </td> --}}
+                                                <td><input type="text" name="action[]"></td>
+                                                <td><input type="text" name="responsibility[]"></td>
+
+                                                
+                                                <td><input type="date" name="material_mfg_date[]"></td>
+                                                <td><input type="date" name="material_expiry_date[]"></td> 
+                                               
+                                                
+                                                <td><input type="text" name="Implementation_verified_by[]"></td>
+                                                {{-- <td><input type="text" name="Implementation_verified_by[]"></td>
+                                                <td>
+                                                    <select name="material_batch_status[]" id="batch_status">
+                                                        <option value="">-- Select value --</option>
+                                                        <option value="Hold">Hold</option>
+                                                        <option value="Release">Release</option>
+                                                        <option value="quarantine">Quarantine</option>
+                                                    </select>
+                                                </td> --}}
+                                            </tbody> 
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-12 sub-head">
+                                    Implementation of Corrective Action by means of
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Material Details">
+                                           Implementation of Corrective Action by means of<button type="button" name="ann"
+                                                id="equipment">+</button>
+                                        </label>
+                                        <table class="table table-bordered" id="equipment_details">
+                                            <thead>
+                                                <tr>
+                                                    <th>Row #</th>
+                                                    <th>Action Plan</th>
+                                                    <th>Implemented through</th>
+                                                    <th>Implemented date</th>
+                                                    <th>Verification of Implementation</th>
+                                                </tr>
+                                            </thead>
+                                            
+
+                                            
+                                         <tbody>
+                                                <td><input disabled type="text" name="serial_number[]" value="1">
+                                                </td>
+                                                <td><input type="text" name="action_plan[]"></td>
+                                                <td><input type="text" name="implemented_through[]"></td>
+                                                <td><input type="text" name="implemented_date[]"></td>
+                                                <td><input type="text" name="verificatio_Implementation[]"></td>
+                                            </tbody> 
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 sub-head">
+                                    Closure of the CAPA
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="comments_new">Comments</label>
+                                        <textarea name="comments_new"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Details">Head Quality / Designee</label>
+                                        <input type="text" name="head_quality">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 sub-head">
+                                    Extension (if required) 
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="due_date_extension">Justification</label>
+                                        
+                                        <textarea name="justification"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="group-input">
+                                        <label for="Initiator Group">Effectiveness Verification of CAPA:</label>
+                                        <select name="is_repeat_assingable_ooc"  id="assignableSelect"
+                                            onchange="toggleRootCauseInput()">
+                                            <option value=" ">Is Effectiveness verification required?</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12" id="rootCauseGroup" style="display: none;">
+                                    <div class="group-input">
+                                        <label for="RootCause">Remark</label>
+                                        <textarea name="rootcausenewfield"  id="rootCauseTextarea" rows="4" placeholder="Describe the root cause here"></textarea>
+                                    </div>
+                                </div>
+                                <script>
+                                    function toggleRootCauseInput() {
+                                        var selectValue = document.getElementById("assignableSelect").value;
+                                        var rootCauseGroup = document.getElementById("rootCauseGroup");
+
+                                        if (selectValue === "YES") {
+                                            rootCauseGroup.style.display = "block"; // Show the textarea if "YES" is selected
+                                        } else {
+                                            rootCauseGroup.style.display = "none"; // Hide the textarea if "NO" or "NA" is selected
+                                        }
+                                    }
+                                </script>
+
+                                {{-- <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="repeat">Repeat</label>
                                         <div><small class="text-primary">Please select yes if it is has recurred in past
@@ -306,20 +652,20 @@
                                             <option value="NA">NA</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
+                                </div> --}}
+                                {{-- <div class="col-lg-6">
                                     <div class="group-input" id="repeat_nature">
                                         <label for="repeat_nature">Repeat Nature<span
                                                 class="text-danger d-none">*</span></label>
                                         <textarea name="repeat_nature"></textarea>
                                     </div>
-                                </div>
-                                <div class="col-12">
+                                </div> --}}
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Problem Description">Problem Description</label>
                                         <textarea name="problem_description"></textarea>
                                     </div>
-                                </div>
+                                </div> --}}
                                                       {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="CAPA Team">CAPA Team</label>
@@ -331,7 +677,7 @@
                                         </select>
                                     </div>
                                 </div> --}}
-                                <div class="col-6">
+                                {{-- <div class="col-6">
                                     <div class="group-input">
                                         <label for="CAPA Team">CAPA Team</label>
                                         <select multiple name="capa_team[]" placeholder="Select CAPA Team"
@@ -341,7 +687,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
                                 {{-- <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="CAPA Related Records">CAPA Related Records</label>
@@ -358,7 +704,7 @@
                                         </div>
                                     </div>
                                 </div> --}}
-                                <div class="col-lg-12">
+                                {{-- <div class="col-lg-12">
                                     <div class="group-input">
                                         <label for="Reference Records">Reference Records</label>
                                <select multiple id="capa_related_record" name="capa_related_record[]" id="">
@@ -368,22 +714,22 @@
                                                     {{ Helpers::getDivisionName($new->division_id) }}/CAPA/{{ date('Y') }}/{{ Helpers::recordFormat($new->record) }}
                                                 </option>
                                             @endforeach
-                                        </select>
+                                        </select> --}}
                                         {{-- <div class="related-record-block">
                                             <input type="text" name="capa_related_record">
                                             <div data-bs-toggle="modal" data-bs-target="#related-records-modal">
                                                 Add
                                             </div>
                                         </div> --}}
-                                    </div>
-                                </div>
-                                <div class="col-12">
+                                    {{-- </div>
+                                </div> --}}
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Initial Observation">Initial Observation</label>
                                         <textarea name="initial_observation"></textarea>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
+                                </div> --}}
+                                {{-- <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="Interim Containnment">Interim Containnment</label>
                                         <select name="interim_containnment"
@@ -393,23 +739,23 @@
                                             <option value="not-required">Not Required</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
+                                </div> --}}
+                                {{-- <div class="col-lg-6">
                                     <div class="group-input" id="containment_comments">
                                         <label for="Containment Comments">
                                             Containment Comments <span class="text-danger d-none">*</span>
                                         </label>
                                         <textarea name="containment_comments" id="containment_comments"></textarea>
                                     </div>
-                                </div>
+                                </div> --}}
                               
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="CAPA Attachments">CAPA Attachment</label>
                                         <div><small class="text-primary">Please Attach all relevant or supporting
-                                                documents</small></div>
+                                                documents</small></div> --}}
                                         {{-- <input multiple type="file" id="myfile" name="capa_attachment[]"> --}}
-                                        <div class="file-attachment-field">
+                                        {{-- <div class="file-attachment-field">
                                             <div class="file-attachment-list" id="capa_attachment"></div>
                                             <div class="add-btn">
                                                 <div>Add</div>
@@ -418,22 +764,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-12">
+                                </div> --}}
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Comments"> CAPA QA Comments </label>
                                         <textarea name="capa_qa_comments"></textarea>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="button-block">
-                                <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
-                                {{-- <button type="button" id="ChangeNextButton" class="nextButton">Next</button> --}}
-                                <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
+                                </div>--}}
+                            </div> 
+                           
+                        </div>
+                        <div class="button-block">
+                            <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
+                            {{-- <button type="button" id="ChangeNextButton" class="nextButton">Next</button> --}}
+                            <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
 
-                            </div>
                         </div>
                     </div>
+                    
 
                     <!-- Product Information content -->
                     <div id="CCForm2" class="inner-block cctabcontent">
@@ -659,7 +1007,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="col-12 sub-head">
+                                {{-- <div class="col-12 sub-head">
                                     Other type CAPA Details
                                 </div>
                                 <div class="col-12">
@@ -673,7 +1021,7 @@
                                         <label for="Comments"> CAPA QA Comments </label>
                                         <textarea name="capa_qa_comments2"></textarea>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
@@ -1047,6 +1395,20 @@
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="QA Review & Closure">QA Review & Closure</label>
+                                        <textarea name="qa_review"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="QA Review & Closure">Remark</label>
+                                        <textarea name="qa_review"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="QA Review & Closure"> Closure Conclusion by Head Quality / Designee</label>
                                         <textarea name="qa_review"></textarea>
                                     </div>
                                 </div>

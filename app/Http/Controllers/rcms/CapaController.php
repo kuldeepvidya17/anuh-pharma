@@ -60,10 +60,11 @@ class CapaController extends Controller
         $capa->intiation_date = $request->intiation_date;
         $capa->general_initiator_group = $request->initiator_group;
         $capa->short_description = $request->short_description;
-        $capa->problem_description = $request->problem_description;
+        // $capa->problem_description = $request->problem_description;
+        $capa->problem_descriptions = $request->problem_descriptions;
         $capa->due_date= $request->due_date;
         $capa->assign_to = $request->assign_to;
-       $capa->capa_team = implode(',', $request->capa_team);
+    //    $capa->capa_team = implode(',', $request->capa_team);
         $capa->capa_type = $request->capa_type;
         $capa->severity_level_form= $request->severity_level_form;
         $capa->initiated_through = $request->initiated_through;
@@ -98,7 +99,7 @@ class CapaController extends Controller
        $capa->Bd_Person = $request->Bd_Person;
        $capa->Production_Person= $request->Production_Person;
     //    $capa->additional_attachments= json_encode($request->additional_attachments);
-         $capa->capa_related_record= implode(',', $request->capa_related_record);
+        //  $capa->capa_related_record= implode(',', $request->capa_related_record);
        
         $capa->initial_observation = $request->initial_observation;
         $capa->interim_containnment = $request->interim_containnment;
@@ -706,11 +707,12 @@ class CapaController extends Controller
         $capa->intiation_date= $request->intiation_date;
         $capa->general_initiator_group = $request->initiator_group;
         $capa->short_description = $request->short_description;
-        $capa->problem_description = $request->problem_description;
+        // $capa->problem_description = $request->problem_description;
+        $capa->problem_descriptions = $request->problem_descriptions;
         $capa->due_date= $request->due_date;
         $capa->assign_to = $request->assign_to;
       //  $capa->capa_team = $request->capa_team;
-        $capa->capa_team = implode(',', $request->capa_team);
+        // $capa->capa_team = implode(',', $request->capa_team);
         $capa->capa_type = $request->capa_type;
         $capa->details_new = $request->details_new;
         $capa->initiated_through = $request->initiated_through;
@@ -737,7 +739,7 @@ class CapaController extends Controller
         $capa->Effectiveness_checker = $request->Effectiveness_checker;
         $capa->effective_check_plan = $request->effective_check_plan;
         $capa->due_date_extension = $request->due_date_extension;
-         $capa->capa_related_record=  implode(',', $request->capa_related_record);
+        //  $capa->capa_related_record=  implode(',', $request->capa_related_record);
         // $capa->reference_record = $request->reference_record;
         $capa->Microbiology_new= $request->Microbiology_new;
         $capa->goup_review = $request->goup_review;
@@ -1313,7 +1315,7 @@ class CapaController extends Controller
         // dd( $MaterialsQueryData->json());
         // $EquipmentsQueryData = Http::get('http://103.167.99.37/LIMS_EL/WebServices.Query.EquipmentsQuery.lims');
         // dd( $EquipmentsQueryData->json());
-        
+        // dd($data->problem_descriptions);
         return view('frontend.capa.capaView', compact('data', 'data1', 'data2', 'data3', 'old_record','revised_date','cft' ));
     }
 
