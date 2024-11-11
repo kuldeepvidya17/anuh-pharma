@@ -265,7 +265,6 @@
                     <tr>
                         <th class="w-20">Containment Comments</th>
                         <td class="w-80">@if($data->containment_comments){{ $data->containment_comments }}@else Not Applicable @endif</td>
-
                     </tr>
                     <tr>
                         <th class="w-20">CAPA QA Comments</th>
