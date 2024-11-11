@@ -30,6 +30,10 @@ return new class extends Migration
             $table->longText('due_date')->nullable();
             $table->longText('initiator_group')->nullable();
             $table->longText('short_description')->nullable();
+            $table->longText('nameAddressagency')->nullable();
+            $table->longText('nameDesgnationCom')->nullable();
+            $table->longText('phone_no')->nullable();
+            $table->longText('email_address')->nullable();
             $table->longText('sample_recd')->nullable();
             $table->longText('test_results_recd')->nullable();
             $table->longText('severity_level_form')->nullable();
@@ -50,6 +54,10 @@ return new class extends Migration
             $table->longText('plan_proposed_on')->nullable();
             $table->longText('plan_approved_by')->nullable();
             $table->longText('plan_approved_on')->nullable();
+
+            $table->longText('rejected_by')->nullable();
+            $table->longText('rejected_on')->nullable();
+            $table->longText('rejected_comment')->nullable();
 
             $table->json('attachments')->nullable();
             $table->timestamps();

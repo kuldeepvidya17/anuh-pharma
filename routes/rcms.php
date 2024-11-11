@@ -195,7 +195,10 @@ Route::group(['prefix' => 'rcms'], function () {
         Route::post('marketcomplaintupdate/{id}', [MarketComplaintController::class, 'update'])->name('marketcomplaintupdate');
         Route::get('MarketComplaintSingleReport/{id}', [MarketComplaintController::class, 'singleReport'])->name('MarketComplaintSingleReport');
         Route::post('MarketComplaint/stage/{id}', [MarketComplaintController::class, 'MC_send_stage'])->name('MC_send_stage');
+        Route::post('marketcomplaint/moreinfo/{id}', [MarketComplaintController::class, 'moreinfo_reject_market'])->name('marketcomplaint_moreinfo');
         Route::get('MarketComplaintAuditTrial/{id}', [MarketComplaintController::class, 'AuditTrial'])->name('MarketcomplaintAuditTrial');
+        Route::get('/marketcomplaint/{id}',[MarketComplaintController::class,'audit_trail_filter_marketcomplaint'])->name('marketcomplaint_filter');
+        Route::get('marketAuditReport/{id}', [MarketComplaintController::class, 'auditReport'])->name('marketcomplaintAuditReport');
 
 
 
