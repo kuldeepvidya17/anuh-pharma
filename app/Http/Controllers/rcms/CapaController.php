@@ -292,8 +292,7 @@ class CapaController extends Controller
        
          // Retrieve data for Proposed Corrective Action grid
         $proposedCorrectiveActionData = CapaGrid::where('capa_id', $id)
-        ->where('
-        ', 'ProposedCorrectiveAction')
+        ->where('identifer', 'ProposedCorrectiveAction')
         ->first();  
         $proposedPreventiveActionData = CapaGrid::where('capa_id', $id)
         ->where('identifer', 'ProposedPreventiveAction')
@@ -838,42 +837,74 @@ class CapaController extends Controller
 
 
     public static function singleReport($id)
-    {
-        $data = Capa::find($id);
-        if (!empty($data)) {
-            // Load Corrective Action Details dynamically
-            $data->CorrectiveActionDetails = CapaGrid::where('capa_id', $id)
-                                                      ->where('identifer', 'ProposedCorrectiveAction')
-                                                      ->get();  // Fetching multiple entries
-            // Check if CorrectiveActionDetails is not empty
-            if ($data->CorrectiveActionDetails->isEmpty()) {
-                // Optional: Add a default message or handle the case where no records are found
-                $data->CorrectiveActionDetails = collect(); // If no corrective action details found
-            }
-    
-            // Load originator name
-            $data->originator = User::where('id', $data->initiator_id)->value('name');
-            
-            // Generate PDF with view and data
-            $pdf = App::make('dompdf.wrapper');
-            $pdf = PDF::loadview('frontend.capa.singleReport', compact('data'))
-                ->setOptions([
-                    'defaultFont' => 'sans-serif',
-                    'isHtml5ParserEnabled' => true,
-                    'isRemoteEnabled' => true,
-                    'isPhpEnabled' => true,
-                ]);
-            $pdf->setPaper('A4');
-            $pdf->render();
-            $canvas = $pdf->getDomPDF()->getCanvas();
-            $height = $canvas->get_height();
-            $width = $canvas->get_width();
-            $canvas->page_script('$pdf->set_opacity(0.1,"Multiply");');
-            $canvas->page_text($width / 4, $height / 2, $data->status, null, 25, [0, 0, 0], 2, 6, -20);
-            
-            return $pdf->stream('CAPA' . $id . '.pdf');
+{
+    $data = Capa::find($id);
+    if (!empty($data)) {
+        $data->originator = User::where('id', $data->initiator_id)->value('name');
+
+        // Get the proposed corrective action data
+        $proposedCorrectiveActionData = CapaGrid::where([
+            'capa_id' => $id,
+            'identifer' => 'ProposedCorrectiveAction'
+        ])->first();
+        $proposedPreventiveActionData = CapaGrid::where([
+            'capa_id' => $id,
+            'identifer' => 'ProposedPreventiveAction'
+        ])->first();
+        // $implementationCorrectiveActionData = CapaGrid::where([
+        //     'capa_id' => $id,
+        //     'identifer' => 'ImplementationCorrectiveAction'
+        // ])->first();
+
+        // Decode the JSON data if it is a JSON string, or leave it as an array
+        $correctiveActions = [];
+        if ($proposedCorrectiveActionData && is_string($proposedCorrectiveActionData->data)) {
+            // Decode if it is a string
+            $correctiveActions = json_decode($proposedCorrectiveActionData->data, true);
+        } elseif ($proposedCorrectiveActionData && is_array($proposedCorrectiveActionData->data)) {
+            // If the data is already an array, use it as it is
+            $correctiveActions = $proposedCorrectiveActionData->data;
         }
+
+        $preventiveActions = [];
+        if ($proposedPreventiveActionData && is_string($proposedPreventiveActionData->data)) {
+            // Decode if it is a string
+            $preventiveActions = json_decode($proposedPreventiveActionData->data, true);
+        } elseif ($proposedPreventiveActionData && is_array($proposedPreventiveActionData->data)) {
+            // If the data is already an array, use it as it is
+            $preventiveActions = $proposedPreventiveActionData->data;
+        }
+
+        // $implementationcorrectiveActions = [];
+        // if ($implementationCorrectiveActionData && is_string($implementationCorrectiveActionData->data)) {
+        //     // Decode if it is a string
+        //     $preventiveActions = json_decode($implementationCorrectiveActionData->data, true);
+        // } elseif ($implementationCorrectiveActionData && is_array($implementationCorrectiveActionData->data)) {
+        //     // If the data is already an array, use it as it is
+        //     $preventiveActions = $implementationCorrectiveActionData->data;
+        // }
+
+        // Debugging to check if the correctiveActions data is correct
+        // Uncomment below line if you want to debug
+        // dd($correctiveActions);
+
+        // Generate the PDF with the data
+        $pdf = App::make('dompdf.wrapper');
+        $pdf = PDF::loadview('frontend.capa.singleReport', compact('data', 'correctiveActions','preventiveActions'))
+            ->setOptions([
+                'defaultFont' => 'sans-serif',
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'isPhpEnabled' => true,
+            ]);
+
+        $pdf->setPaper('A4');
+        return $pdf->stream('Deviation' . $id . '.pdf');
     }
+}
+
+    
+    
     
 
     public static function auditReport($id)
