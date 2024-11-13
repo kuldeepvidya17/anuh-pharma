@@ -341,7 +341,7 @@
 
                                             </div>
                                         </div> -->
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                     <div class="group-input">
                                         <label for="due-date">Proposed Date of Completion<span class="text-danger"></span></label>
                                         <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small></div>
@@ -351,85 +351,9 @@
                                         {{-- <input type="text" value="{{ $data->due_date }}" name="due_date"> --}}
                                         {{-- <div class="static"> {{ $due_date }}</div> --}}
 
-                                    </div>
-                                </div>
-                                        {{-- <div class="col-lg-6">
-                                            <div class="group-input">
-                                                <label for="Initiator Group">Department</label>
-                                                <select name="initiator_Group" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                     id="initiator_group">
-                                                    <option value="CQA"
-                                                        @if ($data->initiator_Group== 'CQA') selected @endif>Corporate
-                                                        Quality Assurance</option>
-                                                    <option value="QAB"
-                                                        @if ($data->initiator_Group== 'QAB') selected @endif>Quality
-                                                        Assurance Biopharma</option>
-                                                    <option value="CQC"
-                                                        @if ($data->initiator_Group== 'CQC') selected @endif>Central
-                                                        Quality Control</option>
-                                                    <option value="CQC"
-                                                        @if ($data->initiator_Group== 'CQC') selected @endif>Manufacturing
-                                                    </option>
-                                                    <option value="PSG"
-                                                        @if ($data->initiator_Group== 'PSG') selected @endif>Plasma
-                                                        Sourcing Group</option>
-                                                    <option value="CS"
-                                                        @if ($data->initiator_Group== 'CS') selected @endif>Central
-                                                        Stores</option>
-                                                    <option value="ITG"
-                                                        @if ($data->initiator_Group== 'ITG') selected @endif>Information
-                                                        Technology Group</option>
-                                                    <option value="MM"
-                                                        @if ($data->initiator_Group== 'MM') selected @endif>Molecular
-                                                        Medicine</option>
-                                                    <option value="CL"
-                                                        @if ($data->initiator_Group== 'CL') selected @endif>Central
-                                                        Laboratory</option>
-                                                    <option value="TT"
-                                                        @if ($data->initiator_Group== 'TT') selected @endif>Tech
-                                                        Team</option>
-                                                    <option value="QA"
-                                                        @if ($data->initiator_Group== 'QA') selected @endif>Quality
-                                                        Assurance</option>
-                                                    <option value="QM"
-                                                        @if ($data->initiator_Group== 'QM') selected @endif>Quality
-                                                        Management</option>
-                                                    <option value="IA"
-                                                        @if ($data->initiator_Group== 'IA') selected @endif>IT
-                                                        Administration</option>
-                                                    <option value="ACC"
-                                                        @if ($data->initiator_Group== 'ACC') selected @endif>Accounting
-                                                    </option>
-                                                    <option value="LOG"
-                                                        @if ($data->initiator_Group== 'LOG') selected @endif>Logistics
-                                                    </option>
-                                                    <option value="SM"
-                                                        @if ($data->initiator_Group== 'SM') selected @endif>Senior
-                                                        Management</option>
-                                                    <option value="BA"
-                                                        @if ($data->initiator_Group== 'BA') selected @endif>Business
-                                                        Administration</option>
-
-                                                </select>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-lg-6">
-                                            <div class="group-input">
-                                                <label for="Initiator Group Code">Initiator Group Code</label>
-                                                <input readonly type="text" name="initiator_group_code"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                    value="{{ $data->initiator_Group}}" id="initiator_group_code"
-                                                    readonly>
-                                              
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="Short Description">Short Description <span
-                                                        class="text-danger">*</span></label>
-                                                        <div><small class="text-primary">Please mention brief summary</small></div>
-                                                <textarea name="short_description"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->short_description }}</textarea>
-                                            </div>
-                                        </div> --}}
+                                   {{--   </div>
+                                </div> --}}
+                                        
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Short Description">Short Description<span
@@ -441,454 +365,356 @@
                                         </div>
         
                                         
-                                        {{-- <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="severity-level">Severity Level</label>
-                                                <span class="text-primary">Severity levels in a QMS record gauge issue seriousness, guiding priority for corrective actions. Ranging from low to high, they ensure quality standards and mitigate critical risks.</span>
-                                                <select {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }} name="severity_level_form">
-                                                    <option  value="0">-- Select --</option>
-                                                    <option @if ($data->severity_level_form=='minor') selected @endif value="minor">Minor</option>
-                                                    <option @if ($data->severity_level_form=='major') selected @endif value="major">Major</option>
-                                                    <option @if ($data->severity_level_form=='critical') selected @endif value="critical">Critical</option>
-                                                </select>
-                                            </div>
-                                        </div> --}}
+                                       
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="Initiator Group">Source of CAPA</label>
                                                 <div><small class="text-primary">Please select related information</small></div>
-                                                <select name="initiated_through"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
+                                                <select name="source_of_capa"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
                                                     onchange="otherController(this.value, 'others', 'initiated_through_req')">
                                                     <option value="">Enter Your Selection Here</option>
-                                                    <option @if ($data->initiated_through == 'internal_audit') selected @endif
+                                                    <option @if ($data->source_of_capa == 'internal_audit') selected @endif
                                                         value="internal_audit">Internal Audit</option>
-                                                        <option @if ($data->initiated_through == 'external_audit') selected @endif
+                                                        <option @if ($data->source_of_capa == 'external_audit') selected @endif
                                                         value="external_audit">External Audit</option>
-                                                    <option @if ($data->initiated_through == 'recall') selected @endif
+                                                    <option @if ($data->source_of_capa == 'recall') selected @endif
                                                         value="recall">Recall</option>
-                                                    <option @if ($data->initiated_through == 'return') selected @endif
+                                                    <option @if ($data->source_of_capa == 'return') selected @endif
                                                         value="return">Return</option>
-                                                    <option @if ($data->initiated_through == 'deviation') selected @endif
+                                                    <option @if ($data->source_of_capa == 'deviation') selected @endif
                                                         value="deviation">Deviation</option>
-                                                    <option @if ($data->initiated_through == 'complaint') selected @endif
+                                                    <option @if ($data->source_of_capa == 'complaint') selected @endif
                                                         value="complaint">Complaint</option>
-                                                    <option @if ($data->initiated_through == 'regulatory') selected @endif
+                                                    <option @if ($data->source_of_capa == 'regulatory') selected @endif
                                                         value="regulatory">Regulatory</option>
-                                                    <option @if ($data->initiated_through == 'lab-incident') selected @endif
+                                                    <option @if ($data->source_of_capa == 'lab-incident') selected @endif
                                                         value="lab-incident">Lab Incident</option>
-                                                    <option @if ($data->initiated_through == 'improvement') selected @endif
+                                                    <option @if ($data->source_of_capa == 'improvement') selected @endif
                                                         value="improvement">Improvement</option>
-                                                    <option @if ($data->initiated_through == 'others') selected @endif
+                                                    <option @if ($data->source_of_capa == 'others') selected @endif
                                                         value="others">Others</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <div class="group-input" id="initiated_through_req">
+                                            <div class="group-input" id="others">
                                                 <label for="initiated_through">Others<span
                                                         class="text-danger d-none">*</span></label>
-                                                <textarea name="initiated_through_req"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> {{ $data->initiated_through_req }}</textarea>
+                                                <textarea name="others"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> {{ $data->others }}</textarea>
                                             </div>
                                         </div>
 
 
 
                                         <div class="col-lg-6">
-                                            <div class="group-input" id="initiated_through_req">
+                                            <div class="group-input" id="source_document_name">
                                                 <label for="initiated_through">Source Document Name / No
                                                        </label>
-                                                <textarea name="problem_descriptions" value>{{ $data->short_description }}</textarea>
+                                                <textarea name="source_document_name" value>{{ $data->source_document_name }}</textarea>
                                             </div>
                                         </div>
 
-                                        {{-- <div class="col-lg-6">
-                                            <div class="group-input">
-                                                <label for="repeat">Repeat</label>
-                                                <div><small class="text-primary">Please select yes if it is has recurred in past six months</small></div>
-                                                <select name="repeat"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                    onchange="otherController(this.value, 'Yes', 'repeat_nature')">
-                                                    <option value="">Enter Your Selection Here</option>
-                                                    <option @if ($data->repeat == 'Yes') selected @endif
-                                                        value="Yes">Yes</option>
-                                                    <option @if ($data->repeat == 'No') selected @endif
-                                                        value="No">No</option>
-                                                    <option @if ($data->repeat == 'NA') selected @endif
-                                                        value="NA">NA</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="group-input" id="repeat_nature">
-                                                <label for="repeat_nature">Repeat Nature<span
-                                                        class="text-danger d-none">*</span></label>
-                                                <textarea name="repeat_nature"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->repeat_nature }}</textarea>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="Problem Description">Problem Description</label>
-                                                <textarea name="problem_description"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->problem_description }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="CAPA Team">CAPA Team</label>
-                                                <select {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }} 
-                                                    multiple id="Audit" placeholder="Select..." name="capa_team[]">
-                                                    @foreach ($users as $value)
-                                                        <!-- <option {{ $data->capa_team == $value->id ? 'selected' : '' }}  value="{{ $value->id }}">{{ $value->name }}</option> -->
-                                                        <option value="{{ $value->id }}"{{ in_array($value->id, explode(',', $data->capa_team)) ? 'selected' : '' }}>
-                                                                   {{ $value->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="group-input">
-                                                <label for="Reference Records">Reference Records</label>
-                                                <select {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                    multiple id="capa_related_record" name="capa_related_record[]"
-                                                    id="">
-                                                    @foreach ($old_record as $new)
-                                                        <option value="{{ $new->id }}"{{ in_array($new->id, explode(',', $data->capa_related_record)) ? 'selected' : '' }}>
-                                                            {{ Helpers::getDivisionName($new->division_id) }}/CAPA/{{ date('Y') }}/{{ Helpers::recordFormat($new->record) }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                    
+                                        <div class="col-12 sub-head">
+                                            Proposed Corrective Action
                                         </div>
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="Initial Observation">Initial Observation</label>
-
-                                                <textarea name="initial_observation" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->initial_observation }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="group-input">
-                                                <label for="Interim Containnment">Interim Containnment</label>
-                                                <select name="interim_containnment"
-                                                    onchange="otherController(this.value, 'required', 'containment_comments')"
-                                                    {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
-                                                    <option value="">Enter Your Selection Here</option>
-                                                    <option
-                                                        {{ $data->interim_containnment == 'required' ? 'selected' : '' }}
-                                                        value="required">Required</option>
-                                                    <option
-                                                        {{ $data->interim_containnment == 'not-required' ? 'selected' : '' }}
-                                                        value="not-required">Not Required</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="group-input" id="containment_comments">
-                                                <label for="Containment Comments">
-                                                    Containment Comments <span class="text-danger d-none">*</span>
+                                                <label for="Proposed Corrective Action">
+                                                    Proposed Corrective Action
+                                                    <button type="button" id="corrective_action_add">+</button>
                                                 </label>
-                                                <textarea name="containment_comments" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->containment_comments }}</textarea>
-                                            </div>
-                                        </div>
-                                       
-                                        <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="CAPA Attachments">CAPA Attachment</label>
-                                                <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
-                                                {{-- <input type="file" id="myfile" name="capa_attachment"
-                                                    {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> --}}
-                                                {{-- <div class="file-attachment-field">
-                                                    <div class="file-attachment-list" id="capa_attachment">
-                                                         --}}
-                                                        {{-- @if (is_array($data->capa_attachment)) --}}
-                                                        {{-- @if ($data->capa_attachment)
-                                                            @foreach (json_decode($data->capa_attachment) as $file)
-                                                                <h6 type="button" class="file-container text-dark"
-                                                                    style="background-color: rgb(243, 242, 240);">
-                                                                    <b>{{ $file }}</b>
-                                                                    <a href="{{ asset('upload/' . $file) }}"
-                                                                        target="_blank"><i class="fa fa-eye text-primary"
-                                                                            style="font-size:20px; margin-right:-10px;"></i></a>
-                                                                    <a type="button" class="remove-file"
-                                                                        data-file-name="{{ $file }}"><i
-                                                                            class="fa-solid fa-circle-xmark"
-                                                                            style="color:red; font-size:20px;"></i></a>
-                                                                </h6>
-                                                            @endforeach --}}
-                                                        {{-- @endif --}}
-                                                        {{-- @endif
-                                                    </div>
-                                                    <div class="add-btn">
-                                                        <div>Add</div>
-                                                        <input
-                                                            {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                            type="file" id="myfile" name="capa_attachment[]"
-                                                            oninput="addMultipleFiles(this, 'capa_attachment')" multiple>
-                                                    </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="corrective_action_details" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 100px;">Row #</th>
+                                                                <th>Action</th>
+                                                                <th>Responsibility (Department)</th>
+                                                                <th>Target Date</th>
+                                                                <th>Completion Date</th>
+                                                                <th>Implementation Verified by QA</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (!empty($proposedCorrectiveActionData) && is_array($proposedCorrectiveActionData->data))
+                                                                @foreach ($proposedCorrectiveActionData->data as $index => $action)
+                                                                    <tr>
+                                                                        <td><input disabled type="text" name="corrective_action_details[{{ $index }}][serial]" value="{{ $index + 1 }}"></td>
+                                                                        <td><input type="text" name="corrective_action_details[{{ $index }}][action]" value="{{ $action['action'] }}"></td>
+                                                                        <td><input type="text" name="corrective_action_details[{{ $index }}][responsibility]" value="{{ $action['responsibility'] }}"></td>
+                                                                        <td><input type="date" name="corrective_action_details[{{ $index }}][target_date]" value="{{ $action['target_date'] }}"></td>
+                                                                        <td><input type="date" name="corrective_action_details[{{ $index }}][completion_date]" value="{{ $action['completion_date'] }}"></td>
+                                                                        <td><input type="text" name="corrective_action_details[{{ $index }}][verified_by_qa]" value="{{ $action['verified_by_qa'] }}"></td>
+                                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr class="no-data">
+                                                                    <td colspan="7">No data found</td>
+                                                                </tr>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        <script>
+                                            $(document).ready(function() {
+                                                // Add new row in Proposed Corrective Action table
+                                                $('#corrective_action_add').click(function(e) {
+                                                    e.preventDefault();
+                                        
+                                                    function generateCorrectiveActionRow(serialNumber) {
+                                                        return (
+                                                            '<tr>' +
+                                                            '<td><input disabled type="text" name="corrective_action_details[' + serialNumber +
+                                                            '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                            '<td><input type="text" name="corrective_action_details[' + serialNumber + '][action]"></td>' +
+                                                            '<td><input type="text" name="corrective_action_details[' + serialNumber + '][responsibility]"></td>' +
+                                                            '<td><input type="date" name="corrective_action_details[' + serialNumber + '][target_date]"></td>' +
+                                                            '<td><input type="date" name="corrective_action_details[' + serialNumber + '][completion_date]"></td>' +
+                                                            '<td><input type="text" name="corrective_action_details[' + serialNumber + '][verified_by_qa]"></td>' +
+                                                            '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                            '</tr>'
+                                                        );
+                                                    }
+                                        
+                                                    var tableBody = $('#corrective_action_details tbody');
+                                                    var rowCount = tableBody.children('tr').not('.no-data').length;
+                                        
+                                                    // Remove "No data found" row if it exists
+                                                    if (rowCount === 0) {
+                                                        tableBody.find('.no-data').remove();
+                                                        rowCount = 0; // Start count from 0 if no rows exist
+                                                    }
+                                        
+                                                    var newRow = generateCorrectiveActionRow(rowCount);
+                                                    tableBody.append(newRow);
+                                                });
+                                        
+                                                // Remove row in Proposed Corrective Action table
+                                                $(document).on('click', '.removeRowBtn', function() {
+                                                    $(this).closest('tr').remove();
+                                        
+                                                    // Check if table is empty after deletion, add "No data found" row if so
+                                                    if ($('#corrective_action_details tbody tr').length === 0) {
+                                                        $('#corrective_action_details tbody').append('<tr class="no-data"><td colspan="7">No data found</td></tr>');
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                    
+                                    
+                                   
+                                        <div class="col-12 sub-head">
+                                            Proposed Preventive Action
+                                        </div>
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="CAPA QA Comments">CAPA QA Comments</label>
-                                                <textarea name="capa_qa_comments" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->capa_qa_comments }}</textarea>
+                                                <label for="Proposed Preventive Action">
+                                                    Proposed Preventive Action
+                                                    <button type="button" id="preventive_action_add">+</button>
+                                                </label>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="preventive_action_details" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 100px;">Row #</th>
+                                                                <th>Action</th>
+                                                                <th>Responsibility (Department)</th>
+                                                                <th>Target Date</th>
+                                                                <th>Completion Date</th>
+                                                                <th>Implementation Verified by QA</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (!empty($proposedPreventiveActionData) && is_array($proposedPreventiveActionData->data))
+                                                                @foreach ($proposedPreventiveActionData->data as $index => $action)
+                                                                    <tr>
+                                                                        <td><input disabled type="text" name="preventive_action_details[{{ $index }}][serial]" value="{{ $index + 1 }}"></td>
+                                                                        <td><input type="text" name="preventive_action_details[{{ $index }}][action]" value="{{ $action['action'] }}"></td>
+                                                                        <td><input type="text" name="preventive_action_details[{{ $index }}][responsibility]" value="{{ $action['responsibility'] }}"></td>
+                                                                        <td><input type="date" name="preventive_action_details[{{ $index }}][target_date]" value="{{ $action['target_date'] }}"></td>
+                                                                        <td><input type="date" name="preventive_action_details[{{ $index }}][completion_date]" value="{{ $action['completion_date'] }}"></td>
+                                                                        <td><input type="text" name="preventive_action_details[{{ $index }}][verified_by_qa]" value="{{ $action['verified_by_qa'] }}"></td>
+                                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr class="no-data">
+                                                                    <td colspan="7">No data found</td>
+                                                                </tr>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div> --}} 
-                                    <div class="col-12 sub-head">
-                                        Proposed Corrective Action 
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="group-input">
-                                            <label for="Material Details">
-                                                Proposed Corrective Action<button type="button" name="ann"
-                                                    id="material">+</button>
-                                            </label>
-                                            <table class="table table-bordered" id="material_details" >
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sr. No</th>
-                                                        <th>Action</th>
-                                                        <th>Responsibility (Department)</th>
-                                                        <th>Target date</th>
-                                                        <th>Completion date</th>
-                                                        <th>Implementation verified by QA</th>
-                                                        {{-- <th>Remark</th> --}}
-                                                        {{-- <th>Batch Status</th> --}}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-    
-                                                </tbody>
-                                                <tbody>
-                                                    <td><input disabled type="text" name="serial_number[]" value="1">
-                                                    </td>
-                                                    {{-- <td> <select name="material_name[]" id="material_name">
-                                                            <option value="">-- Select value --</option>
-                                                            <option value="PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/">
-                                                                PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/
-                                                            </option>
-                                                            <option value="BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION">
-                                                                BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION
-                                                            </option>
-                                                            <option value="CAFFEINECITRATEORALSOLUTION USP 60MG/3ML">
-                                                                CAFFEINECITRATEORALSOLUTION USP 60MG/3ML
-                                                            </option>
-                                                            <option value="BRIMONIDINE TART. OPH SOL 0.1%W/V (CB)">BRIMONIDINE
-                                                                TART. OPH SOL 0.1%W/V (CB)
-                                                            </option>
-                                                            <option value="DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO">
-                                                                DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO
-                                                            </option>
-                                                        </select></td>
-                                                    <td>
-                                                        <select name="material_batch_no[]" id="batch_no">
-                                                            <option value="">select value</option>
-                                                            <option value="DCAU0030">DCAU0030</option>
-                                                            <option value="BDZH0007">BDZH0007</option>
-                                                            <option value="BDZH0006">BDZH0006</option>
-                                                            <option value="BJJH0004A">BJJH0004A</option>
-                                                            <option value="DCAU0036">DCAU0036</option>
-                                                        </select>
-                                                    </td> --}}
-                                                    <td><input type="text" name="action[]"></td>
-                                                    <td><input type="text" name="responsibility[]"></td>
-    
-                                                    
-                                                    <td><input type="date" name="material_mfg_date[]"></td>
-                                                    <td><input type="date" name="material_expiry_date[]"></td> 
+                                        
+                                        <script>
+                                            $(document).ready(function() {
+                                                // Add new row in Proposed Preventive Action table
+                                                $('#preventive_action_add').click(function(e) {
+                                                    e.preventDefault();
+                                        
+                                                    function generatePreventiveActionRow(serialNumber) {
+                                                        return (
+                                                            '<tr>' +
+                                                            '<td><input disabled type="text" name="preventive_action_details[' + serialNumber +
+                                                            '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                            '<td><input type="text" name="preventive_action_details[' + serialNumber + '][action]"></td>' +
+                                                            '<td><input type="text" name="preventive_action_details[' + serialNumber + '][responsibility]"></td>' +
+                                                            '<td><input type="date" name="preventive_action_details[' + serialNumber + '][target_date]"></td>' +
+                                                            '<td><input type="date" name="preventive_action_details[' + serialNumber + '][completion_date]"></td>' +
+                                                            '<td><input type="text" name="preventive_action_details[' + serialNumber + '][verified_by_qa]"></td>' +
+                                                            '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                            '</tr>'
+                                                        );
+                                                    }
+                                        
+                                                    var tableBody = $('#preventive_action_details tbody');
+                                                    var rowCount = tableBody.children('tr').not('.no-data').length;
+                                        
+                                                    // Remove "No data found" row if it exists
+                                                    if (rowCount === 0) {
+                                                        tableBody.find('.no-data').remove();
+                                                        rowCount = 0; // Start count from 0 if no rows exist
+                                                    }
+                                        
+                                                    var newRow = generatePreventiveActionRow(rowCount);
+                                                    tableBody.append(newRow);
+                                                });
+                                        
+                                                // Remove row in Proposed Preventive Action table
+                                                $(document).on('click', '.removeRowBtn', function() {
+                                                    $(this).closest('tr').remove();
+                                        
+                                                    // Check if table is empty after deletion, add "No data found" row if so
+                                                    if ($('#preventive_action_details tbody tr').length === 0) {
+                                                        $('#preventive_action_details tbody').append('<tr class="no-data"><td colspan="7">No data found</td></tr>');
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                        
                                                   
-                                                    
-                                                    <td><input type="text" name="Implementation_verified_by[]"></td>
-                                                    {{-- <td><input type="text" name="Implementation_verified_by[]"></td>
-                                                    <td>
-                                                        <select name="material_batch_status[]" id="batch_status">
-                                                            <option value="">-- Select value --</option>
-                                                            <option value="Hold">Hold</option>
-                                                            <option value="Release">Release</option>
-                                                            <option value="quarantine">Quarantine</option>
-                                                        </select>
-                                                    </td> --}}
-                                                </tbody> 
-                                            </table>
+                                        
+                                     
+                                        
+                                       
+                                        
+                                        <div class="col-12 sub-head">
+                                            Implementation of Corrective Action by means of
                                         </div>
-                                    </div>
-                                    <div class="col-12 sub-head">
-                                        Proposed Preventive Action 
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="group-input">
-                                            <label for="Material Details">
-                                                Proposed Preventive Action<button type="button" name="ann"
-                                                    id="material">+</button>
-                                            </label>
-                                            <table class="table table-bordered" id="material_details" >
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sr. No</th>
-                                                        <th>Action</th>
-                                                        <th>Responsibility (Department)</th>
-                                                        <th>Target date</th>
-                                                        <th>Completion date</th>
-                                                        <th>Implementation verified by QA</th>
-                                                        {{-- <th>Remark</th> --}}
-                                                        {{-- <th>Batch Status</th> --}}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-    
-                                                </tbody>
-                                                <tbody>
-                                                    <td><input disabled type="text" name="serial_number[]" value="1">
-                                                    </td>
-                                                    {{-- <td> <select name="material_name[]" id="material_name">
-                                                            <option value="">-- Select value --</option>
-                                                            <option value="PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/">
-                                                                PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/
-                                                            </option>
-                                                            <option value="BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION">
-                                                                BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION
-                                                            </option>
-                                                            <option value="CAFFEINECITRATEORALSOLUTION USP 60MG/3ML">
-                                                                CAFFEINECITRATEORALSOLUTION USP 60MG/3ML
-                                                            </option>
-                                                            <option value="BRIMONIDINE TART. OPH SOL 0.1%W/V (CB)">BRIMONIDINE
-                                                                TART. OPH SOL 0.1%W/V (CB)
-                                                            </option>
-                                                            <option value="DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO">
-                                                                DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO
-                                                            </option>
-                                                        </select></td>
-                                                    <td>
-                                                        <select name="material_batch_no[]" id="batch_no">
-                                                            <option value="">select value</option>
-                                                            <option value="DCAU0030">DCAU0030</option>
-                                                            <option value="BDZH0007">BDZH0007</option>
-                                                            <option value="BDZH0006">BDZH0006</option>
-                                                            <option value="BJJH0004A">BJJH0004A</option>
-                                                            <option value="DCAU0036">DCAU0036</option>
-                                                        </select>
-                                                    </td> --}}
-                                                    <td><input type="text" name="action[]"></td>
-                                                    <td><input type="text" name="responsibility[]"></td>
-    
-                                                    
-                                                    <td><input type="date" name="material_mfg_date[]"></td>
-                                                    <td><input type="date" name="material_expiry_date[]"></td> 
-                                                   
-                                                    
-                                                    <td><input type="text" name="Implementation_verified_by[]"></td>
-                                                    {{-- <td><input type="text" name="Implementation_verified_by[]"></td>
-                                                    <td>
-                                                        <select name="material_batch_status[]" id="batch_status">
-                                                            <option value="">-- Select value --</option>
-                                                            <option value="Hold">Hold</option>
-                                                            <option value="Release">Release</option>
-                                                            <option value="quarantine">Quarantine</option>
-                                                        </select>
-                                                    </td> --}}
-                                                </tbody> 
-                                            </table>
+                                        <div class="col-12">
+                                            <div class="group-input">
+                                                <label for="ImplementationCorrectiveAction">
+                                                    Implementation of Corrective Action
+                                                    <button type="button" id="implementation_action_add">+</button>
+                                                </label>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="implementation_action_details" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 100px;">Row #</th>
+                                                                <th>Action Plan</th>
+                                                                <th>Implemented Through</th>
+                                                                <th>Implemented Date</th>
+                                                                <th>Verification of Implementation</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (!empty($implementationCorrectiveActionData) && is_array($implementationCorrectiveActionData->data))
+                                                                @foreach ($implementationCorrectiveActionData->data as $index => $action)
+                                                                    <tr>
+                                                                        <td><input disabled type="text" name="implementation_action_details[{{ $index }}][serial]" value="{{ $index + 1 }}"></td>
+                                                                        <td><input type="text" name="implementation_action_details[{{ $index }}][action_plan]" value="{{ $action['action_plan'] ?? '' }}"></td>
+                                                                        <td><input type="text" name="implementation_action_details[{{ $index }}][implemented_through]" value="{{ $action['implemented_through'] ?? '' }}"></td>
+                                                                        <td><input type="date" name="implementation_action_details[{{ $index }}][implemented_date]" value="{{ $action['implemented_date'] ?? '' }}"></td>
+                                                                        <td><input type="text" name="implementation_action_details[{{ $index }}][verification]" value="{{ $action['verification'] ?? '' }}"></td>
+                                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr class="no-data">
+                                                                    <td colspan="6">No data found</td>
+                                                                </tr>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12 sub-head">
-                                        Implementation of Corrective Action by means of
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="group-input">
-                                            <label for="Material Details">
-                                               Implementation of Corrective Action by means of<button type="button" name="ann"
-                                                    id="equipment">+</button>
-                                            </label>
-                                            <table class="table table-bordered" id="equipment_details">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Row #</th>
-                                                        <th>Action Plan</th>
-                                                        <th>Implemented through</th>
-                                                        <th>Implemented date</th>
-                                                        <th>Verification of Implementation</th>
-                                                    </tr>
-                                                </thead>
+                                        
+                                        <script>
+                                            $(document).ready(function() {
+                                                // Add new row in Implementation Corrective Action table
+                                                $('#implementation_action_add').click(function(e) {
+                                                    e.preventDefault();
                                                 
-    
-                                                
-                                             <tbody>
-                                                    <td><input disabled type="text" name="serial_number[]" value="1">
-                                                    </td>
-                                                    <td><input type="text" name="action_plan[]"></td>
-                                                    <td><input type="text" name="implemented_through[]"></td>
-                                                    <td><input type="text" name="implemented_date[]"></td>
-                                                    <td><input type="text" name="verificatio_Implementation[]"></td>
-                                                </tbody> 
-                                            </table>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-12 sub-head">
-                                        Closure of the CAPA
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="group-input">
-                                            <label for="due_date_extension">Comments</label>
+                                                    function generateImplementationActionRow(serialNumber) {
+                                                        return (
+                                                            '<tr>' +
+                                                            '<td><input disabled type="text" name="implementation_action_details[' + serialNumber +
+                                                            '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                            '<td><input type="text" name="implementation_action_details[' + serialNumber + '][action_plan]"></td>' +
+                                                            '<td><input type="text" name="implementation_action_details[' + serialNumber + '][implemented_through]"></td>' +
+                                                            '<td><input type="date" name="implementation_action_details[' + serialNumber + '][implemented_date]"></td>' +
+                                                            '<td><input type="text" name="implementation_action_details[' + serialNumber + '][verification]"></td>' +
+                                                            '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                            '</tr>'
+                                                        );
+                                                    }
                                             
-                                            <textarea name="due_date_extension"></textarea>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-12">
-                                        <div class="group-input">
-                                            <label for="Details">Head Quality / Designee</label>
-                                            <input type="text" name="head_quality">
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-12 sub-head">
-                                        Extension (if required) 
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="group-input">
-                                            <label for="due_date_extension">Justification</label>
+                                                    var tableBody = $('#implementation_action_details tbody');
+                                                    var rowCount = tableBody.children('tr').not('.no-data').length;
                                             
-                                            <textarea name="justification"></textarea>
-                                        </div>
-                                    </div>
+                                                    // Remove "No data found" row if it exists
+                                                    if (rowCount === 0) {
+                                                        tableBody.find('.no-data').remove();
+                                                        rowCount = 0; // Start count from 0 if no rows exist
+                                                    }
+                                            
+                                                    var newRow = generateImplementationActionRow(rowCount);
+                                                    tableBody.append(newRow);
+                                                });
+                                            
+                                                // Remove row in Implementation Corrective Action table
+                                                $(document).on('click', '.removeRowBtn', function() {
+                                                    $(this).closest('tr').remove();
+                                            
+                                                    // Check if table is empty after deletion, add "No data found" row if so
+                                                    if ($('#implementation_action_details tbody tr').length === 0) {
+                                                        $('#implementation_action_details tbody').append('<tr class="no-data"><td colspan="6">No data found</td></tr>');
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                        
+                                        
+                                        
+                                        
+                                        
+                                 
+                                        
+                                       
+                                        
+
+                                   
+
     
-                                    <div class="col-lg-12">
-                                        <div class="group-input">
-                                            <label for="Initiator Group">Effectiveness Verification of CAPA:</label>
-                                            <select name="is_repeat_assingable_ooc"  id="assignableSelect"
-                                                onchange="toggleRootCauseInput()">
-                                                <option value=" ">Is Effectiveness verification required?</option>
-                                                <option value="YES">YES</option>
-                                                <option value="NO">NO</option>
-                                            </select>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-lg-12" id="rootCauseGroup" style="display: none;">
-                                        <div class="group-input">
-                                            <label for="RootCause">Remark</label>
-                                            <textarea name="rootcausenewfield"  id="rootCauseTextarea" rows="4" placeholder="Describe the root cause here"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                    <script>
-                                        function toggleRootCauseInput() {
-                                            var selectValue = document.getElementById("assignableSelect").value;
-                                            var rootCauseGroup = document.getElementById("rootCauseGroup");
-    
-                                            if (selectValue === "YES") {
-                                                rootCauseGroup.style.display = "block"; // Show the textarea if "YES" is selected
-                                            } else {
-                                                rootCauseGroup.style.display = "none"; // Hide the textarea if "NO" or "NA" is selected
-                                            }
-                                        }
-                                    </script>
+
     
                                     <div class="button-block">
                                         <button type="submit" id="ChangesaveButton" class="saveButton"
@@ -899,71 +725,44 @@
                                     </div>
                                 </div>
                             </div>
+                            </div>
 
                             <!-- Product Information content -->
                             <div id="CCForm2" class="inner-block cctabcontent">
                                 <div class="inner-block-content">
                                     <div class="row">
-                                        {{-- <div class="col-12 sub-head">
-                                            Product Details
+                                       
+                                        <div class="col-12 sub-head">
+                                            Closure of the CAPA
                                         </div>
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="Product Details">
-                                                    Product Details<button type="button" name="ann"
-                                                    id="product"
-                                                        {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>+</button>
-                                                </label>
-                                                <table class="table table-bordered" id="product_details">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Row #</th>
-                                                            <th>Product Name</th>
-                                                            <th>Batch No./Lot No./AR No.</th>
-                                                            <th>Manufacturing Date</th>
-                                                            <th>Date Of Expiry</th>
-                                                            <th>Batch Disposition Decision</th>
-                                                            <th>Remark</th>
-                                                            <th>Batch Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        
-                                                    </tbody>
-                                                        @if ($data1->product_name)
-                                                        @foreach (unserialize($data1->product_name) as $key => $temps)
-                                                        <tr>
-                                                            <td><input type="text" name="serial_number[]"
-                                                                    value="{{ $key + 1 }}"></td>
-                                                            <td><input type="text" name="product_name[]"
-                                                                    value="{{ unserialize($data1->product_name)[$key] ? unserialize($data1->product_name)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="batch_no[]"
-                                                                    value="{{ unserialize($data1->batch_no)[$key] ? unserialize($data1->batch_no)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="mfg_date[]"
-                                                                    value="{{ unserialize($data1->mfg_date)[$key] ? unserialize($data1->mfg_date)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="expiry_date[]"
-                                                                    value="{{ unserialize($data1->expiry_date)[$key] ? unserialize($data1->expiry_date)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="batch_desposition[]"
-                                                                    value="{{ unserialize($data1->batch_desposition)[$key] ? unserialize($data1->batch_desposition)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="remark[]"
-                                                                    value="{{ unserialize($data1->remark)[$key] ? unserialize($data1->remark)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="batch_status[]"
-                                                                    value="{{ unserialize($data1->batch_status)[$key] ? unserialize($data1->batch_status)[$key] : '' }}">
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                        @endif
-
-                                                    </tbody>
-                                                </table>
+                                                <label for="due_date_extension">Comments</label>
+                                                
+                                                <textarea name="comments_cloasure">{{ $data->comments_cloasure }}</textarea>
                                             </div>
-                                        </div> --}}
+                                        </div>
+        
+                                        <div class="col-12">
+                                            <div class="group-input">
+                                                <label for="Details">Head Quality / Designee</label>
+                                                <input type="text" name="head_quality">
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-12 sub-head">
+                                            Extension (if required) 
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="group-input">
+                                                <label for="due_date_extension">Justification</label>
+                                                
+                                                <textarea name="justification">{{ $data->justification }}</textarea>
+                                            </div>
+                                        </div>
+        
+                                       
+
                                         <div class="col-12 sub-head">
                                             Material Details
                                         </div>
@@ -987,87 +786,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @if ($data2->material_name)
-                                                        @foreach (unserialize($data2->material_name) as $key => $temps)
-                                                        <tr>
-                                                            <td><input type="text" name="serial_number[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ $key + 1 }}"></td>
-                                                            <!-- {{-- <td><input type="text" name="product_name[]"
-                                                                    value="{{ unserialize($data2->material_name)[$key] ? unserialize($data2->material_name)[$key] : '' }}">
-                                                            </td> --}} -->
-                                                            <td><input type="text" name="material_name[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                value="{{ unserialize($data2->material_name)[$key] ? unserialize($data2->material_name)[$key] : '' }}">
-                                                        </td>
-                                                            <td><input type="text" name="material_batch_no[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ unserialize($data2->material_batch_no)[$key] ? unserialize($data2->material_batch_no)[$key] : '' }}">
-                                                            </td>
-                                                            <!-- {{-- <td><input type="text" name="material_mfg_date[]"
-                                                                    value="{{ unserialize($data2->material_mfg_date)[$key] ? unserialize($data2->material_mfg_date)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="material_expiry_date[]"
-                                                                    value="{{ unserialize($data2->material_expiry_date)[$key] ? unserialize($data2->material_expiry_date)[$key] : '' }}">
-                                                            </td> --}} -->
-                                                            <!-- <td><div class="group-input new-date-data-field mb-0">
-                                                                <div class="input-date "><div
-                                                                 class="calenderauditee">
-                                                                <input type="text" id="material_mfg_date' + serialNumber +'" readonly placeholder="DD-MMM-YYYY" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}  value="{{ Helpers::getdateFormat(unserialize($data2->material_mfg_date)[$key]) }}" />
-                                                                <input type="date" name="material_mfg_date[]" value="{{ Helpers::getdateFormat(unserialize($data2->material_mfg_date)[$key]) }}" class="hide-input" 
-                                                                oninput="handleDateInput(this, `material_mfg_date' + serialNumber +'`)" /></div></div></div></td> -->
- 
-                                                                <td><div class="group-input new-date-data-field mb-0">
-                                                                <div class="input-date ">
-                                                              <div class="calenderauditee">
-                                                                <input type="text"   id="material_mfg_date{{$key}}" readonly placeholder="DD-MMM-YYYY" value="{{ Helpers::getdateFormat(unserialize($data2->material_mfg_date)[$key]) }}"/>
-                                                                <input type="date"  id="material_mfg_date{{$key}}_checkdate" value="{{unserialize($data2->material_mfg_date)[$key]}}"  name="material_mfg_date[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }} value="{{ Helpers::getdateFormat(unserialize($data2->material_mfg_date)[$key]) }}
-                                                                "class="hide-input" 
-                                                                oninput="handleDateInput(this, `material_mfg_date{{$key}}`);checkDate('material_mfg_date{{$key}}_checkdate','material_expiry_date{{$key}}_checkdate')"  /></div></div></div></td>
-                                                                
-                                                                <!-- <td><div class="group-input new-date-data-field mb-0">
-                                                                    <div class="input-date "><div
-                                                                     class="calenderauditee">
-                                                                    <input type="text" id="material_expiry_date' + serialNumber +'" readonly placeholder="DD-MMM-YYYY" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}  value="{{ Helpers::getdateFormat(unserialize($data2->material_expiry_date)[$key]) }}" />
-                                                                    <input type="date" name="material_expiry_date[]" value="{{ Helpers::getdateFormat(unserialize($data2->material_expiry_date)[$key]) }}" class="hide-input" 
-                                                                    oninput="handleDateInput(this, `material_expiry_date' + serialNumber +'`)" /></div></div></div></td> -->
-                                                                    <td><div class="group-input new-date-data-field mb-0">
-                                                                <div class="input-date ">
-                                                                    <div class="calenderauditee">
-                                                                <input type="text"   id="material_expiry_date{{$key}}" readonly placeholder="DD-MMM-YYYY" value="{{ Helpers::getdateFormat(unserialize($data2->material_expiry_date)[$key]) }}" />
-                                                                <input type="date" id="material_expiry_date{{$key}}_checkdate" value="{{unserialize($data2->material_mfg_date)[$key]}}"  name="material_expiry_date[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }} value="{{ Helpers::getdateFormat(unserialize($data2->material_expiry_date)[$key]) }}"class="hide-input" 
-                                                                oninput="handleDateInput(this, `material_expiry_date{{$key}}`);checkDate('material_mfg_date{{$key}}_checkdate','material_expiry_date{{$key}}_checkdate')"  /></div></div></div></td>
-
-                                                            <td><input type="text" name="material_batch_desposition[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ unserialize($data2->material_batch_desposition)[$key] ? unserialize($data2->material_batch_desposition)[$key] : '' }}">
-                                                            </td>
-                                                             <td><input type="text" name="material_remark[]" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ unserialize($data2->material_remark)[$key] ? unserialize($data2->material_remark)[$key] : '' }}">
-                                                            </td>
-                                                             <!-- <td><input type="text" id="batch_status" name="material_batch_status[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ unserialize($data2->material_batch_status)[$key] ? unserialize($data2->material_batch_status)[$key] : '' }}">
-                                                            </td>  -->
-                                                            <!-- <td> 
-                                                               <select id="batch_status"
-                                                                   name="material_batch_status[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                                   
-                                                               <option value="">-- Select value --</option>
-                                                                  <option value="Hold">Hold</option>
-                                                                  <option value="Release">Release</option>
-                                                                <option value="quarantine">Quarantine</option>
-                                                                value="{{ unserialize($data2->material_batch_status)[$key] ? unserialize($data2->material_batch_status)[$key] : '' }}" >
-                                                            </select>   
-                                                        </td> -->
-                                                        <td> 
-                                                            <select id="batch_status" name="material_batch_status[]"{{ $data->stage == 0 || $data->stage == 6 ? ' disabled' : '' }}>
-                                                                <option value="">-- Select value --</option>
-                                                                <option value="Hold"{{ isset(unserialize($data2->material_batch_status)[$key]) && unserialize($data2->material_batch_status)[$key] == 'Hold' ? ' selected' : '' }}>Hold</option>
-                                                                <option value="Release"{{ isset(unserialize($data2->material_batch_status)[$key]) && unserialize($data2->material_batch_status)[$key] == 'Release' ? ' selected' : '' }}>Release</option>
-                                                                <option value="quarantine"{{ isset(unserialize($data2->material_batch_status)[$key]) && unserialize($data2->material_batch_status)[$key] == 'quarantine' ? ' selected' : '' }}>Quarantine</option>
-                                                            </select>
-                                                        </td>
-
-                                                        </tr>
-                                                    @endforeach
-                                                        @endif
-
+                                                     
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1092,26 +811,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @if ($data3->equipment)
-                                                        @foreach (unserialize($data3->equipment) as $key => $temps)
-                                                        <tr>
-                                                            <td><input type="text" name="serial_number[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ $key + 1 }}"></td>
-
-                                                            <td><input type="text" name="equipment[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ unserialize($data3->equipment)[$key] ? unserialize($data3->equipment)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="equipment_instruments[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ unserialize($data3->equipment_instruments)[$key] ? unserialize($data3->equipment_instruments)[$key] : '' }}">
-                                                            </td>
-                                                            <td><input type="text" name="equipment_comments[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}}
-                                                                    value="{{ unserialize($data3->equipment_comments)[$key] ? unserialize($data3->equipment_comments)[$key] : '' }}">
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                        @endif
-
-
+                                                    
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1149,6 +849,38 @@
                             <div id="CCForm3" class="inner-block cctabcontent">
                                 <div class="inner-block-content">
                                     <div class="row">
+
+                                        <div class="col-lg-12">
+                                            <div class="group-input">
+                                                <label for="Initiator Group">Effectiveness Verification of CAPA:</label>
+                                                <select name="effectiveness_verification_capa" id="assignableSelect" onchange="toggleRootCauseInput()">
+                                                    <option value=" ">Is Effectiveness verification required?</option>
+                                                    <option value="YES" {{ (old('effectiveness_verification_capa', $data->effectiveness_verification_capa ?? '') == 'YES') ? 'selected' : '' }}>YES</option>
+                                                    <option value="NO" {{ (old('effectiveness_verification_capa', $data->effectiveness_verification_capa ?? '') == 'NO') ? 'selected' : '' }}>NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+        
+                                        <div class="col-lg-12" id="rootCauseGroup" style="display: none;">
+                                            <div class="group-input">
+                                                <label for="RootCause">Remark</label>
+                                                <textarea name="effectivenessRemark"  id="effectivenessRemark" rows="4" placeholder="Describe the root cause here">{{ $data->effectivenessRemark }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <script>
+                                            function toggleRootCauseInput() {
+                                                var selectValue = document.getElementById("assignableSelect").value;
+                                                var rootCauseGroup = document.getElementById("rootCauseGroup");
+        
+                                                if (selectValue === "YES") {
+                                                    rootCauseGroup.style.display = "block"; // Show the textarea if "YES" is selected
+                                                } else {
+                                                    rootCauseGroup.style.display = "none"; // Hide the textarea if "NO" or "NA" is selected
+                                                }
+                                            }
+                                        </script>
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="Project Datails Application">Project Datails
