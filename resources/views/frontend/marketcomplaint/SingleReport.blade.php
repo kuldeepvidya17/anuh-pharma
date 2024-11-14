@@ -177,7 +177,7 @@
                     <strong> Market Complaint No.</strong>
                 </td>
                 <td class="w-40">
-                    {{ Helpers::divisionNameForQMS($data->division_id) }}/DEV/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
+                    {{ Helpers::divisionNameForQMS($data->division_id) }}/MC/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
                 </td>
                 <td class="w-30">
                     <strong>Record No.</strong> {{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
@@ -228,6 +228,18 @@
                             Not Applicable
                         @endif
                         </td>
+                    </tr>
+                    <tr>
+                        
+                        <th class="w-20">Department Group</th>
+                        <td class="w-30">
+                            @if ($data->initiator_group)
+                            {{ Helpers::getFullDepartmentName($data->initiator_group) }}
+                        @else
+                            Not Applicable
+                        @endif                        </td>
+                        <th class="w-20">Department Group Code</th>
+                        <td class="w-30">{{ $data->initiator_group_code ? $data->initiator_group_code : '' }} </td>
                     </tr>
 
                 </table>
@@ -325,55 +337,28 @@
                    </table>
                 <table>
                     <tr>
-                        <th class="w-20">Department</th>
-                        <td class="w-30">
-                            @if ($data->Initiator_Group)
-                                {{ Helpers::getFullDepartmentName($data->Initiator_Group) }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                       
-
-                        {{-- <th class="w-20">Department Code</th> --}}
-                        {{-- <td class="w-30">@if ($data->initiator_group_code){{ $data->initiator_group_code }} @else Not Applicable @endif</td> --}}
-                    </tr>
-                   
-                    <tr>
-                        <th class="w-20"> Name & Address of the complainant agency</th>
-                        <td class="w-30">
-                            @if ($data->Deviation_date)
-                            {{ \Carbon\Carbon::parse($data->Deviation_date)->format('d-m-Y') }}
+                        <th class="w-20">Name & Address of The Complainant Agency</th>
+                            @if ($data->nameAddressagency)
+                            {{ \Carbon\Carbon::parse($data->nameAddressagency)->format('d-m-Y') }}
                         @else
                             Not Applicable
                         @endif
                         </td>
-                        <th class="w-20"> Deviation Observed On (Time)</th>
-                        <td class="w-30">
-                            @if ($data->deviation_time)
-                                {{ $data->deviation_time }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-
-                    </tr>
-                    <tr>
                         <th class="w-20"> Name & Designation complainer</th>
-                        <td class="w-30"> @if ($data->Delay_Justification)
-                            {{ $data->Delay_Justification }}
+                        <td class="w-30"> @if ($data->nameDesgnationCom)
+                            {{ $data->nameDesgnationCom }}
                         @else
                             Not Applicable
                         @endif</td>
-                        <th class="w-20">Phone No</th>
-                        @php
-                            $facilityIds = explode(',', $data->Facility);
-                            $users = $facilityIds ? DB::table('users')->whereIn('id', $facilityIds)->get() : [];
-                        @endphp
+                       
 
+                    </tr>
+                    <tr>
+                        
+                        <th class="w-20">Phone No</th>
                         <td>
-                            @if ($data->Facility)
-                            {{ $data->Facility }}
+                            @if ($data->phone_no)
+                            {{ $data->phone_no }}
                         @else
                             Not Applicable
                         @endif
@@ -387,16 +372,16 @@
                     <tr>
                         <th class="w-20">Email address </th>
                         <td class="w-30">
-                            @if ($data->Deviation_reported_date)
-                            {{ \Carbon\Carbon::parse($data->Deviation_reported_date)->format('d-m-Y') }}
+                            @if ($data->email_address)
+                            {{ $data->email_address }}
                         @else
                             Not Applicable
                         @endif
                         </td>
                         <th class="w-20">Sample Recd</th>
                         <td class="w-30">
-                            @if ($data->audit_type)
-                                {{ $data->audit_type }}
+                            @if ($data->sample_recd)
+                                {{ $data->sample_recd }}
                             @else
                                 Not Applicable
                             @endif
@@ -406,16 +391,16 @@
 
                         <th class="w-20"> Test Results recd</th>
                         <td class="w-30">
-                            @if ($data->others)
-                                {{ $data->others }}
+                            @if ($data->test_results_recd)
+                                {{ $data->test_results_recd }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <th class="w-20">Classification based on receipt of complaint</th>
+                        <th class="w-20">Classification Based on Receipt of Complaint</th>
                         <td class="w-30">
-                            @if ($data->Facility_Equipment)
-                                {{ $data->Facility_Equipment }}
+                            @if ($data->severity_level_form)
+                                {{ $data->severity_level_form }}
                             @else
                                 Not Applicable
                             @endif
@@ -424,54 +409,96 @@
                     </tr>
                     <tr>
 
-                        <th class="w-20">Acknowledgment sent to customer through marketing department by Head QA</th>
+                        <th class="w-20">Acknowledgment Sent to Customer Through Marketing Department by Head QA</th>
                         <td class="w-30">
-                            @if ($data->Document_Details_Required)
-                                {{ $data->Document_Details_Required }}
+                            @if ($data->acknowledgment_sent)
+                                {{ $data->acknowledgment_sent }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
                     </tr>
                 </table>
-                {{-- <div class="block">
-                    <div class="block-head">
-                        Previous History of Product Specific
+              
+                <div class="block-head">
+                    Previous History of Product Specific 
+                </div>
+                <div class="border-table" style="margin-bottom: 15px;">
+                    <div class="table-responsive">
+                        <!-- First Half of the Table -->
+                        <table class="table table-bordered" id="product_details" style="width: 100%;">
+                                <thead>
+                                    <tr class="table_bg">
+                                        <th style="width: 15px;">Row #</th>
+                                        <th style="width: 150px;">Complaint Receipt Date</th>
+                                        <th style="width: 150px;">Complaint Received From</th>
+                                        <th style="width: 200px;">Nature of Complaint</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($historydeta && is_array($historydeta))
+                                        @php $serialNumber = 1; @endphp
+                                        @foreach($historydeta as $key => $detail)
+                                            <tr>
+                                                <td>{{ $serialNumber++ }}</td>
+                                                <td>{{ $detail['receipt_date'] ?? 'Not Applicable' }}</td>
+                                                <td>{{ $detail['received_from'] ?? 'Not Applicable' }}</td>
+                                                <td>{{ $detail['nature_of_complaint'] ?? 'Not Applicable' }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Not Applicable</td>
+                                            <td>Not Applicable</td>
+                                            <td>Not Applicable</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            
+                            <!-- Second Half of the Table -->
+                            <table class="table table-bordered" id="history_details_second" style="width: 100%; margin-top: 15px;">
+                                <thead>
+                                    <tr class="table_bg">
+                                        <th style="width: 15px;">Row #</th>
+                                        <th style="width: 150px;">CAPA Taken</th>
+                                        <th style="width: 150px;">Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($historydeta && is_array($historydeta))
+                                        @php $serialNumber = 1; @endphp
+                                        @foreach($historydeta as $key => $detail)
+                                            <tr>
+                                                <td>{{ $serialNumber++ }}</td>
+                                                <td>{{ $detail['capa_taken'] ?? 'Not Applicable' }}</td>
+                                                <td>{{ $detail['remark'] ?? 'Not Applicable' }}</td>
+                                                
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Not Applicable</td>
+                                            <td>Not Applicable</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="border-table">
-                        <table>
-                            <tr class="table_bg">
-                            <th class="w-10">Row #</th>
-                                <th class="w-25">Complaint Receipt Date</th>
-                                <th class="w-25">Complaint Received From</th>
-                                <th class="w-25">Nature of Complaint</th>
-                                <th class="w-25">CAPA Taken</th>
-                                <th class="w-25">Remark</th>
-                                <th class="w-25">Action</th>
-                            </tr>
-                              <!-- Loop through the history details data -->
-                            @foreach($historyDetails as $index => $history)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $history['receipt_date'] ?? 'Not Available' }}</td>
-                                <td>{{ $history['received_from'] ?? 'Not Available' }}</td>
-                                <td>{{ $history['nature_of_complaint'] ?? 'Not Available' }}</td>
-                                <td>{{ $history['capa_taken'] ?? 'Not Available' }}</td>
-                                <td>{{ $history['remark'] ?? 'Not Available' }}</td>
-                                <td><button type="button">Action</button></td>
-                            </tr>
-                        @endforeach
-                        </table>
-                    </div>
+                </div>
+                
 
-               
-                </div> --}}
+
+
                 <table>
                     <tr>
-                        <th class="w-20">Analysis / Physical examination of control sample to be done</th>
+                        <th class="w-20">Analysis / Physical Examination of Control Sample to be Done</th>
                         <td class="w-30">
-                            @if ($data->Product_Details_Required)
-                                {{ $data->Product_Details_Required }}
+                            @if ($data->analysis_physical_examination)
+                                {{ $data->analysis_physical_examination }}
                             @else
                                 Not Applicable
                             @endif
@@ -501,7 +528,7 @@
                             </td>
                            </tr>
                             <tr>
-                                <th class="w-20">QA for review of root cause of Market complaint</th>
+                                <th class="w-20">QA for Review of Root Cause of Market Complaint</th>
                                 <td class="w-80">
                                     @if ($data->Immediate_Action)
                                         {{ strip_tags($data->Immediate_Action) }}
@@ -511,10 +538,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="w-20">Preliminary Investigation Report sent by QA to complainant on</th>
+                                <th class="w-20">Preliminary Investigation Report sent by QA to Complainant on</th>
                                 <td class="w-80">
-                                    @if ($data->Preliminary_Impact)
-                                        {{strip_tags($data->Preliminary_Impact) }}
+                                    @if ($data->Preliminary_Investigation_Report)
+                                        {{strip_tags($data->Preliminary_Investigation_Report) }}
                                     @else
                                         Not Applicable
                                     @endif

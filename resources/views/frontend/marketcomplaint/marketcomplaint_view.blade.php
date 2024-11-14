@@ -815,7 +815,7 @@
                                          </div>
                                          <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="repeat">QA for review of root cause of Market complaint</label>
+                                                <label for="repeat">QA for Review of Root Cause of Market Complaint</label>
                                                 <div><small class="text-primary">Identification of Cross functional departments by QA for review of root cause of Market complaint</small></div>
                                                 <select name="Identification_Cross_functional">
                                                     <option value="">Enter Your Selection Here</option>
@@ -827,7 +827,7 @@
                                        
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="Corrective Action">Preliminary Investigation Report sent by QA to complainant on</label>
+                                                <label for="Corrective Action">Preliminary Investigation Report sent by QA to Complainant on</label>
                                                 <textarea name="Preliminary_Investigation_Report"></textarea>
                                             </div>
                                         </div>

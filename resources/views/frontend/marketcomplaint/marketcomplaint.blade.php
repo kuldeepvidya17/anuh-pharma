@@ -153,7 +153,7 @@
                                         <select id="select-state" placeholder="Select..." name="assign_to">
                                             <option value="">Select a value</option>
                                             @foreach ($users as $value)
-                                                <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                                <option value="{{ $value->name }}">{{ $value->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('assign_to')
@@ -176,7 +176,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="Initiator Group">Initiator Group</label>
+                                        <label for="Initiator Group">Department Group</label>
                                         <select name="initiator_group" id="initiator_group">
                                             <option value="">-- Select --</option>
                                             <option value="CQA" @if (old('initiator_group') == 'CQA') selected @endif>
@@ -220,7 +220,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="Initiator Group Code">Initiator Group Code</label>
+                                        <label for="Initiator Group Code">Department Group Code</label>
                                         <input type="text" name="initiator_group_code" id="initiator_group_code"
                                             value="" >
                                     </div>
@@ -320,7 +320,7 @@
 
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="repeat">Name & Address of the complainant agency</label>
+                                        <label for="repeat">Name & Address of The Complainant Agency</label>
                                         
                                        {{-- <textarea type="longtext" name="nameAddressagency"></textarea> --}}
                                        <textarea name="nameAddressagency" id="" ></textarea>
@@ -391,7 +391,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="repeat">Acknowledgment sent to customer through marketing department by Head QA </label>
+                                        <label for="repeat">Acknowledgment Sent to Customer Through Marketing Department by Head QA </label>
                                         
                                         <select name="acknowledgment_sent">
                             
@@ -645,7 +645,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="repeat">QA for review of root cause of Market complaint</label>
+                                        <label for="repeat">QA for Review of Root Cause of Market Complaint</label>
                                         <div><small class="text-primary">Identification of Cross functional departments by QA for review of root cause of Market complaint</small></div>
                                         <select name="Identification_Cross_functional">
                                             <option value="">Enter Your Selection Here</option>
@@ -657,17 +657,17 @@
                                
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Corrective Action">Preliminary Investigation Report sent by QA to complainant on</label>
+                                        <label for="Corrective Action">Preliminary Investigation Report sent by QA to Complainant on</label>
                                         <textarea name="Preliminary_Investigation_Report"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Closure Attachments">Attachment(if any)</label>
                                         <div><small class="text-primary">Please Attach all relevant or supporting
-                                                documents</small></div>
+                                                documents</small></div> --}}
                                         {{-- <input multiple type="file" id="myfile" name="closure_attachment[]"> --}}
-                                        <div class="file-attachment-field">
+                                        {{-- <div class="file-attachment-field">
                                             <div class="file-attachment-list" id="attachment"></div>
                                             <div class="add-btn">
                                                 <div>Add</div>
@@ -676,7 +676,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-lg-6 new-date-data-field">
                                     <div class="group-input input-date">
                                         <label for="Date Due"> Further Response Received from customer </label>
@@ -688,12 +688,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Preventive Action">Details of Response </label>
                                         <textarea name="Details_of_Response"></textarea>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="repeat">Further investigation / Additional testing required</label>
@@ -704,7 +704,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                {{-- <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="repeat">Method / Tools to be used for investigation</label>
                                         <select name="Method_Tools_to_be_used_for">
@@ -716,7 +716,7 @@
                                            
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
                                
                             </div>
                             <div class="button-block">
