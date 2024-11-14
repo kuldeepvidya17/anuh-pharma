@@ -328,8 +328,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="repeat">Name &   
-                                            Designation complainer
+                                        <label for="repeat">Name & Designation complainer
                                             </label>
                                         
                                        <input type="text" name="nameDesgnationCom">
@@ -403,6 +402,83 @@
                                     </div>
                                 </div>
                                
+                                <div class="col-12 sub-head">
+                                    Previous History of Product Specific 
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Previous History">
+                                            Same nature of Complaint (If any)
+                                            <button type="button" id="history_add">+</button>
+                                        </label>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="history_details" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 100px;">Row #</th>
+                                                        <th>Complaint Receipt Date</th>
+                                                        <th>Complaint Received From</th>
+                                                        <th>Nature of Complaint</th>
+                                                        <th>CAPA Taken</th>
+                                                        <th>Remark</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input disabled type="text" name="history_details[0][serial]" value="1"></td>
+                                                        <td><input type="text" name="history_details[0][receipt_date]"></td>
+                                                        <td><input type="text" name="history_details[0][received_from]"></td>
+                                                        <td><input type="text" name="history_details[0][nature_of_complaint]"></td>
+                                                        <td><input type="text" name="history_details[0][capa_taken]"></td>
+                                                        <td><input type="text" name="history_details[0][remark]"></td>
+                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <script>
+                                    $(document).ready(function() {
+                                        // Add new row in History Details table
+                                        $('#history_add').click(function(e) {
+                                            e.preventDefault();
+                                
+                                            function generateHistoryTableRow(serialNumber) {
+                                                var html =
+                                                    '<tr>' +
+                                                    '<td><input disabled type="text" name="history_details[' + serialNumber +
+                                                    '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                    '<td><input type="text" name="history_details[' + serialNumber +
+                                                    '][receipt_date]"></td>' +
+                                                    '<td><input type="text" name="history_details[' + serialNumber +
+                                                    '][received_from]"></td>' +
+                                                    '<td><input type="text" name="history_details[' + serialNumber +
+                                                    '][nature_of_complaint]"></td>' +
+                                                    '<td><input type="text" name="history_details[' + serialNumber +
+                                                    '][capa_taken]"></td>' +
+                                                    '<td><input type="text" name="history_details[' + serialNumber +
+                                                    '][remark]"></td>' +
+                                                    '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                    '</tr>';
+                                                return html;
+                                            }
+                                
+                                            var tableBody = $('#history_details tbody');
+                                            var rowCount = tableBody.children('tr').length;
+                                            var newRow = generateHistoryTableRow(rowCount);
+                                            tableBody.append(newRow);
+                                        });
+                                
+                                        // Remove row in both tables
+                                        $(document).on('click', '.removeRowBtn', function() {
+                                            $(this).closest('tr').remove();
+                                        });
+                                    });
+                                </script>
+                                
                                
                                 <div class="col-lg-6">
                                     <div class="group-input">

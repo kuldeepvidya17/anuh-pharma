@@ -101,6 +101,7 @@ class MarketComplaintController extends Controller
     
         $marketcomplaint->type="MarketComplaint";
         $marketcomplaint->stage=1;
+        $marketcomplaint->status = "Opened";
 
         $attachments = [];
         if ($request->hasFile('attachment')) {
@@ -435,7 +436,14 @@ class MarketComplaintController extends Controller
         $materialDetailsData->data = $request->material_details;
         // dd($materialDetailsData->data);
         $materialDetailsData->save();
-        
+
+          // Store History Details
+        $historyDetailsData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'HistoryDetails'])->firstOrNew();
+        $historyDetailsData->market_id = $griddata;
+        $historyDetailsData->identifer = 'HistoryDetails';
+        $historyDetailsData->data = $request->history_details;
+        $historyDetailsData->save();
+            
         
 
         toastr()->success("Record is created Successfully");
@@ -454,13 +462,14 @@ class MarketComplaintController extends Controller
         $data->assign_to_name = User::where('id', $data->assign_id)->value('name');
         $productDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'ProductDetails')->first();
         $materialDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'MaterialDetails')->first();
+        $historyDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'HistoryDetails')->first();
         // $grid_data1 = DeviationGrid::where('deviation_grid_id', $id)->where('type', "Document")->first();
         // $grid_data2 = DeviationGrid::where('deviation_grid_id', $id)->where('type', "Product")->first();
         $data->initiator_name = User::where('id', $data->initiator_id)->value('name');
         $pre = MarketComplaint::all();
         $divisionName = DB::table('q_m_s_divisions')->where('id', $data->division_id)->value('name');
         // dd($materialDetailsData);
-        return view('frontend.marketcomplaint.marketcomplaint_view', compact('data','userData','productDetailsData','materialDetailsData', 'old_record', 'pre', 'divisionName'));
+        return view('frontend.marketcomplaint.marketcomplaint_view', compact('data','userData','productDetailsData','materialDetailsData','historyDetailsData', 'old_record', 'pre', 'divisionName'));
     }
 
     public function update(Request $request, $id)
@@ -516,6 +525,13 @@ class MarketComplaintController extends Controller
         $materialDetailsData->identifer = 'MaterialDetails';
         $materialDetailsData->data = $request->material_details;
         // dd($materialDetailsData->data);
+
+          // Store History Details (new grid)
+        $historyDetailsData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'HistoryDetails'])->firstOrNew();
+        $historyDetailsData->market_id = $griddata;
+        $historyDetailsData->identifer = 'HistoryDetails';
+        $historyDetailsData->data = $request->history_details;
+        $historyDetailsData->save();
         $materialDetailsData->update();
 
 
@@ -576,12 +592,44 @@ class MarketComplaintController extends Controller
         $data = MarketComplaint::find($id);
         // return $data;
         // $data1 =  DeviationCft::where('deviation_id', $id)->first();
+        // $historyDetails = $historyData ? json_decode($historyData->data, true) : [];
         if (!empty ($data)) {
             $data->originator = User::where('id', $data->initiator_id)->value('name');
-          
+            $productDetailsData = MarketComplaintGrids::where(['market_id' => $id, 'identifer' => 'ProductDetails'])->first(); 
+            $historyDetailsData = MarketComplaintGrids::where(['market_id' => $id, 'identifer' => 'HistoryDetails'])->first(); 
+            $materialDetailsData = MarketComplaintGrids::where(['market_id' => $id, 'identifer' => 'MaterialDetails'])->first(); 
+
+            $productdeta = [];
+            if ($productDetailsData && is_string($productDetailsData->data)) {
+                // Decode if it is a string
+                $productdeta = json_decode($productDetailsData->data, true);
+            } elseif ($productDetailsData && is_array($productDetailsData->data)) {
+                // If the data is already an array, use it as it is
+                $productdeta = $productDetailsData->data;
+            }
+
+            $historydeta = [];
+            if ($historyDetailsData && is_string($historyDetailsData->data)) {
+                // Decode if it is a string
+                $historydeta = json_decode($historyDetailsData->data, true);
+            } elseif ($historyDetailsData && is_array($historyDetailsData->data)) {
+                // If the data is already an array, use it as it is
+                $historydeta = $historyDetailsData->data;
+            }
+            $materialdeta = [];
+            if ($materialDetailsData && is_string($materialDetailsData->data)) {
+                // Decode if it is a string
+                $materialdeta = json_decode($materialDetailsData->data, true);
+            } elseif ($materialDetailsData && is_array($materialDetailsData->data)) {
+                // If the data is already an array, use it as it is
+                $materialdeta = $materialDetailsData->data;
+            }
+    
+
+
             $pdf = App::make('dompdf.wrapper');
             $time = Carbon::now();
-            $pdf = PDF::loadview('frontend.marketcomplaint.SingleReport', compact('data',))
+            $pdf = PDF::loadview('frontend.marketcomplaint.SingleReport', compact('productdeta','historydeta','materialdeta','data',))
                 ->setOptions([
                 'defaultFont' => 'sans-serif',
                 'isHtml5ParserEnabled' => true,
@@ -612,7 +660,7 @@ class MarketComplaintController extends Controller
             $lastDocument = MarketComplaint::find($id);
             if ($marketcomplaint->stage == 1) {
                 $marketcomplaint->stage = "2";
-                $marketcomplaint->status = "Pending marketcomplaint Plan";
+                $marketcomplaint->status = "HOD/Designee";
                 $marketcomplaint->plan_proposed_by = Auth::user()->name;
                 $marketcomplaint->plan_proposed_on = Carbon::now()->format('d-M-Y');
                    
@@ -626,7 +674,9 @@ class MarketComplaintController extends Controller
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->stage = 'Plan Proposed';
+                    $history->change_to =   "HOD/Designee";
+                    $history->change_from = $lastDocument->status;
+                    $history->stage = 'HOD/Designee';
                     $history->save();
 
                   
@@ -637,7 +687,7 @@ class MarketComplaintController extends Controller
             }
             if ($marketcomplaint->stage == 2) {
                 $marketcomplaint->stage = "3";
-                $marketcomplaint->status = "marketcomplaint In Progress";
+                $marketcomplaint->status = "QA Review";
                 $marketcomplaint->plan_approved_by = Auth::user()->name;
                 $marketcomplaint->plan_approved_on = Carbon::now()->format('d-M-Y');
                   
@@ -651,7 +701,9 @@ class MarketComplaintController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Plan Approved';
+                $history->change_to =   "QA Review";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'QA Review';
                 $history->save();
                 
               
@@ -662,31 +714,6 @@ class MarketComplaintController extends Controller
             }
             if ($marketcomplaint->stage == 3) {
                 $marketcomplaint->stage = "4";
-                $marketcomplaint->status = "marketcomplaint In Progress";
-                $marketcomplaint->plan_approved_by = Auth::user()->name;
-                $marketcomplaint->plan_approved_on = Carbon::now()->format('d-M-Y');
-                  
-                $history = new MarketComplaintAuditTrial();
-                $history->market_id = $id;
-                $history->activity_type = 'Activity Log';
-                $history->previous = "";
-                // $history->current = $capa->plan_approved_by;
-                $history->comment = $request->comment;
-                $history->user_id = Auth::user()->id;
-                $history->user_name = Auth::user()->name;
-                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastDocument->status;
-                $history->stage = 'Plan Approved';
-                $history->save();
-                
-              
-                
-                $marketcomplaint->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($marketcomplaint->stage == 4) {
-                $marketcomplaint->stage = "5";
                 $marketcomplaint->status = "Head QA/Designee";
                 $marketcomplaint->plan_approved_by = Auth::user()->name;
                 $marketcomplaint->plan_approved_on = Carbon::now()->format('d-M-Y');
@@ -701,7 +728,9 @@ class MarketComplaintController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Plan Approved';
+                $history->change_to =   "Head QA/Designee";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'Head QA/Designee';
                 $history->save();
                 
               
@@ -710,8 +739,8 @@ class MarketComplaintController extends Controller
                 toastr()->success('Document Sent');
                 return back();
             }
-            if ($marketcomplaint->stage == 5) {
-                $marketcomplaint->stage = "6";
+            if ($marketcomplaint->stage == 4) {
+                $marketcomplaint->stage = "5";
                 $marketcomplaint->status = "Pending Actions Completion";
                 $marketcomplaint->plan_approved_by = Auth::user()->name;
                 $marketcomplaint->plan_approved_on = Carbon::now()->format('d-M-Y');
@@ -726,7 +755,36 @@ class MarketComplaintController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Plan Approved';
+                $history->change_to =   "Pending Actions Completion";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'Pending Actions Completion';
+                $history->save();
+                
+              
+                
+                $marketcomplaint->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($marketcomplaint->stage == 5) {
+                $marketcomplaint->stage = "6";
+                $marketcomplaint->status = "Closed - Done";
+                $marketcomplaint->plan_approved_by = Auth::user()->name;
+                $marketcomplaint->plan_approved_on = Carbon::now()->format('d-M-Y');
+                  
+                $history = new MarketComplaintAuditTrial();
+                $history->market_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                // $history->current = $capa->plan_approved_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status; 
+                $history->change_to =   "Closed - Done";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'Closed - Done';
                 $history->save();
                 
               
@@ -828,7 +886,7 @@ class MarketComplaintController extends Controller
     // dd("test");
     $audit = MarketComplaintAuditTrial::where('market_id', $id)
         ->orderByDesc('id')
-        ->paginate() // Change to paginate
+        ->paginate(10) // Change to paginate
         ;
 
     $today = Carbon::now()->format('d-m-y');

@@ -443,12 +443,12 @@
                                                                         <td><input disabled type="text" name="product_details[{{ $index }}][serial]" value="{{ $index + 1 }}"></td>
                                                                         <td><input type="text" name="product_details[{{ $index }}][product_name]" value="{{ $detail['product_name'] }}"></td>
                                                                         <td><input type="text" name="product_details[{{ $index }}][batch_no]" value="{{ $detail['batch_no'] }}"></td>
-                                                                        <td><input type="text" name="product_details[{{ $index }}][mfg_date]" value="{{ $detail['mfg_date'] }}"></td>
-                                                                        <td><input type="text" name="product_details[{{ $index }}][exp_date]" value="{{ $detail['exp_date'] }}"></td>
+                                                                        <td><input type="date" name="product_details[{{ $index }}][mfg_date]" value="{{ $detail['mfg_date'] }}"></td>
+                                                                        <td><input type="date" name="product_details[{{ $index }}][exp_date]" value="{{ $detail['exp_date'] }}"></td>
                                                                         <td><input type="text" name="product_details[{{ $index }}][batch_size]" value="{{ $detail['batch_size'] }}"></td>
-                                                                        <td><input type="text" name="product_details[{{ $index }}][dispatch_date]" value="{{ $detail['dispatch_date'] }}"></td>
+                                                                        <td><input type="date" name="product_details[{{ $index }}][dispatch_date]" value="{{ $detail['dispatch_date'] }}"></td>
                                                                         <td><input type="text" name="product_details[{{ $index }}][dispatch_qty]" value="{{ $detail['dispatch_qty'] }}"></td>
-                                                                        <td><input type="text" name="product_details[{{ $index }}][completion_date]" value="{{ $detail['completion_date'] }}"></td>
+                                                                        <td><input type="date" name="product_details[{{ $index }}][completion_date]" value="{{ $detail['completion_date'] }}"></td>
                                                                         <td><button type="button" class="removeRowBtn">Remove</button></td>
                                                                     </tr>
                                                                 @endforeach
@@ -476,12 +476,12 @@
                                                             '][serial]" value="' + (serialNumber + 1) + '"></td>' +
                                                             '<td><input type="text" name="product_details[' + serialNumber + '][product_name]"></td>' +
                                                             '<td><input type="text" name="product_details[' + serialNumber + '][batch_no]"></td>' +
-                                                            '<td><input type="text" name="product_details[' + serialNumber + '][mfg_date]"></td>' +
-                                                            '<td><input type="text" name="product_details[' + serialNumber + '][exp_date]"></td>' +
+                                                            '<td><input type="date" name="product_details[' + serialNumber + '][mfg_date]"></td>' +
+                                                            '<td><input type="date" name="product_details[' + serialNumber + '][exp_date]"></td>' +
                                                             '<td><input type="text" name="product_details[' + serialNumber + '][batch_size]"></td>' +
-                                                            '<td><input type="text" name="product_details[' + serialNumber + '][dispatch_date]"></td>' +
+                                                            '<td><input type="date" name="product_details[' + serialNumber + '][dispatch_date]"></td>' +
                                                             '<td><input type="text" name="product_details[' + serialNumber + '][dispatch_qty]"></td>' +
-                                                            '<td><input type="text" name="product_details[' + serialNumber + '][completion_date]"></td>' +
+                                                            '<td><input type="date" name="product_details[' + serialNumber + '][completion_date]"></td>' +
                                                             '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
                                                             '</tr>'
                                                         );
@@ -583,6 +583,86 @@
                                         </div>
                                     </div>
                                    
+                                    <div class="col-12 sub-head">
+                                        Previous History of Product Specific 
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="group-input">
+                                            <label for="Previous History">
+                                                Same nature of Complaint (If any)
+                                                <button type="button" id="history_add">+</button>
+                                            </label>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="history_details" style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 100px;">Row #</th>
+                                                            <th>Complaint Receipt Date</th>
+                                                            <th>Complaint Received From</th>
+                                                            <th>Nature of Complaint</th>
+                                                            <th>CAPA Taken</th>
+                                                            <th>Remark</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (!empty($historyDetailsData) && is_array($historyDetailsData->data))
+                                                            @foreach ($historyDetailsData->data as $index => $detail)
+                                                                <tr>
+                                                                    <td><input disabled type="text" name="history_details[{{ $index }}][serial]" value="{{ $index + 1 }}"></td>
+                                                                    <td><input type="text" name="history_details[{{ $index }}][receipt_date]" value="{{ $detail['receipt_date'] }}"></td>
+                                                                    <td><input type="text" name="history_details[{{ $index }}][received_from]" value="{{ $detail['received_from'] }}"></td>
+                                                                    <td><input type="text" name="history_details[{{ $index }}][nature_of_complaint]" value="{{ $detail['nature_of_complaint'] }}"></td>
+                                                                    <td><input type="text" name="history_details[{{ $index }}][capa_taken]" value="{{ $detail['capa_taken'] }}"></td>
+                                                                    <td><input type="text" name="history_details[{{ $index }}][remark]" value="{{ $detail['remark'] }}"></td>
+                                                                    <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @else
+                                                            <tr>
+                                                                <td colspan="7">No data found</td>
+                                                            </tr>
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <script>
+                                        $(document).ready(function() {
+                                            // Add new row in History Details table
+                                            $('#history_add').click(function(e) {
+                                                e.preventDefault();
+                                    
+                                                // Function to generate new row for History Details table
+                                                function generateHistoryTableRow(serialNumber) {
+                                                    return (
+                                                        '<tr>' +
+                                                        '<td><input disabled type="text" name="history_details[' + serialNumber + '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                        '<td><input type="text" name="history_details[' + serialNumber + '][receipt_date]"></td>' +
+                                                        '<td><input type="text" name="history_details[' + serialNumber + '][received_from]"></td>' +
+                                                        '<td><input type="text" name="history_details[' + serialNumber + '][nature_of_complaint]"></td>' +
+                                                        '<td><input type="text" name="history_details[' + serialNumber + '][capa_taken]"></td>' +
+                                                        '<td><input type="text" name="history_details[' + serialNumber + '][remark]"></td>' +
+                                                        '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                        '</tr>'
+                                                    );
+                                                }
+                                    
+                                                var tableBody = $('#history_details tbody');
+                                                var rowCount = tableBody.children('tr').length;
+                                                var newRow = generateHistoryTableRow(rowCount);
+                                                tableBody.append(newRow);
+                                            });
+                                    
+                                            // Remove row in History Details table
+                                            $(document).on('click', '.removeRowBtn', function() {
+                                                $(this).closest('tr').remove();
+                                            });
+                                        });
+                                    </script>
+                                    
                                    
                                     <div class="col-lg-6">
                                         <div class="group-input">
