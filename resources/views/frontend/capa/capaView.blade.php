@@ -10,7 +10,7 @@
 
         header {
             display: none;
-        }
+        } 
         .remove-file  {
             color: white;
             cursor: pointer;
@@ -82,14 +82,14 @@
 
                         @if ($data->stage == 1 && (in_array(3, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Propose Plan
+                                CAPA Initiaion by the Concerned Department Head
                             </button>
                         @elseif($data->stage == 2 && (in_array(4, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#rejection-modal">
                                 More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Approve Plan
+                                Allocation of CAPA No.by QA
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">
                                 Cancel
@@ -102,7 +102,7 @@
                               QA More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Complete
+                               Corrective Action Taken
                             </button>
                             <button id="major" type="button" class="button_theme1" data-bs-toggle="modal"
                                 data-bs-target="#child-modal">
@@ -113,7 +113,7 @@
                             </button> --}}
                         @elseif($data->stage == 4 && (in_array(7, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Approve
+                                Preventive Action 
 
                             </button>
                             <!-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
@@ -124,13 +124,30 @@
                             </button>
                         @elseif($data->stage == 5)
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                All Actions Completed
+                               Implementation of CAPA
                             </button>
                         @elseif($data->stage == 6)
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
-                                Child
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
+                                CAPA CLoser by QA
                             </button>
-                        @endif
+                    
+                        @elseif($data->stage == 7)
+                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
+                            Child
+                        </button>
+                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
+                            CAPA Effectiveness Strategy by QA-If Reconmmended
+                        </button>
+                        @elseif($data->stage == 8)
+                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
+                            CAPA CLoser by QA
+                        </button>
+                        @elseif($data->stage == 9)
+                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
+                            Closure of CAPA Effectiveness by QA
+                        </button>
+                
+                    @endif
                         <button class="button_theme1"> <a class="text-white" href="{{ url('rcms/qms-dashboard') }}"> Exit
                             </a> </button>
 
@@ -146,47 +163,69 @@
                             <div class="bg-danger">Closed-Cancelled</div>
                         </div>
                     @else
-                        <div class="progress-bars">
-                            @if ($data->stage >= 1)
-                                <div class="active">Opened</div>
-                            @else
-                                <div class="">Opened</div>
-                            @endif
-
-                            @if ($data->stage >= 2)
-                                <div class="active">Pending CAPA Plan </div>
-                            @else
-                                <div class="">Pending CAPA Plan</div>
-                            @endif
-
-                            @if ($data->stage >= 3)
-                                <div class="active">CAPA In Progress</div>
-                            @else
-                                <div class="">CAPA In Progress</div>
-                            @endif
-
-                            @if ($data->stage >= 4)
-                                <div class="active">QA Review</div>
-                            @else
-                                <div class="">QA Review</div>
-                            @endif
-
-
-                            @if ($data->stage >= 5)
-                                <div class="active">Pending Actions Completion</div>
-                            @else
-                                <div class="">Pending Actions Completion</div>
-                            @endif
-                            @if ($data->stage >= 6)
-                                <div class="bg-danger">Closed - Done</div>
-                            @else
-                                <div class="">Closed - Done</div>
-                            @endif
-                    @endif
-
-
-                </div>
-                {{-- @endif --}}
+                    <div class="progress-bars">
+                        @if ($data->stage >= 1)
+                            <div class="active">Opened</div>
+                        @else
+                            <div class="">Opened</div>
+                        @endif
+                    
+                        @if ($data->stage >= 2)
+                            <div class="active">Concerned Department Head</div>
+                        @else
+                            <div class="">Concerned Department Head</div>
+                        @endif
+                    
+                        @if ($data->stage >= 3)
+                            <div class="active">Allocation of CAPA</div>
+                        @else
+                            <div class="">Allocation of CAPA</div>
+                        @endif
+                    
+                        @if ($data->stage >= 4)
+                            <div class="active">Corrective Action Taken</div>
+                        @else
+                            <div class="">Corrective Action Taken</div>
+                        @endif
+                    
+                        @if ($data->stage >= 5)
+                            <div class="active">Preventive Action</div>
+                        @else
+                            <div class="">Preventive Action</div>
+                        @endif
+                    
+                        @if ($data->stage >= 6)
+                            <div class="active">Implementation of CAPA</div>
+                        @else
+                            <div class="">Implementation of CAPA</div>
+                        @endif
+                    
+                        @if ($data->stage >= 7)
+                            <div class="active">CAPA Closer by QA</div>
+                        @else
+                            <div class="">CAPA Closer by QA</div>
+                        @endif
+                    
+                        @if ($data->stage >= 8)
+                            <div class="active">CAPA Effectiveness Strategy by QA</div>
+                        @else
+                            <div class="">CAPA Effectiveness Strategy by QA</div>
+                        @endif
+                    
+                         @if ($data->stage >= 9)
+                            <div class="active">Closure of CAPA Effectiveness by QA</div>
+                        @else
+                            <div class="">Closure of CAPA Effectiveness by QA</div>
+                        @endif
+                    
+                        @if ($data->stage >= 10)
+                            <div class="bg-danger">Closed - Done</div>
+                        @else
+                            <div class="">Closed - Done</div>
+                        @endif 
+                    </div>
+                    
+                @endif
                 {{-- ---------------------------------------------------------------------------------------- --}}
             </div>
         </div>
@@ -227,6 +266,90 @@
                                                 {{-- <div class="static"></div> --}}
                                             </div>
                                         </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="group-input">
+                                                <label for="Division Code">Site/Location Code</label>
+                                                <input readonly type="text" name="division_code"
+                                                    value="{{ Helpers::getDivisionName(session()->get('division')) }}">
+                                                <input type="hidden" name="division_id" value="{{ session()->get('division') }}">
+                                                {{-- <div class="static">QMS-North America</div> --}}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="group-input">
+                                                <label for="Initiator">Initiator</label>
+                                                <input disabled type="text" name="initiator_id"
+                                                    value="{{ $data->initiator_name }}">
+                                                {{-- <div class="static"> </div> --}}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="group-input">
+                                                <label for="Date Due">Date of Initiation</label>
+                                                <input disabled type="text" value="{{ date('d-M-Y') }}" name="intiation_date">
+                                                <input type="hidden" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 new-date-data-field">
+                                            <div class="group-input input-date">
+                                                <label for="due_date">Due Date</label>
+                                                <div class="calenderauditee">
+                                                    @php
+                                                        $Date = isset($data->due_date)
+                                                            ? new \DateTime($data->due_date)
+                                                            : null;
+                                                    @endphp
+                                                    {{-- Format the date as desired --}}
+                                                    <input type="text" id="due_date_display" placeholder="DD-MMM-YYYY"
+                                                        value="{{ $Date ? $Date->format('d-M-Y') : '' }}" readonly />
+            
+                                                    <input type="date" name="due_date" id="due_date" class="hide-input"
+                                                        min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                                        value="{{ $data->due_date ?? '' }}"
+                                                        oninput="handleDateInput(this, 'due_date_display')"
+                                                        />
+            
+            
+                                                </div>
+                                            </div>
+                                        </div>
+            
+                                        <script>
+                                            function handleDateInput(input, displayId) {
+                                                var display = document.getElementById(displayId);
+                                                var date = new Date(input.value);
+                                                var options = {
+                                                    day: '2-digit',
+                                                    month: 'short', // Change 'short' instead of 'Short'
+                                                    year: 'numeric'
+                                                };
+                                                var formattedDate = date.toLocaleDateString('en-GB', options).replace(/ /g, '-');
+                                                display.value = formattedDate;
+                                            }
+                                        </script>
+            
+            
+                                        <style>
+                                            .hide-input {
+                                                display: none;
+                                            }
+                                        </style>
+        
+
+                                        <div class="col-12">
+                                            <div class="group-input">
+                                                <label for="Short Description">Short Description<span
+                                                        class="text-danger">*</span></label><span id="rchars">255</span>characters remaining
+                                                <textarea name="short_description"   id="docname" type="text"    maxlength="255" required  {{ $data->stage == 0 || $data->stage == 6 ? "disabled" : "" }}>{{ $data->short_description }}</textarea>
+                                            </div>
+                                            <p id="docnameError" style="color:red">**Short Description is required</p>
+        
+                                        </div>
+        
+                                        
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="Initiator Group">Department</label>
@@ -297,14 +420,7 @@
                                                
                                             </div>
                                         </div> --}}
-                                        <div class="col-lg-6">
-                                            <div class="group-input">
-                                                <label for="Initiator">Initiator</label>
-                                                <input disabled type="text" name="initiator_id"
-                                                    value="{{ $data->initiator_name }}">
-                                                {{-- <div class="static"> </div> --}}
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-lg-6">
                                         <div class="group-input ">
                                             <label for="Date Due"><b>Date</b></label>
@@ -312,97 +428,48 @@
                                             <input type="hidden" value="{{ date('d-m-Y') }}" name="intiation_date">
                                         </div>
                                     </div>
-                                        {{-- <div class="col-md-6">
-                                            <div class="group-input">
-                                                <label for="search">
-                                                    Assigned To <span class="text-danger"></span>
-                                                </label>
-                                                <select id="select-state" placeholder="Select..." name="assign_to"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : ''}} >
-                                                    <option value="">Select a value</option>
-                                                    @foreach ($users as $value)
-                                                        <option {{ $data->assign_to == $value->id ? 'selected' : '' }}
-                                                            value="{{ $value->id }}">{{ $value->name }}</option>
-                                                    @endforeach
-                                                </select>
-
-                                            </div>
-                                        </div> --}}
-                                        <!-- <div class="col-md-6">
-                                            <div class="group-input">
-                                                <label for="due-date">Due Date <span class="text-danger">*</span></label>
-                                                <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small></div>
-                                                {{-- @if (!empty($revised_date)) --}}
-                                                <input readonly type="text"
-                                                {{-- value="{{ Helpers::getdateFormat($revised_date) }}"> --}}
-                                                {{-- @else --}}
-                                                <input disabled type="text"
-                                                {{-- value="{{ Helpers::getdateFormat($data->due_date) }}"> --}}
-                                                {{-- @endif --}}
-
-                                            </div>
-                                        </div> -->
-                                        {{-- <div class="col-md-6">
-                                    <div class="group-input">
-                                        <label for="due-date">Proposed Date of Completion<span class="text-danger"></span></label>
-                                        <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small></div>
-                                        <input  type="text"
-                                              value="{{ Helpers::getdateFormat($data->due_date) }}"
-                                            name="due_date">
-                                        {{-- <input type="text" value="{{ $data->due_date }}" name="due_date"> --}}
-                                        {{-- <div class="static"> {{ $due_date }}</div> --}}
-
-                                   {{--   </div>
-                                </div> --}}
+                                       
                                         
-                                        <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="Short Description">Short Description<span
-                                                        class="text-danger">*</span></label><span id="rchars">255</span>characters remaining
-                                                <textarea name="short_description"   id="docname" type="text"    maxlength="255" required  {{ $data->stage == 0 || $data->stage == 6 ? "disabled" : "" }}>{{ $data->short_description }}</textarea>
-                                            </div>
-                                            <p id="docnameError" style="color:red">**Short Description is required</p>
-        
-                                        </div>
-        
                                         
                                        
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Initiator Group">Source of CAPA</label>
+                                                <label for="source_of_capa">Source of CAPA</label>
                                                 <div><small class="text-primary">Please select related information</small></div>
-                                                <select name="source_of_capa"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                    onchange="otherController(this.value, 'others', 'initiated_through_req')">
+                                                <select name="source_of_capa" onchange="toggleOtherField(this.value)">
                                                     <option value="">Enter Your Selection Here</option>
-                                                    <option @if ($data->source_of_capa == 'internal_audit') selected @endif
-                                                        value="internal_audit">Internal Audit</option>
-                                                        <option @if ($data->source_of_capa == 'external_audit') selected @endif
-                                                        value="external_audit">External Audit</option>
-                                                    <option @if ($data->source_of_capa == 'recall') selected @endif
-                                                        value="recall">Recall</option>
-                                                    <option @if ($data->source_of_capa == 'return') selected @endif
-                                                        value="return">Return</option>
-                                                    <option @if ($data->source_of_capa == 'deviation') selected @endif
-                                                        value="deviation">Deviation</option>
-                                                    <option @if ($data->source_of_capa == 'complaint') selected @endif
-                                                        value="complaint">Complaint</option>
-                                                    <option @if ($data->source_of_capa == 'regulatory') selected @endif
-                                                        value="regulatory">Regulatory</option>
-                                                    <option @if ($data->source_of_capa == 'lab-incident') selected @endif
-                                                        value="lab-incident">Lab Incident</option>
-                                                    <option @if ($data->source_of_capa == 'improvement') selected @endif
-                                                        value="improvement">Improvement</option>
-                                                    <option @if ($data->source_of_capa == 'others') selected @endif
-                                                        value="others">Others</option>
+                                                    <option value="deviation">Deviation</option>
+                                                    <option value="Self_Inspection">Self Inspection</option>
+                                                    <option value="market_complaint">Market Complaint</option>
+                                                    <option value="oot">OOT</option>
+                                                    <option value="External_Regulatory">External / Regulatory Audit Observation</option>
+                                                    <option value="oos">OOS</option>
+                                                    <option value="Input_from_Employees">Input from the Employees</option>
+                                                    <option value="others">Others</option>
                                                 </select>
                                             </div>
                                         </div>
+                            
                                         <div class="col-lg-6">
-                                            <div class="group-input" id="others">
-                                                <label for="initiated_through">Others<span
-                                                        class="text-danger d-none">*</span></label>
-                                                <textarea name="others"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> {{ $data->others }}</textarea>
+                                            <div class="group-input" id="initiated_through_req" style="display: none;">
+                                                <label for="others">Others<span class="text-danger d-none">*</span></label>
+                                                <textarea name="others" class="form-control"></textarea>
                                             </div>
                                         </div>
+
+                                        <script>
+                                            // JavaScript function to show/hide the 'Others' text area
+                                            function toggleOtherField(value) {
+                                                var othersField = document.getElementById("initiated_through_req");
+                                        
+                                                // If 'Others' is selected, show the 'Others' field
+                                                if (value === "others") {
+                                                    othersField.style.display = "block";
+                                                } else {
+                                                    othersField.style.display = "none";
+                                                }
+                                            }
+                                        </script>
 
 
 
@@ -1507,28 +1574,28 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Plan Proposed By">Plan Proposed By</label>
+                                                <label for="Plan Proposed By">Concerned Department Head By</label>
                                                 <input type="hidden" name="plan_proposed_by"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                 <div class="static">{{ $data->plan_proposed_by }}</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Plan Proposed On">Plan Proposed On</label>
+                                                <label for="Concerned Department Head On">Concerned Department Head On</label>
                                                 <input type="hidden" name="plan_proposed_on"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                 <div class="static">{{ $data->plan_proposed_on }}</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Plan Approved By">Plan Approved By</label>
+                                                <label for="Plan Approved By">Allocation of CAPA By</label>
                                                 <input type="hidden" name="plan_approved_by"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                 <div class="static">{{ $data->plan_approved_by }}</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Plan Approved On">Plan Approved On</label>
+                                                <label for="Allocation of CAPA On">Allocation of CAPA On</label>
                                                 <input type="hidden" name="plan_approved_on"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                 <div class="static">{{ $data->Plan_approved_on }}</div>
                                             </div>
@@ -1565,21 +1632,21 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Completed By">Completed By</label>
+                                                <label for="Completed By">Corrective Action Taken By</label>
                                                 <input type="hidden" name="completed_by"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                 <div class="static">{{ $data->completed_by }}</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Completed On">Completed On</label>
+                                                <label for="Completed On">Corrective Action Taken On</label>
                                                 <input type="hidden" name="completed_on"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                 <div class="static">{{ $data->completed_on }}</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Approved By">Approved By</label>
+                                                <label for="Approved By">Preventive Action By</label>
                                                 <input type="hidden" name="approved_by"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
 
                                                 <div class="static">{{ $data->approved_by }}</div>
@@ -1587,7 +1654,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="Approved On">Approved On</label>
+                                                <label for="Approved On">Preventive Action On</label>
                                                 <input type="hidden" name="approved_on"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                 <div class="static">{{ $data->approved_on }}</div>
                                             </div>

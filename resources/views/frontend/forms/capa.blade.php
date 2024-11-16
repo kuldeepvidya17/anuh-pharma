@@ -149,22 +149,7 @@
                                         <input type="hidden" value="{{ date('Y-m-d') }}" name="intiation_date">
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6">
-                                    <div class="group-input">
-                                        <label for="search">
-                                            Assigned To <span class="text-danger"></span>
-                                        </label>
-                                        <select id="select-state" placeholder="Select..." name="assign_to">
-                                            <option value="">Select a value</option>
-                                            @foreach ($users as $value)
-                                                <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('assign_to')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div> --}}
+                              
                                
                                 <div class="col-lg-6 new-date-data-field">
                                     <div class="group-input input-date">
@@ -178,6 +163,17 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Short Description">Short Description<span
+                                                class="text-danger">*</span></label><span id="rchars">255</span>
+                                        characters remaining
+                                        <input id="docname" type="text" name="short_description" maxlength="255" required>
+                                    </div>
+                                </div>  
+                                    <p id="docnameError" style="color:red">**Short Description is required</p>
+                               
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="Initiator Group">Department</label>
@@ -243,44 +239,47 @@
                                     </div>
                                 </div> --}}
                                
-                                <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="Short Description">Short Description<span
-                                                class="text-danger">*</span></label><span id="rchars">255</span>
-                                        characters remaining
-                                        <input id="docname" type="text" name="short_description" maxlength="255" required>
-                                    </div>
-                                </div>  
-                                    <p id="docnameError" style="color:red">**Short Description is required</p>
-                               
+                              
 
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Initiator Group">Source of CAPA</label>
-                                        <div><small class="text-primary">Please select related information</small></div>
-                                        <select name="source_of_capa"
-                                            onchange="otherController(this.value, 'others', 'initiated_through_req')">
-                                            <option value="">Enter Your Selection Here</option>
-                                            <option value="deviation">Deviation</option>
-                                            <option value="Self_Inspection ">Self Inspection</option>
-                                            <option value="market_complaint">Market Complaint </option>
-                                            <option value="oot">OOT</option>
-                                            <option value="External_Regulatory">External / Regulatory Audit Observation</option>
-                                            <option value="oos">OOS</option>
-                                            <option value="Input_from_Employees">Input from the Employees</option>
-                                            <option value="others">Others</option>
-                                        </select>
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="Initiator Group">Source of CAPA</label>
+                                            <div><small class="text-primary">Please select related information</small></div>
+                                            <select name="source_of_capa" onchange="toggleOtherField(this.value)">
+                                                <option value="">Enter Your Selection Here</option>
+                                                <option value="deviation">Deviation</option>
+                                                <option value="Self_Inspection">Self Inspection</option>
+                                                <option value="market_complaint">Market Complaint</option>
+                                                <option value="oot">OOT</option>
+                                                <option value="External_Regulatory">External / Regulatory Audit Observation</option>
+                                                <option value="oos">OOS</option>
+                                                <option value="Input_from_Employees">Input from the Employees</option>
+                                                <option value="others">Others</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="group-input" id="initiated_through_req">
-                                        <label for="initiated_through">Others<span
-                                                class="text-danger d-none">*</span></label>
-                                        <textarea name="others"></textarea>
+                                    
+                                    <div class="col-lg-6">
+                                        <div class="group-input" id="initiated_through_req" style="display: none;">
+                                            <label for="initiated_through">Others<span class="text-danger d-none">*</span></label>
+                                            <textarea name="others"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-
+                                    
+                                    <script>
+                                        // JavaScript function to show/hide the 'Others' text area
+                                        function toggleOtherField(value) {
+                                            var othersField = document.getElementById("initiated_through_req");
+                                    
+                                            // If 'Others' is selected, show the 'Others' field
+                                            if (value === "others") {
+                                                othersField.style.display = "block";
+                                            } else {
+                                                othersField.style.display = "none";
+                                            }
+                                        }
+                                    </script>
+                                    
                                 <div class="col-lg-6">
                                     <div class="group-input" id="initiated_through_req">
                                         <label for="initiated_through">Source Document Name / No

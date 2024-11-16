@@ -35,9 +35,9 @@ class CapaController extends Controller
         $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
         $currentDate = Carbon::now();
         $formattedDate = $currentDate->addDays(30);
-        $due_date= $formattedDate->format('Y-m-d');
+        $due_date = $formattedDate->format('Y-m-d');
         $changeControl = OpenStage::find(1);
-         if(!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
+        if (!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
         return view("frontend.forms.capa", compact('due_date', 'record_number', 'old_record', 'cft'));
     }
 
@@ -59,113 +59,107 @@ class CapaController extends Controller
         $capa->division_code = $request->division_code;
         $capa->intiation_date = $request->intiation_date;
         $capa->general_initiator_group = $request->initiator_group;
+        $capa->due_date = $request->due_date;
         $capa->short_description = $request->short_description;
-         $capa->source_of_capa = $request->source_of_capa;
-         $capa->others = $request->others;
-         $capa->source_document_name = $request->source_document_name;
-         $capa->comments_cloasure = $request->comments_cloasure;
-         $capa->head_quality = $request->head_quality;
-         $capa->justification = $request->justification;
-         $capa->effectiveness_verification_capa = $request->effectiveness_verification_capa;
-         $capa->effectivenessRemark = $request->effectivenessRemark;
-         $capa->problem_description = $request->problem_description;
-         $capa->problem_description = $request->problem_description;
-         $capa->problem_description = $request->problem_description;
-     
+        $capa->source_of_capa = $request->source_of_capa;
+        $capa->others = $request->others;
+        $capa->source_document_name = $request->source_document_name;
+        $capa->comments_cloasure = $request->comments_cloasure;
+        $capa->head_quality = $request->head_quality;
+        $capa->justification = $request->justification;
+        $capa->effectiveness_verification_capa = $request->effectiveness_verification_capa;
+        $capa->effectivenessRemark = $request->effectivenessRemark;
+        $capa->problem_description = $request->problem_description;
+        $capa->problem_description = $request->problem_description;
+        $capa->problem_description = $request->problem_description;
+
 
         $capa->status = 'Opened';
         $capa->stage = 1;
         $capa->save();
 
-      
+
 
         $record = RecordNumber::first();
         $record->counter = ((RecordNumber::first()->value('counter')) + 1);
         $record->update();
 
-        if (!empty($capa->division_code)) {
-            $history = new CapaAuditTrial();
-            $history->capa_id = $capa->id;
-            $history->activity_type = 'Division Code';
-            $history->previous = "Null";
-            $history->current = $capa->division_code;
-            $history->comment = "NA";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $capa->status;
-            $history->save();
+
+
+
+
+        // Define the fields and their respective activity types
+        $fields = [
+            'record_number' => 'CAPA No',
+            'division_id' => 'Site/Location Code',
+            'division_code' => 'Initiator',
+            'intiation_date' => 'Date of Initiation',
+            'short_description' => 'Short Description',
+            'initiator_group' => 'Department',
+            'initiator_group_code' => 'Department Group Code',
+            'source_of_capa' => 'Source of CAPA',
+            'others' => 'Others',
+            'source_document_name' => 'Source Document Name / No',
+            'comments_cloasure' => 'Closure of the CAPA',
+            'head_quality' => 'Head Quality / Designee',
+            'justification' => 'Justification',
+            'effectiveness_verification_capa' => 'Effectiveness Verification Capa',
+            'effectivenessRemark' => 'Remark',
+        ];
+
+        // Loop through each field and create an audit trail entry if the field is not empty
+        foreach ($fields as $field => $activity_type) {
+            // Check if the field is not empty
+            if (!empty($capa->$field)) {
+                $history = new CapaAuditTrial();
+                $history->capa_id = $capa->id;
+                $history->activity_type = $activity_type;
+                $history->previous = "Null";
+                $history->current = $capa->$field;
+                $history->comment = "Not Applicable";
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $capa->status;
+                $history->change_to = "Opened";
+                $history->change_from = "Initiation";
+                $history->action_name = "Create";
+                $history->save();
+            }
         }
 
-        if (!empty($capa->intiation_date)) {
-            $history = new CapaAuditTrial();
-            $history->capa_id = $capa->id;
-            $history->activity_type = 'Date of Initiation';
-            $history->previous = "Null";
-            $history->current = $capa->intiation_date;
-            $history->comment = "NA";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $capa->status;
-            $history->save();
-        }
 
-        if (!empty($capa->general_initiator_group)) {
-            $history = new CapaAuditTrial();
-            $history->capa_id = $capa->id;
-            $history->activity_type = 'Initiator Group';
-            $history->previous = "Null";
-            $history->current = $capa->general_initiator_group;
-            $history->comment = "NA";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $capa->status;
-            $history->save();
-        }
 
-        if (!empty($capa->short_description)) {
-            $history = new CapaAuditTrial();
-            $history->capa_id = $capa->id;
-            $history->activity_type = 'Short Description';
-            $history->previous = "Null";
-            $history->current = $capa->short_description;
-            $history->comment = "NA";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $capa->status;
-            $history->save();
-        }
 
-        
+
+
+
         // ======================Gird data store=============
         $griddata = $capa->id;
-       // Store data for Proposed Corrective Action grid
+        // Store data for Proposed Corrective Action grid
         $proposedCorrectiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ProposedCorrectiveAction'])->firstOrNew();
         $proposedCorrectiveActionData->capa_id = $griddata;
         $proposedCorrectiveActionData->identifer = 'ProposedCorrectiveAction';
         $proposedCorrectiveActionData->data = $request->corrective_action_details;
         $proposedCorrectiveActionData->save();
         // dd($proposedCorrectiveActionData);
-// Store data for Proposed Preventive Action grid (new code)
+        // Store data for Proposed Preventive Action grid (new code)
         $proposedPreventiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ProposedPreventiveAction'])->firstOrNew();
         $proposedPreventiveActionData->capa_id = $griddata;
         $proposedPreventiveActionData->identifer = 'ProposedPreventiveAction';
         $proposedPreventiveActionData->data = $request->preventive_action_details;
         $proposedPreventiveActionData->save();
 
-            // Store data for Implementation of Corrective Action grid
+        // Store data for Implementation of Corrective Action grid
         $implementationCorrectiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ImplementationCorrectiveAction'])->firstOrNew();
         $implementationCorrectiveActionData->capa_id = $griddata;
         $implementationCorrectiveActionData->identifer = 'ImplementationCorrectiveAction';
         $implementationCorrectiveActionData->data = $request->implementation_corrective_action_details;
         $implementationCorrectiveActionData->save();
-       
+
         // dd($proposedPreventiveActionData);
 
-      
+
 
         toastr()->success("Record is created Successfully");
         return redirect(url('rcms/qms-dashboard'));
@@ -181,8 +175,9 @@ class CapaController extends Controller
         $capa->parent_id = $request->parent_id;
         $capa->parent_type = $request->parent_type;
         $capa->division_code = $request->division_code;
-        $capa->intiation_date= $request->intiation_date;
+        $capa->intiation_date = $request->intiation_date;
         $capa->general_initiator_group = $request->initiator_group;
+        $capa->due_date = $request->due_date;
         $capa->short_description = $request->short_description;
         // $capa->problem_description = $request->problem_description;
         $capa->source_of_capa = $request->source_of_capa;
@@ -193,85 +188,87 @@ class CapaController extends Controller
         $capa->justification = $request->justification;
         $capa->effectiveness_verification_capa = $request->effectiveness_verification_capa;
         $capa->effectivenessRemark = $request->effectivenessRemark;
-       
-       
 
 
 
-        if ($lastDocument->division_code != $capa->division_code || !empty($request->division_codec_comment)) {
-            $history = new CapaAuditTrial();
-            $history->capa_id = $id;
-            $history->activity_type = 'Division Code';
-            $history->previous = $lastDocument->division_code;
-            $history->current = $capa->division_code;
-            $history->comment = $request->division_code_comment;
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $lastDocument->status;
-            $history->save();
+        $capa->update();
+        // dd($capa->due_date);
+
+
+
+        // -------audit trrail show start update -----------
+        $fields = [
+           
+            'short_description' => 'Short Description',
+            'initiator_group' => 'Department',
+            'initiator_group_code' => 'Department Group Code',
+            'source_of_capa' => 'Source of CAPA',
+            'others' => 'Others',
+            'source_document_name' => 'Source Document Name / No',
+            'comments_cloasure' => 'Closure of the CAPA',
+            'head_quality' => 'Head Quality / Designee',
+            'justification' => 'Justification',
+            'effectiveness_verification_capa' => 'Effectiveness Verification of CAPA',
+            'effectivenessRemark' => 'Remark',
+        
+
+
+        ];
+        foreach ($fields as $field => $activity_type) {
+            $previous = $lastDocument->$field ?? '';
+            $current = $capa->$field ?? '';
+        
+            if (trim($previous) !== trim($current) || !empty($request->comment)) {
+                $history = new CapaAuditTrial;
+                $history->capa_id = $id;
+                $history->activity_type = $activity_type;
+                $history->previous = $previous;
+                $history->current = $current;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->change_to = "Not Applicable";
+                $history->change_from = $lastDocument->status;
+                $history->action_name = 'Update';
+                $history->save();
+            }
         }
+        
 
-        if ($lastDocument->general_initiator_group != $capa->general_initiator_group || !empty($request->general_initiator_group_comment)) {
 
-            $history = new CapaAuditTrial();
-            $history->capa_id = $id;
-            $history->activity_type = 'Initiator Group';
-            $history->previous = $lastDocument->general_initiator_group;
-            $history->current = $capa->general_initiator_group;
-            $history->comment = $request->general_initiator_group_comment;
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $lastDocument->status;
-            $history->save();
-        }
-        if ($lastDocument->short_description != $capa->divishort_descriptionsion_code || !empty($request->short_description_comment)) {
+        // =============================Capa grid update==============
 
-            $history = new CapaAuditTrial();
-            $history->capa_id = $id;
-            $history->activity_type = 'Short Description';
-            $history->previous = $lastDocument->short_description;
-            $history->current = $capa->short_description;
-            $history->comment = $request->short_description_comment;
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $lastDocument->status;
-            $history->save();
-        }
-       
-// =============================Capa grid update==============
-            
-//             $correctiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ProposedCorrectiveAction'])->firstOrNew();
-//             $correctiveActionData->capa_id = $griddata;
-//             $correctiveActionData->identifer = 'ProposedCorrectiveAction';
-//             $correctiveActionData->data = $request->ProposedCorrectiveAction;
-// // dd($correctiveActionData->data);
-//    $correctiveActionData->save();
-            $griddata = $capa->id;
+        //             $correctiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ProposedCorrectiveAction'])->firstOrNew();
+        //             $correctiveActionData->capa_id = $griddata;
+        //             $correctiveActionData->identifer = 'ProposedCorrectiveAction';
+        //             $correctiveActionData->data = $request->ProposedCorrectiveAction;
+        // // dd($correctiveActionData->data);
+        //    $correctiveActionData->save();
+        $griddata = $capa->id;
 
-          // Store data for Proposed Corrective Action grid
+        // Store data for Proposed Corrective Action grid
         $proposedCorrectiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ProposedCorrectiveAction'])->firstOrNew();
         $proposedCorrectiveActionData->capa_id = $griddata;
         $proposedCorrectiveActionData->identifer = 'ProposedCorrectiveAction';
         $proposedCorrectiveActionData->data = $request->corrective_action_details;
         $proposedCorrectiveActionData->update();
 
-             // Store data for Proposed Preventive Action grid
+        // Store data for Proposed Preventive Action grid
         $proposedPreventiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ProposedPreventiveAction'])->firstOrNew();
         $proposedPreventiveActionData->capa_id = $griddata;
         $proposedPreventiveActionData->identifer = 'ProposedPreventiveAction';
         $proposedPreventiveActionData->data = $request->preventive_action_details;
         $proposedPreventiveActionData->update();
 
-         $implementationCorrectiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ImplementationCorrectiveAction'])->firstOrNew();
+        $implementationCorrectiveActionData = CapaGrid::where(['capa_id' => $griddata, 'identifer' => 'ImplementationCorrectiveAction'])->firstOrNew();
         $implementationCorrectiveActionData->capa_id = $griddata;
         $implementationCorrectiveActionData->identifer = 'ImplementationCorrectiveAction';
         $implementationCorrectiveActionData->data = $request->implementation_corrective_action_details;
         $implementationCorrectiveActionData->update();
-           
-        
+
+
         toastr()->success("Record is updated Successfully");
         return back();
     }
@@ -281,29 +278,30 @@ class CapaController extends Controller
         $cft = [];
         $revised_date = "";
         $data = Capa::find($id);
-        //dd($data);
+    //    dd($data->due_date);
+
         $old_record = Capa::select('id', 'division_id', 'record')->get();
         $revised_date = Extension::where('parent_id', $id)->where('parent_type', "Capa")->value('revised_date');
         $data->record = str_pad($data->record, 4, '0', STR_PAD_LEFT);
         $data->assign_to_name = User::where('id', $data->assign_id)->value('name');
         $data->initiator_name = User::where('id', $data->initiator_id)->value('name');
         $changeControl = OpenStage::find(1);
-        if(!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
-       
-         // Retrieve data for Proposed Corrective Action grid
+        if (!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
+
+        // Retrieve data for Proposed Corrective Action grid
         $proposedCorrectiveActionData = CapaGrid::where('capa_id', $id)
-        ->where('identifer', 'ProposedCorrectiveAction')
-        ->first();  
+            ->where('identifer', 'ProposedCorrectiveAction')
+            ->first();
         $proposedPreventiveActionData = CapaGrid::where('capa_id', $id)
-        ->where('identifer', 'ProposedPreventiveAction')
-        ->first(); 
+            ->where('identifer', 'ProposedPreventiveAction')
+            ->first();
         $implementationCorrectiveActionData = CapaGrid::where('capa_id', $id)
-        ->where('identifer', 'ImplementationCorrectiveAction')
-        ->first();      
+            ->where('identifer', 'ImplementationCorrectiveAction')
+            ->first();
         // dd($implementationCorrectiveActionData);
 
 
-        return view('frontend.capa.capaView', compact('data','proposedCorrectiveActionData','proposedPreventiveActionData','implementationCorrectiveActionData','old_record','revised_date','cft' ));
+        return view('frontend.capa.capaView', compact('data', 'proposedCorrectiveActionData', 'proposedPreventiveActionData', 'implementationCorrectiveActionData', 'old_record', 'revised_date', 'cft'));
     }
 
 
@@ -319,41 +317,41 @@ class CapaController extends Controller
                 $capa->status = "Pending CAPA Plan";
                 $capa->plan_proposed_by = Auth::user()->name;
                 $capa->plan_proposed_on = Carbon::now()->format('d-M-Y');
-                   
-                    $history = new CapaAuditTrial();
-                    $history->capa_id = $id;
-                    $history->activity_type = 'Activity Log';
-                    $history->previous = "";
-                    $history->current = $capa->plan_proposed_by;
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->stage = 'Plan Proposed';
-                    $history->save();
 
-                    $list = Helpers::getHodUserList();
-                    foreach ($list as $u) {
-                        if($u->q_m_s_divisions_id == $capa->division_id){
-                            $email = Helpers::getInitiatorEmail($u->user_id);
-                             if ($email !== null) {
-                                try {
-                                    Mail::send(
-                                        'mail.view-mail',
-                                         ['data' => $capa],
-                                      function ($message) use ($email) {
-                                          $message->to($email)
-                                              ->subject("Document is Submitted By ".Auth::user()->name);
-                                      }
-                                    );
-                                } catch (\Exception $e) {
-                                    // 
-                                }
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->plan_proposed_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Plan Proposed';
+                $history->save();
+
+                $list = Helpers::getHodUserList();
+                foreach ($list as $u) {
+                    if ($u->q_m_s_divisions_id == $capa->division_id) {
+                        $email = Helpers::getInitiatorEmail($u->user_id);
+                        if ($email !== null) {
+                            try {
+                                Mail::send(
+                                    'mail.view-mail',
+                                    ['data' => $capa],
+                                    function ($message) use ($email) {
+                                        $message->to($email)
+                                            ->subject("Document is Submitted By " . Auth::user()->name);
+                                    }
+                                );
+                            } catch (\Exception $e) {
+                                // 
                             }
-                     } 
-                  }
-           
+                        }
+                    }
+                }
+
                 $capa->update();
                 toastr()->success('Document Sent');
                 return back();
@@ -363,7 +361,7 @@ class CapaController extends Controller
                 $capa->status = "CAPA In Progress";
                 $capa->plan_approved_by = Auth::user()->name;
                 $capa->plan_approved_on = Carbon::now()->format('d-M-Y');
-                  
+
                 $history = new CapaAuditTrial();
                 $history->capa_id = $id;
                 $history->activity_type = 'Activity Log';
@@ -376,28 +374,28 @@ class CapaController extends Controller
                 $history->origin_state = $lastDocument->status;
                 $history->stage = 'Plan Approved';
                 $history->save();
-                
+
                 $list = Helpers::getQAUserList();
                 foreach ($list as $u) {
-                    if($u->q_m_s_divisions_id == $capa->division_id){
-                    $email = Helpers::getInitiatorEmail($u->user_id);
-                    if ($email !== null) {
-                        try {
-                            Mail::send(
-                                'mail.view-mail',
-                                ['data' => $capa],
-                                function ($message) use ($email) {
-                                    $message->to($email)
-                                        ->subject("Plan Approved By ".Auth::user()->name);
-                                }
-                            );
-                        } catch (\Exception $e) {
-                            // 
+                    if ($u->q_m_s_divisions_id == $capa->division_id) {
+                        $email = Helpers::getInitiatorEmail($u->user_id);
+                        if ($email !== null) {
+                            try {
+                                Mail::send(
+                                    'mail.view-mail',
+                                    ['data' => $capa],
+                                    function ($message) use ($email) {
+                                        $message->to($email)
+                                            ->subject("Plan Approved By " . Auth::user()->name);
+                                    }
+                                );
+                            } catch (\Exception $e) {
+                                // 
+                            }
                         }
                     }
-                  } 
                 }
-                
+
                 $capa->update();
                 toastr()->success('Document Sent');
                 return back();
@@ -407,18 +405,18 @@ class CapaController extends Controller
                 $capa->status = "QA Review";
                 $capa->completed_by = Auth::user()->name;
                 $capa->completed_on = Carbon::now()->format('d-M-Y');
-                    $history = new CapaAuditTrial();
-                    $history->capa_id = $id;
-                    $history->activity_type = 'Activity Log';
-                    $history->previous = "";
-                    $history->current = $capa->completed_by;
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->stage = 'Completed';
-                    $history->save();
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->completed_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Completed';
+                $history->save();
                 $capa->update();
                 toastr()->success('Document Sent');
                 return back();
@@ -428,40 +426,124 @@ class CapaController extends Controller
                 $capa->status = "Pending Actions Completion";
                 $capa->approved_by = Auth::user()->name;
                 $capa->approved_on = Carbon::now()->format('d-M-Y');
-                        $history = new CapaAuditTrial();
-                        $history->capa_id = $id;
-                        $history->activity_type = 'Activity Log';
-                        $history->previous = "";
-                        $history->current = $capa->approved_by;
-                        $history->comment = $request->comment;
-                        $history->user_id = Auth::user()->id;
-                        $history->user_name = Auth::user()->name;
-                        $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                        $history->origin_state = $lastDocument->status;
-                        $history->stage = 'Approved';
-                        $history->save();
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->approved_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Approved';
+                $history->save();
+                $capa->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($capa->stage == 5) {
+                $capa->stage = "6";
+                $capa->status = "Pending Actions Completion";
+                $capa->approved_by = Auth::user()->name;
+                $capa->approved_on = Carbon::now()->format('d-M-Y');
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->approved_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Approved';
+                $history->save();
+                $capa->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($capa->stage == 6) {
+                $capa->stage = "7";
+                $capa->status = "Pending Actions Completion";
+                $capa->approved_by = Auth::user()->name;
+                $capa->approved_on = Carbon::now()->format('d-M-Y');
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->approved_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Approved';
+                $history->save();
+                $capa->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($capa->stage == 7) {
+                $capa->stage = "8";
+                $capa->status = "Pending Actions Completion";
+                $capa->approved_by = Auth::user()->name;
+                $capa->approved_on = Carbon::now()->format('d-M-Y');
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->approved_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Approved';
+                $history->save();
+                $capa->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($capa->stage == 8) {
+                $capa->stage = "9";
+                $capa->status = "Pending Actions Completion";
+                $capa->approved_by = Auth::user()->name;
+                $capa->approved_on = Carbon::now()->format('d-M-Y');
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->approved_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Approved';
+                $history->save();
                 $capa->update();
                 toastr()->success('Document Sent');
                 return back();
             }
 
-            if ($capa->stage == 5) {
-                $capa->stage = "6";
+            if ($capa->stage == 9) {
+                $capa->stage = "10";
                 $capa->status = "Closed - Done";
                 $capa->completed_by = Auth::user()->name;
-                $capa->completed_on = Carbon::now()->format('d-M-Y');  
-                        $history = new CapaAuditTrial();
-                        $history->capa_id = $id;
-                        $history->activity_type = 'Activity Log';
-                        $history->previous = "";
-                        $history->current = $capa->completed_by;
-                        $history->comment = $request->comment;
-                        $history->user_id = Auth::user()->id;
-                        $history->user_name = Auth::user()->name;
-                        $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                        $history->origin_state = $lastDocument->status;
-                        $history->stage = 'Completed';
-                        $history->save();
+                $capa->completed_on = Carbon::now()->format('d-M-Y');
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->completed_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Completed';
+                $history->save();
                 $capa->update();
                 toastr()->success('Document Sent');
                 return back();
@@ -470,7 +552,7 @@ class CapaController extends Controller
             toastr()->error('E-signature Not match');
             return back();
         }
-    } 
+    }
 
 
     public function capaCancel(Request $request, $id)
@@ -484,18 +566,18 @@ class CapaController extends Controller
             $capa->status = "Closed-Cancelled";
             $capa->cancelled_by = Auth::user()->name;
             $capa->cancelled_on = Carbon::now()->format('d-M-Y');
-                    $history = new CapaAuditTrial();
-                    $history->capa_id = $id;
-                    $history->activity_type = 'Activity Log';
-                    $history->previous ="";
-                    $history->current = $capa->cancelled_by;
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state =  $capa->status;
-                    $history->stage = 'Cancelled';
-                    $history->save();
+            $history = new CapaAuditTrial();
+            $history->capa_id = $id;
+            $history->activity_type = 'Activity Log';
+            $history->previous = "";
+            $history->current = $capa->cancelled_by;
+            $history->comment = $request->comment;
+            $history->user_id = Auth::user()->id;
+            $history->user_name = Auth::user()->name;
+            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+            $history->origin_state =  $capa->status;
+            $history->stage = 'Cancelled';
+            $history->save();
             $capa->update();
             $history = new CapaHistory();
             $history->type = "Capa";
@@ -508,23 +590,23 @@ class CapaController extends Controller
 
             $list = Helpers::getInitiatorUserList();
             foreach ($list as $u) {
-                if($u->q_m_s_divisions_id == $capa->division_id){
-                  $email = Helpers::getInitiatorEmail($u->user_id);
-                  if ($email !== null) {
-                    try {
-                        Mail::send(
-                            'mail.view-mail',
-                            ['data' => $capa],
-                            function ($message) use ($email) {
-                                $message->to($email)
-                                    ->subject("Cancelled By ".Auth::user()->name);
-                            }
-                         );
-                    } catch (\Exception $e) {
-                        // 
+                if ($u->q_m_s_divisions_id == $capa->division_id) {
+                    $email = Helpers::getInitiatorEmail($u->user_id);
+                    if ($email !== null) {
+                        try {
+                            Mail::send(
+                                'mail.view-mail',
+                                ['data' => $capa],
+                                function ($message) use ($email) {
+                                    $message->to($email)
+                                        ->subject("Cancelled By " . Auth::user()->name);
+                                }
+                            );
+                        } catch (\Exception $e) {
+                            // 
+                        }
                     }
-                  }
-                } 
+                }
             }
 
             toastr()->success('Document Sent');
@@ -534,7 +616,7 @@ class CapaController extends Controller
             return back();
         }
     }
-  
+
     public function capa_qa_more_info(Request $request, $id)
     {
         if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
@@ -542,87 +624,86 @@ class CapaController extends Controller
             $lastDocument = Capa::find($id);
 
 
-          if($capa->stage == 3){
-            $capa->stage = "2";
-            $capa->status = "Pending CAPA Plan";
-            $capa->qa_more_info_required_by = Auth::user()->name;
-            $capa->qa_more_info_required_on = Carbon::now()->format('d-M-Y');
-                    $history = new CapaAuditTrial();
-                    $history->capa_id = $id;
-                    $history->activity_type = 'Activity Log';
-                    $history->previous ="";
-                    $history->current = $capa->qa_more_info_required_by;
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->stage = 'Qa More Info Required';
-                    $history->save();
-            $capa->update();
-            $history = new CapaHistory();
-            $history->type = "Capa";
-            $history->doc_id = $id;
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->stage_id = $capa->stage;
-            $history->status = $capa->status;
-            $history->save();
-            $list = Helpers::getHodUserList();
-            foreach ($list as $u) {
-                if($u->q_m_s_divisions_id == $capa->division_id){
-                 $email = Helpers::getInitiatorEmail($u->user_id);
-                 if ($email !== null) {
-                    try {
-                        Mail::send(
-                           'mail.view-mail',
-                           ['data' => $capa],
-                           function ($message) use ($email) {
-                               $message->to($email)
-                                   ->subject("Document is Send By ".Auth::user()->name);
-                           }
-                       );
-                    } catch (\Exception $e) {
-                        // 
+            if ($capa->stage == 3) {
+                $capa->stage = "2";
+                $capa->status = "Pending CAPA Plan";
+                $capa->qa_more_info_required_by = Auth::user()->name;
+                $capa->qa_more_info_required_on = Carbon::now()->format('d-M-Y');
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->qa_more_info_required_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Qa More Info Required';
+                $history->save();
+                $capa->update();
+                $history = new CapaHistory();
+                $history->type = "Capa";
+                $history->doc_id = $id;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->stage_id = $capa->stage;
+                $history->status = $capa->status;
+                $history->save();
+                $list = Helpers::getHodUserList();
+                foreach ($list as $u) {
+                    if ($u->q_m_s_divisions_id == $capa->division_id) {
+                        $email = Helpers::getInitiatorEmail($u->user_id);
+                        if ($email !== null) {
+                            try {
+                                Mail::send(
+                                    'mail.view-mail',
+                                    ['data' => $capa],
+                                    function ($message) use ($email) {
+                                        $message->to($email)
+                                            ->subject("Document is Send By " . Auth::user()->name);
+                                    }
+                                );
+                            } catch (\Exception $e) {
+                                // 
+                            }
+                        }
                     }
-                  }
-                } 
+                }
+                toastr()->success('Document Sent');
+                return back();
             }
-            toastr()->success('Document Sent');
-            return back();
-          }
-            
-        if($capa->stage == 4){
-        $capa->stage = "3";
-        $capa->status = "CAPA In Progress";
-        $capa->rejected_by = Auth::user()->name;
-        $capa->rejected_on = Carbon::now()->format('d-M-Y');
-                    $history = new CapaAuditTrial();
-                    $history->capa_id = $id;
-                    $history->activity_type = 'Activity Log';
-                    $history->previous = "";
-                    $history->current = $capa->rejected_by;
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->stage = 'Rejected';
-                    $history->save();   
-        $capa->update();
-        $history = new CapaHistory();
-        $history->type = "Capa";
-        $history->doc_id = $id;
-        $history->user_id = Auth::user()->id;
-        $history->user_name = Auth::user()->name;
-        $history->stage_id = $capa->stage;
-        $history->status = $capa->status;
-        $history->save();
-        toastr()->success('Document Sent');
-        return back();
-        }
-        } 
-        else {
+
+            if ($capa->stage == 4) {
+                $capa->stage = "3";
+                $capa->status = "CAPA In Progress";
+                $capa->rejected_by = Auth::user()->name;
+                $capa->rejected_on = Carbon::now()->format('d-M-Y');
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->rejected_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Rejected';
+                $history->save();
+                $capa->update();
+                $history = new CapaHistory();
+                $history->type = "Capa";
+                $history->doc_id = $id;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->stage_id = $capa->stage;
+                $history->status = $capa->status;
+                $history->save();
+                toastr()->success('Document Sent');
+                return back();
+            }
+        } else {
             toastr()->error('E-signature Not match');
             return back();
         }
@@ -649,23 +730,23 @@ class CapaController extends Controller
                 $history->status = "Opened";
                 $list = Helpers::getInitiatorUserList();
                 foreach ($list as $u) {
-                    if($u->q_m_s_divisions_id == $capa->division_id){
-                    $email = Helpers::getInitiatorEmail($u->user_id);
-                    if ($email !== null) {
-                        try {
-                            Mail::send(
-                                'mail.view-mail',
-                                ['data' => $capa],
-                                function ($message) use ($email) {
-                                    $message->to($email)
-                                        ->subject("More Info Required ".Auth::user()->name);
-                                }
-                            );
-                        } catch (\Exception $e) {
-                            // 
+                    if ($u->q_m_s_divisions_id == $capa->division_id) {
+                        $email = Helpers::getInitiatorEmail($u->user_id);
+                        if ($email !== null) {
+                            try {
+                                Mail::send(
+                                    'mail.view-mail',
+                                    ['data' => $capa],
+                                    function ($message) use ($email) {
+                                        $message->to($email)
+                                            ->subject("More Info Required " . Auth::user()->name);
+                                    }
+                                );
+                            } catch (\Exception $e) {
+                                // 
+                            }
                         }
-                      }
-                    } 
+                    }
                 }
                 $history->save();
 
@@ -677,18 +758,18 @@ class CapaController extends Controller
                 $capa->status = "Pending CAPA Plan";
                 $capa->qa_more_info_required_by = Auth::user()->name;
                 $capa->qa_more_info_required_on = Carbon::now()->format('d-M-Y');
-                        $history = new CapaAuditTrial();
-                        $history->capa_id = $id;
-                        $history->activity_type = 'Activity Log';
-                        $history->previous = "";
-                        $history->current = $capa->qa_more_info_required_by;
-                        $history->comment = $request->comment;
-                        $history->user_id = Auth::user()->id;
-                        $history->user_name = Auth::user()->name;
-                        $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                        $history->origin_state = $lastDocument->status;
-                        $history->stage = 'Qa More Info Required';
-                        $history->save();   
+                $history = new CapaAuditTrial();
+                $history->capa_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->previous = "";
+                $history->current = $capa->qa_more_info_required_by;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = 'Qa More Info Required';
+                $history->save();
                 $capa->update();
                 $history = new CapaHistory();
                 $history->type = "Capa";
@@ -701,7 +782,6 @@ class CapaController extends Controller
                 toastr()->success('Document Sent');
                 return back();
             }
-
         } else {
             toastr()->error('E-signature Not match');
             return back();
@@ -727,16 +807,16 @@ class CapaController extends Controller
         // dd("test");
         $audit = CapaAuditTrial::where('capa_id', $id)
             ->orderByDesc('id')
-            ->paginate() // Change to paginate
-            ;
-    
+            ->paginate(10) // Change to paginate
+        ;
+
         $today = Carbon::now()->format('d-m-y');
         $document = Capa::where('id', $id)->first();
         $document->initiator = User::where('id', $document->initiator_id)->value('name');
         $users = User::all();
         // dd($document );
-    
-        return view('frontend.capa.audit-trial', compact('audit', 'document', 'today','users'));
+
+        return view('frontend.capa.audit-trial', compact('audit', 'document', 'today', 'users'));
     }
 
     public function auditDetailsCapa($id)
@@ -754,16 +834,16 @@ class CapaController extends Controller
 
     public function child_change_control(Request $request, $id)
     {
-        $cft =[];
+        $cft = [];
         $parent_id = $id;
-        $parent_record= $request->parent_record;
-       
+        $parent_record = $request->parent_record;
+
         $parent_type = "Audit_Program";
         $record_number = ((RecordNumber::first()->value('counter')) + 1);
         $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
         $currentDate = Carbon::now();
         $formattedDate = $currentDate->addDays(30);
-        $due_date= $formattedDate->format('d-M-Y');
+        $due_date = $formattedDate->format('d-M-Y');
         $parent_record = Capa::where('id', $id)->value('record');
         $parent_record = str_pad($parent_record, 4, '0', STR_PAD_LEFT);
         $parent_division_id = Capa::where('id', $id)->value('division_id');
@@ -773,7 +853,7 @@ class CapaController extends Controller
         $hod = User::where('role', 4)->get();
         $pre = CC::all();
         $changeControl = OpenStage::find(1);
-        if(!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
+        if (!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
         // return $capa_data;
         if ($request->child_type == "Change_control") {
             $record_number = ((RecordNumber::first()->value('counter')) + 1);
@@ -784,8 +864,8 @@ class CapaController extends Controller
             $parent_id = $id;
 
             $Changecontrolchild->save();
-            
-            return view('frontend.change-control.new-change-control', compact('cft','parent_record','parent_record','pre','hod','parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
+
+            return view('frontend.change-control.new-change-control', compact('cft', 'parent_record', 'parent_record', 'pre', 'hod', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
         }
         if ($request->child_type == "extension") {
             $parent_due_date = "";
@@ -798,7 +878,7 @@ class CapaController extends Controller
 
             $record_number = ((RecordNumber::first()->value('counter')) + 1);
             $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
-            return view('frontend.forms.extension', compact('parent_id', 'parent_record','parent_name', 'record_number', 'parent_due_date'));
+            return view('frontend.forms.extension', compact('parent_id', 'parent_record', 'parent_name', 'record_number', 'parent_due_date'));
         }
         $old_record = Capa::select('id', 'division_id', 'record')->get();
         if ($request->child_type == "Action_Item") {
@@ -810,7 +890,7 @@ class CapaController extends Controller
             $parent_id = $id;
 
             $actionchild->save();
-            return view('frontend.forms.action-item', compact('old_record','parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_name', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
+            return view('frontend.forms.action-item', compact('old_record', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_name', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
         } else {
             $record_number = ((RecordNumber::first()->value('counter')) + 1);
             $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
@@ -820,7 +900,7 @@ class CapaController extends Controller
             $parent_id = $id;
             $effectivenesschild->save();
             //  dd($effectivenesschild);
-            return view('frontend.forms.effectiveness-check', compact('old_record','parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
+            return view('frontend.forms.effectiveness-check', compact('old_record', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
         }
     }
 
@@ -831,81 +911,81 @@ class CapaController extends Controller
         $currentDate = Carbon::now();
         dd($currentDate);
         $formattedDate = $currentDate->addDays(30);
-        $due_date= $formattedDate->format('Y-m-d');
+        $due_date = $formattedDate->format('Y-m-d');
         return view("frontend.forms.effectiveness-check", compact('due_date', 'record_number'));
     }
 
 
     public static function singleReport($id)
-{
-    $data = Capa::find($id);
-    if (!empty($data)) {
-        $data->originator = User::where('id', $data->initiator_id)->value('name');
+    {
+        $data = Capa::find($id);
+        if (!empty($data)) {
+            $data->originator = User::where('id', $data->initiator_id)->value('name');
 
-        // Get the proposed corrective action data
-        $proposedCorrectiveActionData = CapaGrid::where([
-            'capa_id' => $id,
-            'identifer' => 'ProposedCorrectiveAction'
-        ])->first();
-        $proposedPreventiveActionData = CapaGrid::where([
-            'capa_id' => $id,
-            'identifer' => 'ProposedPreventiveAction'
-        ])->first();
-        // $implementationCorrectiveActionData = CapaGrid::where([
-        //     'capa_id' => $id,
-        //     'identifer' => 'ImplementationCorrectiveAction'
-        // ])->first();
+            // Get the proposed corrective action data
+            $proposedCorrectiveActionData = CapaGrid::where([
+                'capa_id' => $id,
+                'identifer' => 'ProposedCorrectiveAction'
+            ])->first();
+            $proposedPreventiveActionData = CapaGrid::where([
+                'capa_id' => $id,
+                'identifer' => 'ProposedPreventiveAction'
+            ])->first();
+            // $implementationCorrectiveActionData = CapaGrid::where([
+            //     'capa_id' => $id,
+            //     'identifer' => 'ImplementationCorrectiveAction'
+            // ])->first();
 
-        // Decode the JSON data if it is a JSON string, or leave it as an array
-        $correctiveActions = [];
-        if ($proposedCorrectiveActionData && is_string($proposedCorrectiveActionData->data)) {
-            // Decode if it is a string
-            $correctiveActions = json_decode($proposedCorrectiveActionData->data, true);
-        } elseif ($proposedCorrectiveActionData && is_array($proposedCorrectiveActionData->data)) {
-            // If the data is already an array, use it as it is
-            $correctiveActions = $proposedCorrectiveActionData->data;
+            // Decode the JSON data if it is a JSON string, or leave it as an array
+            $correctiveActions = [];
+            if ($proposedCorrectiveActionData && is_string($proposedCorrectiveActionData->data)) {
+                // Decode if it is a string
+                $correctiveActions = json_decode($proposedCorrectiveActionData->data, true);
+            } elseif ($proposedCorrectiveActionData && is_array($proposedCorrectiveActionData->data)) {
+                // If the data is already an array, use it as it is
+                $correctiveActions = $proposedCorrectiveActionData->data;
+            }
+
+            $preventiveActions = [];
+            if ($proposedPreventiveActionData && is_string($proposedPreventiveActionData->data)) {
+                // Decode if it is a string
+                $preventiveActions = json_decode($proposedPreventiveActionData->data, true);
+            } elseif ($proposedPreventiveActionData && is_array($proposedPreventiveActionData->data)) {
+                // If the data is already an array, use it as it is
+                $preventiveActions = $proposedPreventiveActionData->data;
+            }
+
+            // $implementationcorrectiveActions = [];
+            // if ($implementationCorrectiveActionData && is_string($implementationCorrectiveActionData->data)) {
+            //     // Decode if it is a string
+            //     $preventiveActions = json_decode($implementationCorrectiveActionData->data, true);
+            // } elseif ($implementationCorrectiveActionData && is_array($implementationCorrectiveActionData->data)) {
+            //     // If the data is already an array, use it as it is
+            //     $preventiveActions = $implementationCorrectiveActionData->data;
+            // }
+
+            // Debugging to check if the correctiveActions data is correct
+            // Uncomment below line if you want to debug
+            // dd($correctiveActions);
+
+            // Generate the PDF with the data
+            $pdf = App::make('dompdf.wrapper');
+            $pdf = PDF::loadview('frontend.capa.singleReport', compact('data', 'correctiveActions', 'preventiveActions'))
+                ->setOptions([
+                    'defaultFont' => 'sans-serif',
+                    'isHtml5ParserEnabled' => true,
+                    'isRemoteEnabled' => true,
+                    'isPhpEnabled' => true,
+                ]);
+
+            $pdf->setPaper('A4');
+            return $pdf->stream('Deviation' . $id . '.pdf');
         }
-
-        $preventiveActions = [];
-        if ($proposedPreventiveActionData && is_string($proposedPreventiveActionData->data)) {
-            // Decode if it is a string
-            $preventiveActions = json_decode($proposedPreventiveActionData->data, true);
-        } elseif ($proposedPreventiveActionData && is_array($proposedPreventiveActionData->data)) {
-            // If the data is already an array, use it as it is
-            $preventiveActions = $proposedPreventiveActionData->data;
-        }
-
-        // $implementationcorrectiveActions = [];
-        // if ($implementationCorrectiveActionData && is_string($implementationCorrectiveActionData->data)) {
-        //     // Decode if it is a string
-        //     $preventiveActions = json_decode($implementationCorrectiveActionData->data, true);
-        // } elseif ($implementationCorrectiveActionData && is_array($implementationCorrectiveActionData->data)) {
-        //     // If the data is already an array, use it as it is
-        //     $preventiveActions = $implementationCorrectiveActionData->data;
-        // }
-
-        // Debugging to check if the correctiveActions data is correct
-        // Uncomment below line if you want to debug
-        // dd($correctiveActions);
-
-        // Generate the PDF with the data
-        $pdf = App::make('dompdf.wrapper');
-        $pdf = PDF::loadview('frontend.capa.singleReport', compact('data', 'correctiveActions','preventiveActions'))
-            ->setOptions([
-                'defaultFont' => 'sans-serif',
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-                'isPhpEnabled' => true,
-            ]);
-
-        $pdf->setPaper('A4');
-        return $pdf->stream('Deviation' . $id . '.pdf');
     }
-}
 
-    
-    
-    
+
+
+
 
     public static function auditReport($id)
     {
