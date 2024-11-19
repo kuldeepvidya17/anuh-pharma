@@ -568,7 +568,7 @@
 
                                
                                 {{-- </div> --}}
-                                <div class="col-12 sub-head">
+                                {{-- <div class="col-12 sub-head">
                                     Material Details
                                 </div>
                                 <div class="col-12">
@@ -627,7 +627,7 @@
                                             </tbody> 
                                         </table>
                                     </div>
-                                </div>
+                                </div> --}}
                                 
                             </div>
                             <div class="button-block">
@@ -1038,30 +1038,30 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="QA Review & Closure">Remark</label>
-                                        <textarea name="qa_review"></textarea>
+                                        <textarea name="qa_Remark"></textarea>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="QA Review & Closure"> Closure Conclusion by Head Quality / Designee</label>
                                         <textarea name="qa_review"></textarea>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Closure Attachments">Closure Attachment</label>
+                                        <label for="CAPA Attachments">CAPA Attachments </label>
                                         <div><small class="text-primary">Please Attach all relevant or supporting
                                                 documents</small></div>
-                                        {{-- <input multiple type="file" id="myfile" name="closure_attachment[]"> --}}
+                                        
                                         <div class="file-attachment-field">
                                             <div class="file-attachment-list" id="closure_attachment"></div>
                                             <div class="add-btn">
                                                 <div>Add</div>
-                                                <input type="file" id="myfile" name="closure_attachment[]"
+                                                <input type="file" id="closure_attachment" name="closure_attachment[]"
                                                     oninput="addMultipleFiles(this, 'closure_attachment')" multiple>
                                             </div>
                                         </div>
@@ -1112,15 +1112,16 @@
                                 </div> -->
                                 <div class="col-12 sub-head">
                                     Extension Justification
-                                </div>
-                                <div class="col-12">
+                                </div> 
+                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="due_date_extension">Due Date Extension Justification</label>
                                         <div><small class="text-primary">Please Mention justification if due date is
                                                 crossed</small></div>
                                         <textarea name="due_date_extension"></textarea>
                                     </div>
-                                </div>
+                                </div> 
+                                
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>

@@ -82,14 +82,14 @@
 
                         @if ($data->stage == 1 && (in_array(3, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                CAPA Initiaion by the Concerned Department Head
+                                Propose Plan
                             </button>
                         @elseif($data->stage == 2 && (in_array(4, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#rejection-modal">
                                 More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Allocation of CAPA No.by QA
+                                Approve Plan
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">
                                 Cancel
@@ -102,7 +102,7 @@
                               QA More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                               Corrective Action Taken
+                                Complete
                             </button>
                             <button id="major" type="button" class="button_theme1" data-bs-toggle="modal"
                                 data-bs-target="#child-modal">
@@ -113,7 +113,7 @@
                             </button> --}}
                         @elseif($data->stage == 4 && (in_array(7, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Preventive Action 
+                                Approve
 
                             </button>
                             <!-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
@@ -124,35 +124,19 @@
                             </button>
                         @elseif($data->stage == 5)
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                               Implementation of CAPA
+                                All Actions Completed
                             </button>
                         @elseif($data->stage == 6)
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                CAPA CLoser by QA
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
+                                Child
                             </button>
-                    
-                        @elseif($data->stage == 7)
-                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
-                            Child
-                        </button>
-                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                            CAPA Effectiveness Strategy by QA-If Reconmmended
-                        </button>
-                        @elseif($data->stage == 8)
-                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                            CAPA CLoser by QA
-                        </button>
-                        @elseif($data->stage == 9)
-                        <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                            Closure of CAPA Effectiveness by QA
-                        </button>
-                
-                    @endif
+                        @endif
                         <button class="button_theme1"> <a class="text-white" href="{{ url('rcms/qms-dashboard') }}"> Exit
                             </a> </button>
 
 
                     </div>
+
 
                 </div>
                 <div class="status">
@@ -171,54 +155,32 @@
                         @endif
                     
                         @if ($data->stage >= 2)
-                            <div class="active">Concerned Department Head</div>
+                            <div class="active">Pending CAPA Plan</div>
                         @else
-                            <div class="">Concerned Department Head</div>
+                            <div class="">Pending CAPA Plan</div>
                         @endif
                     
                         @if ($data->stage >= 3)
-                            <div class="active">Allocation of CAPA</div>
+                            <div class="active">CAPA In Progress</div>
                         @else
-                            <div class="">Allocation of CAPA</div>
+                            <div class="">CAPA In Progress</div>
                         @endif
                     
                         @if ($data->stage >= 4)
-                            <div class="active">Corrective Action Taken</div>
+                            <div class="active">QA Review</div>
                         @else
-                            <div class="">Corrective Action Taken</div>
+                            <div class="">QA Review</div>
                         @endif
                     
                         @if ($data->stage >= 5)
-                            <div class="active">Preventive Action</div>
+                            <div class="active">Pending Actions Completion</div>
                         @else
-                            <div class="">Preventive Action</div>
+                            <div class="">Pending Actions Completion</div>
                         @endif
+                    
+                       
                     
                         @if ($data->stage >= 6)
-                            <div class="active">Implementation of CAPA</div>
-                        @else
-                            <div class="">Implementation of CAPA</div>
-                        @endif
-                    
-                        @if ($data->stage >= 7)
-                            <div class="active">CAPA Closer by QA</div>
-                        @else
-                            <div class="">CAPA Closer by QA</div>
-                        @endif
-                    
-                        @if ($data->stage >= 8)
-                            <div class="active">CAPA Effectiveness Strategy by QA</div>
-                        @else
-                            <div class="">CAPA Effectiveness Strategy by QA</div>
-                        @endif
-                    
-                         @if ($data->stage >= 9)
-                            <div class="active">Closure of CAPA Effectiveness by QA</div>
-                        @else
-                            <div class="">Closure of CAPA Effectiveness by QA</div>
-                        @endif
-                    
-                        @if ($data->stage >= 10)
                             <div class="bg-danger">Closed - Done</div>
                         @else
                             <div class="">Closed - Done</div>
@@ -813,7 +775,7 @@
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Details">Head Quality / Designee</label>
-                                                <input type="text" name="head_quality">
+                                                <input type="text" name="head_quality" value="{{ $data->head_quality }}">
                                             </div>
                                         </div>
         
@@ -830,7 +792,7 @@
         
                                        
 
-                                        <div class="col-12 sub-head">
+                                        {{-- <div class="col-12 sub-head">
                                             Material Details
                                         </div>
                                         <div class="col-12">
@@ -860,7 +822,7 @@
                                         </div>
                                         <div class="col-12 sub-head">
                                             Equipment/Instruments Details
-                                        </div>
+                                        </div> 
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Material Details">
@@ -899,7 +861,7 @@
                                                 <label for="Comments"> CAPA QA Comments </label>
                                                 <textarea name="capa_qa_comments2" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->capa_qa_comments2 }}</textarea>
                                             </div>
-                                        </div>
+                                        </div>--}}
                                     </div>
                                     <div class="button-block">
                                         <button type="submit" class="saveButton"
@@ -1450,12 +1412,14 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="Closure Attachments">Closure Attachment</label>
+                                                <label for="CAPA Attachments">CAPA Attachments</label>
                                                 <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
-                                                {{-- <input type="file" id="myfile" name="closure_attachment"
-                                                    {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> --}}
+                                                {{-- <input type="file" id="myfile" name="capa_attachment"
+                                                    {{ $data->stage == 0 || $data->stage == 9 ? 'disabled' : '' }}> --}}
                                                 <div class="file-attachment-field">
-                                                    <div class="file-attachment-list" id="closure_attachment1">
+                                                    <div class="file-attachment-list" id="closure_attachment">
+
+                                                        {{-- @if (is_array($data->closure_attachment)) --}}
                                                         @if ($data->closure_attachment)
                                                             @foreach (json_decode($data->closure_attachment) as $file)
                                                                 <h6 type="button" class="file-container text-dark"
@@ -1470,15 +1434,15 @@
                                                                             style="color:red; font-size:20px;"></i></a>
                                                                 </h6>
                                                             @endforeach
+                                                        {{-- @endif --}}
                                                         @endif
                                                     </div>
                                                     <div class="add-btn">
                                                         <div>Add</div>
                                                         <input
-                                                            {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                            type="file" id="myfile" name="closure_attachment[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                            oninput="addMultipleFiles(this, 'closure_attachment1')"
-                                                            multiple>
+                                                            {{ $data->stage == 0|| $data->stage == 2 || $data->stage == 3|| $data->stage == 4 || $data->stage == 5 || $data->stage == 6 || $data->stage == 7|| $data->stage == 8|| $data->stage == 9 ? 'disabled' : '' }}
+                                                            type="file" id="myfile" name="closure_attachment[]"
+                                                            oninput="addMultipleFiles(this, 'closure_attachment')" multiple>
                                                     </div>
                                                 </div>
                                             </div>

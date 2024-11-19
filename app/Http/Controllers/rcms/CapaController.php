@@ -73,6 +73,28 @@ class CapaController extends Controller
         $capa->problem_description = $request->problem_description;
         $capa->problem_description = $request->problem_description;
 
+        $capa->capa_type = $request->capa_type;
+        $capa->corrective_action = $request->corrective_action;
+        $capa->preventive_action = $request->preventive_action;
+        $capa->supervisor_review_comments = $request->supervisor_review_comments;
+        $capa->qa_review = $request->qa_review;
+        $capa->due_date_extension = $request->due_date_extension;
+        // $capa->closure_attachment = $request->closure_attachment;
+        if (!empty($request->closure_attachment)) {
+            $files = [];
+            if ($request->hasfile('closure_attachment')) {
+                foreach ($request->file('closure_attachment') as $file) {
+                    $name = $request->name . '-closure_attachment' . rand(1, 100) . '.' . $file->getClientOriginalExtension();
+                    $file->move('upload/', $name);
+                    $files[] = $name;
+                }
+            }
+            $capa->closure_attachment = json_encode($files);
+        }
+    //   dd($capa->closure_attachment);
+
+
+
 
         $capa->status = 'Opened';
         $capa->stage = 1;
@@ -189,7 +211,17 @@ class CapaController extends Controller
         $capa->effectiveness_verification_capa = $request->effectiveness_verification_capa;
         $capa->effectivenessRemark = $request->effectivenessRemark;
 
-
+        if (!empty($request->closure_attachment)) {
+            $files = [];
+            if ($request->hasfile('closure_attachment')) {
+                foreach ($request->file('closure_attachment') as $file) {
+                    $name = $request->name . 'closure_attachment' . rand(1, 100) . '.' . $file->getClientOriginalExtension();
+                    $file->move('upload/', $name);
+                    $files[] = $name;
+                }
+            }
+            $capa->closure_attachment = json_encode($files);
+        }
 
         $capa->update();
         // dd($capa->due_date);
@@ -269,6 +301,7 @@ class CapaController extends Controller
         $implementationCorrectiveActionData->update();
 
 
+
         toastr()->success("Record is updated Successfully");
         return back();
     }
@@ -278,7 +311,7 @@ class CapaController extends Controller
         $cft = [];
         $revised_date = "";
         $data = Capa::find($id);
-    //    dd($data->due_date);
+    //    dd($data->closure_attachment);
 
         $old_record = Capa::select('id', 'division_id', 'record')->get();
         $revised_date = Extension::where('parent_id', $id)->where('parent_type', "Capa")->value('revised_date');
@@ -314,7 +347,7 @@ class CapaController extends Controller
             $lastDocument = Capa::find($id);
             if ($capa->stage == 1) {
                 $capa->stage = "2";
-                $capa->status = "Pending CAPA Plan";
+                $capa->status = "Concerned Department Head";
                 $capa->plan_proposed_by = Auth::user()->name;
                 $capa->plan_proposed_on = Carbon::now()->format('d-M-Y');
 
@@ -328,7 +361,9 @@ class CapaController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Plan Proposed';
+                $history->change_to =   "Pending CAPA Plan";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'Pending CAPA Plan';
                 $history->save();
 
                 $list = Helpers::getHodUserList();
@@ -372,7 +407,9 @@ class CapaController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Plan Approved';
+                $history->change_to =   "CAPA In Progress";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'CAPA In Progress';
                 $history->save();
 
                 $list = Helpers::getQAUserList();
@@ -415,7 +452,9 @@ class CapaController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Completed';
+                $history->change_to =   "CAPA In Progress";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'CAPA In Progress';
                 $history->save();
                 $capa->update();
                 toastr()->success('Document Sent');
@@ -436,99 +475,17 @@ class CapaController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Approved';
+                $history->change_to =   "Pending Actions Completion";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'Pending Actions Completion';
                 $history->save();
                 $capa->update();
                 toastr()->success('Document Sent');
                 return back();
             }
-            if ($capa->stage == 5) {
-                $capa->stage = "6";
-                $capa->status = "Pending Actions Completion";
-                $capa->approved_by = Auth::user()->name;
-                $capa->approved_on = Carbon::now()->format('d-M-Y');
-                $history = new CapaAuditTrial();
-                $history->capa_id = $id;
-                $history->activity_type = 'Activity Log';
-                $history->previous = "";
-                $history->current = $capa->approved_by;
-                $history->comment = $request->comment;
-                $history->user_id = Auth::user()->id;
-                $history->user_name = Auth::user()->name;
-                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastDocument->status;
-                $history->stage = 'Approved';
-                $history->save();
-                $capa->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
+           
             if ($capa->stage == 6) {
                 $capa->stage = "7";
-                $capa->status = "Pending Actions Completion";
-                $capa->approved_by = Auth::user()->name;
-                $capa->approved_on = Carbon::now()->format('d-M-Y');
-                $history = new CapaAuditTrial();
-                $history->capa_id = $id;
-                $history->activity_type = 'Activity Log';
-                $history->previous = "";
-                $history->current = $capa->approved_by;
-                $history->comment = $request->comment;
-                $history->user_id = Auth::user()->id;
-                $history->user_name = Auth::user()->name;
-                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastDocument->status;
-                $history->stage = 'Approved';
-                $history->save();
-                $capa->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($capa->stage == 7) {
-                $capa->stage = "8";
-                $capa->status = "Pending Actions Completion";
-                $capa->approved_by = Auth::user()->name;
-                $capa->approved_on = Carbon::now()->format('d-M-Y');
-                $history = new CapaAuditTrial();
-                $history->capa_id = $id;
-                $history->activity_type = 'Activity Log';
-                $history->previous = "";
-                $history->current = $capa->approved_by;
-                $history->comment = $request->comment;
-                $history->user_id = Auth::user()->id;
-                $history->user_name = Auth::user()->name;
-                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastDocument->status;
-                $history->stage = 'Approved';
-                $history->save();
-                $capa->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($capa->stage == 8) {
-                $capa->stage = "9";
-                $capa->status = "Pending Actions Completion";
-                $capa->approved_by = Auth::user()->name;
-                $capa->approved_on = Carbon::now()->format('d-M-Y');
-                $history = new CapaAuditTrial();
-                $history->capa_id = $id;
-                $history->activity_type = 'Activity Log';
-                $history->previous = "";
-                $history->current = $capa->approved_by;
-                $history->comment = $request->comment;
-                $history->user_id = Auth::user()->id;
-                $history->user_name = Auth::user()->name;
-                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastDocument->status;
-                $history->stage = 'Approved';
-                $history->save();
-                $capa->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-
-            if ($capa->stage == 9) {
-                $capa->stage = "10";
                 $capa->status = "Closed - Done";
                 $capa->completed_by = Auth::user()->name;
                 $capa->completed_on = Carbon::now()->format('d-M-Y');
@@ -542,7 +499,9 @@ class CapaController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Completed';
+                $history->change_to =   "Closed - Done";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'Closed - Done';
                 $history->save();
                 $capa->update();
                 toastr()->success('Document Sent');
@@ -639,7 +598,9 @@ class CapaController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
-                $history->stage = 'Qa More Info Required';
+                $history->change_to =   "Pending CAPA Plan";
+                $history->change_from = $lastDocument->status;
+                $history->stage = 'Pending CAPA Plan';
                 $history->save();
                 $capa->update();
                 $history = new CapaHistory();
@@ -689,6 +650,8 @@ class CapaController extends Controller
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                 $history->origin_state = $lastDocument->status;
+                $history->change_to =   "CAPA In Progress";
+                $history->change_from = $lastDocument->status;
                 $history->stage = 'Rejected';
                 $history->save();
                 $capa->update();
