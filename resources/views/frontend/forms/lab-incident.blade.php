@@ -111,135 +111,185 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Initiator Group"><b>Initiator Group</b></label>
-                                        <select name="Initiator_Group" id="initiator_group">
-                                            <option value="">-- Select --</option>
-                                            <option value="CQA" @if(old('Initiator_Group') =="CQA") selected @endif>Corporate Quality Assurance</option>
-                                            <option value="QAB" @if(old('Initiator_Group') =="QAB") selected @endif>Quality Assurance Biopharma</option>
-                                            <option value="CQC" @if(old('Initiator_Group') =="CQA") selected @endif>Central Quality Control</option>
-                                            <option value="CQC" @if(old('Initiator_Group') =="MANU") selected @endif>Manufacturing</option>
-                                            <option value="PSG" @if(old('Initiator_Group') =="PSG") selected @endif>Plasma Sourcing Group</option>
-                                            <option value="CS"  @if(old('Initiator_Group') == "CS") selected @endif>Central Stores</option>
-                                            <option value="ITG" @if(old('Initiator_Group') =="ITG") selected @endif>Information Technology Group</option>
-                                            <option value="MM"  @if(old('Initiator_Group') == "MM") selected @endif>Molecular Medicine</option>
-                                            <option value="CL"  @if(old('Initiator_Group') == "CL") selected @endif>Central Laboratory</option>
 
-                                            <option value="TT"  @if(old('Initiator_Group') == "TT") selected @endif>Tech team</option>
-                                            <option value="QA"  @if(old('Initiator_Group') == "QA") selected @endif> Quality Assurance</option>
-                                            <option value="QM"  @if(old('Initiator_Group') == "QM") selected @endif>Quality Management</option>
-                                            <option value="IA"  @if(old('Initiator_Group') == "IA") selected @endif>IT Administration</option>
-                                            <option value="ACC"  @if(old('Initiator_Group') == "ACC") selected @endif>Accounting</option>
-                                            <option value="LOG"  @if(old('Initiator_Group') == "LOG") selected @endif>Logistics</option>
-                                            <option value="SM"  @if(old('Initiator_Group') == "SM") selected @endif>Senior Management</option>
-                                            <option value="BA"  @if(old('Initiator_Group') == "BA") selected @endif>Business Administration</option>
-                                        </select>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Name of Product">Name of Product/Material</label>
+                                        <input name="name_of_product_material"></input>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+
+                                <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Initiator Group Code">Initiator Group Code</label>
-                                        <input type="text" name="initiator_group_code" id="initiator_group_code" value="" readonly>
+                                        <label for="Batch No.">Batch No./A. R. Number</label>
+                                        <input name="batch_number"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="group-input">
+                                        <label for="Stage">Stage</label>
+                                        <input name="stage_number"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="group-input">
+                                        <label for="Reference Specification No.">Reference Specification No./ SOP No./ DOC No.</label>
+                                        <input name="reference_specification_number"></input>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Test">Test</label>
+                                        <textarea name="Document_Details"></textarea>
                                     </div>
                                 </div>
                                
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Short Description">Short Description<span
+                                        <label for="Short Description">Description of the Incident<span
                                                 class="text-danger">*</span></label><span id="rchars">255</span>
                                         characters remaining
                                         <input id="docname" type="text" name="short_desc" maxlength="255" required>
                                     </div>
                                 </div>  
+
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="severity-level">Severity Level</label>
-                                        <span class="text-primary">Severity levels in a QMS record gauge issue seriousness, guiding priority for corrective actions. Ranging from low to high, they ensure quality standards and mitigate critical risks.</span>
-                                        <select name="severity_level2">
-                                            <option value="0">-- Select --</option>
-                                            <option value="minor">Minor</option>
-                                            <option value="major">Major</option>
-                                            <option value="critical">Critical</option>
-                                        </select>
+                                        <label for="Immediate action taken">Immediate action taken</label>
+                                        <textarea name="immediate_action_taken"></textarea>
                                     </div>
                                 </div>
-                                <!-- <div class="col-lg-6">
-                                            <div class="group-input" id="initiated_through_req">
-                                                <label for="If Other">Others<span
-                                                        class="text-danger d-none">*</span></label>
-                                                {{-- <textarea {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }} name="initiated_if_other">{{$data->initiated_if_other}}</textarea> --}}
-                                            </div>
-                                        </div> -->
-                                {{-- <div class="col-lg-6">
+
+                                <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Date of Occurance">Date of Occurance</label>
-                                        <input type="date" name="occurance_date">
+                                        <label for="Investigation details">Investigation details</label>
+                                        <textarea name="investigation_details"></textarea>
                                     </div>
                                 </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Investigation by Concern Department">Investigation by Concern Department(if Applicable: Yes/No)</label>
+                                        <textarea name="investigation_concern_department"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Root Cause">Root Cause</label>
+                                        <textarea name="root_cause"></textarea>
+                                    </div>
+                                </div>
+
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="
-                                        ">Due Date</label>
-                                        <input type="hidden" value="{{ $due_date }}" name="due_date">
-                                        <div class="static"> {{ $due_date }}</div>
-                                    </div>
-                                </div> --}}
-                                {{-- <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Assigned to">Assigned to</label>
-                                        <select name="assigend">
-                                            @foreach ($users as $data)
-                                                <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div> --}}
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Incident Category">Incident Category</label>
-                                        <select name="Incident_Category">
+                                        <label for="Incident Root cause Categorization">Incident Root cause Categorization</label>
+                                        <select name="is_repeat_gi" id="assignableSelect">
                                             <option value="">Enter Your Selection Here</option>
-                                            <option value="Biological">Biological</option>
-                                            <option value="Chemical">Chemical</option>
-                                            <option value="Others">Others</option>
+                                            <option value="Power Outage Error">Power Outage Error</option>
+                                            <option value="Human error">Human error</option>
+                                            <option value="Instrument Failure error">Instrument Failure error</option>
+                                            <option value="Spillage of the sample solution">Spillage of the sample solution</option>
+                                            <option value="Incorrect Instrument Parameter">Incorrect Instrument Parameter</option>
+                                            <option value="System Suitability Failure">System Suitability Failure</option>
+                                            <option value="Wrong MOA">Wrong MOA</option>
+                                            <option value="Communication error">Communication error</option>
+                                            <option value="yes">Miscellaneous/ Others (Describe in brief)</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input" id="Incident_Category_others">
-                                        <label for="Incident_Category">Others<span
-                                                class="text-danger d-none">*</span></label>
-                                        <textarea name="Incident_Category_others"></textarea>
+
+                                <div class="col-lg-6" id="rootCauseGroup" style="display: none;">
+                                    <div class="group-input">
+                                        <label for="Miscellaneous">Miscellaneous/Others(Describe in brief)<span class="text-danger">*</span></label>
+                                        <textarea name="miscellaneous_others" id="rootCauseTextarea" rows="3" placeholder="Enter Miscellaneous/Others(Describe in brief)"></textarea>
+
                                     </div>
                                 </div>
-                                 <div class="col-lg-6">
+
+                                <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Invocation Type">Invocation Type</label>
-                                        <select name="Invocation_Type">
-                                            <option value="">Enter Your Selection Here</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
-                                    </div> 
+                                        <label for="Current Control Measure">Current Control Measure</label>
+                                        <textarea name="current_control_measure"></textarea>
+                                    </div>
                                 </div>
-                                
-                                <div class="col-lg-12">
+
+                                <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Initial Attachments">Initial Attachment</label>
-                                        <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
-                                        {{-- <input type="file" id="myfile" name="Initial_Attachment"> --}}
-                                        <div class="file-attachment-field">
-                                            <div class="file-attachment-list" id="Initial_Attachment"></div>
-                                            <div class="add-btn">
-                                                <div>Add</div>
-                                                <input type="file" id="myfile" name="Initial_Attachment[]"
-                                                    oninput="addMultipleFiles(this, 'Initial_Attachment')" multiple>
-                                            </div>
+                                        <label for="Corrective Action">Corrective Action</label>
+                                        <textarea name="Currective_Action"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Preventive Action (if any)">Preventive Action (if any)</label>
+                                        <textarea name="Preventive_Action"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Evaluation & Recommendation from QA">Evaluation & Recommendation from QA</label>
+                                        <textarea name="evaluation_from_qa"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Conclusion & Disposition by Head Quality/Designee">Conclusion & Disposition by Head Quality/Designee</label>
+                                        <textarea name="conclusion_by_head_quality"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Justification for Delay in Closing">Justification for Delay in Closing (if applicable - Yes/No)</label>
+                                        <textarea name="justification_delay_closing"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 new-date-data-field">
+                                    <div class="group-input input-date">
+                                        <label for="Date Due">Target Closure Date</label>
+                                        <div class="calenderauditee">
+                                            <input type="text" id="target_close_date" readonly
+                                                placeholder="DD-MMM-YYYY"/>
+                                            <input type="date" name="target_close_date"  min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
+                                                oninput="handleDateInput(this, 'target_close_date')"  />
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-6 new-date-data-field">
+                                    <div class="group-input input-date">
+                                        <label for="Date Due">Tentative extended closure date</label>
+                                        <div class="calenderauditee">
+                                            <input type="text" id="tentavie_extended_closure_date" readonly
+                                                placeholder="DD-MMM-YYYY"/>
+                                            <input type="date" name="tentavie_extended_closure_date"  min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
+                                                oninput="handleDateInput(this, 'tentavie_extended_closure_date')"  />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Preventive Action (if any)">Justification</label>
+                                        <textarea name="justification"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Preventive Action (if any)">Closure Verification</label>
+                                        <textarea name="closure_verification"></textarea>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="button-block">
                                 <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -259,12 +309,12 @@
                                         <textarea name="Incident_Details"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <!-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Document Details ">Document Details</label>
                                         <textarea name="Document_Details"></textarea>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Instrument Details">Instrument Details</label>
@@ -316,9 +366,7 @@
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
-<a href="/rcms/qms-dashboard">
-                                        <button type="button" class="backButton">Back</button>
-                                    </a>
+                                        <button type="button" class="backButton" onclick="previousStep()">Back</button>
                                 <button type="button" class="nextButton" onclick="nextStep()">Next</button>
                                 <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
                             </div>
@@ -356,7 +404,7 @@
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Investigation Details ">Investigation Details</label>
-                                        <textarea name="Investigation_Details"></textarea>
+                                        <textarea name="Investigation_Details_sec"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -368,15 +416,13 @@
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Root Cause">Root Cause</label>
-                                        <textarea name="Root_Cause"></textarea>
+                                        <textarea name="Root_Cause_sec"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
-<a href="/rcms/qms-dashboard">
-                                        <button type="button" class="backButton">Back</button>
-                                    </a>
+                                        <button type="button" class="backButton" onclick="previousStep()">Back</button>
                                 <button type="button" class="nextButton" onclick="nextStep()">Next</button>
                                 <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
                             </div>
@@ -387,7 +433,7 @@
                     <div id="CCForm4" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="row">
-                                <div class="col-12">
+                                <!-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Currective Action">Corrective Action</label>
                                         <textarea name="Currective_Action"></textarea>
@@ -398,7 +444,7 @@
                                         <label for="Preventive Action">Preventive Action</label>
                                         <textarea name="Preventive_Action"></textarea>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Corrective & Preventive Action">Corrective & Preventive Action</label>
@@ -423,9 +469,7 @@
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
-<a href="/rcms/qms-dashboard">
-                                        <button type="button" class="backButton">Back</button>
-                                    </a>
+                                        <button type="button" class="backButton" onclick="previousStep()">Back</button>
                                 <button type="button" class="nextButton" onclick="nextStep()">Next</button>
                                 <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
                             </div>
@@ -460,9 +504,7 @@
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
-<a href="/rcms/qms-dashboard">
-                                        <button type="button" class="backButton">Back</button>
-                                    </a>
+                                        <button type="button" class="backButton" onclick="previousStep()">Back</button>
                                 <button type="button" class="nextButton" onclick="nextStep()">Next</button>
                                 <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
                             </div>
@@ -542,9 +584,7 @@
                             
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
-<a href="/rcms/qms-dashboard">
-                                        <button type="button" class="backButton">Back</button>
-                                    </a>
+                                        <button type="button" class="backButton" onclick="previousStep()">Back</button>
                                 <button type="button" class="nextButton" onclick="nextStep()">Next</button>
                                 <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
                             </div>
@@ -655,9 +695,7 @@
                                     </div>                   
                                 <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
-<a href="/rcms/qms-dashboard">
-                                        <button type="button" class="backButton">Back</button>
-                                    </a>
+                                        <button type="button" class="backButton" onclick="previousStep()">Back</button>
                                 <button type="submit">Submit</button>
                                 <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white" href="#"> Exit </a></button>
                             </div>
@@ -679,6 +717,30 @@
             display: block;
         }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+                // Initialize the display of the textarea based on the current value
+                toggleRootCauseInput();
+
+                function toggleRootCauseInput() {
+                var selectValue = document.getElementById("assignableSelect").value.toLowerCase(); // Convert value to lowercase for consistency
+                var rootCauseGroup = document.getElementById("rootCauseGroup");
+                var rootCauseTextarea = document.getElementById("rootCauseTextarea");
+
+                if (selectValue === "yes") {
+                    rootCauseGroup.style.display = "block";  // Show the textarea if "Yes" is selected
+                    rootCauseTextarea.setAttribute('required', 'required');  // Make textarea required
+                    } else {
+                    rootCauseGroup.style.display = "none";   // Hide the textarea if "No" is selected
+                    rootCauseTextarea.removeAttribute('required');  // Remove required attribute
+                }
+            }
+
+            // Attach the event listener
+            document.getElementById("assignableSelect").addEventListener("change", toggleRootCauseInput);
+        });
+    </script>
 
     <script>
         VirtualSelect.init({
