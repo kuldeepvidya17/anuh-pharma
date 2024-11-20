@@ -98,7 +98,11 @@ class MarketComplaintController extends Controller
         $marketcomplaint->details_of_response = $request->input('Details_of_Response');
         $marketcomplaint->further_investigation_additional_testing = $request->input('Further_investigation_Additional_testing');
         $marketcomplaint->method_tools_to_be_used_for = $request->input('Method_Tools_to_be_used_for');
-    
+        $marketcomplaint->capa_qa_comments2 = $request->input('capa_qa_comments2');
+        $marketcomplaint->qa_review = $request->input('qa_review');
+        $marketcomplaint->head_qulitiy_comment = $request->input('head_qulitiy_comment');
+
+
         $marketcomplaint->type="MarketComplaint";
         $marketcomplaint->stage=1;
         $marketcomplaint->status = "Opened";
@@ -444,7 +448,33 @@ class MarketComplaintController extends Controller
         $historyDetailsData->data = $request->history_details;
         $historyDetailsData->save();
             
-        
+         
+
+          $qualityDetailsData_1 = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'QualityControl_1'])->firstOrNew();
+          $qualityDetailsData_1->market_id = $griddata;
+          $qualityDetailsData_1->identifer = 'QualityControl_1';
+          $qualityDetailsData_1->data = $request->qualitycontrol_1;
+          $qualityDetailsData_1->save();
+        // dd($qualityDetailsData_1);
+
+        $qualityDetailsData_2 = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'QualityControl_2'])->firstOrNew();
+        $qualityDetailsData_2->market_id = $griddata;
+        $qualityDetailsData_2->identifer = 'QualityControl_2';
+        $qualityDetailsData_2->data = $request->qualitycontrol_2;
+        $qualityDetailsData_2->save();
+                // Store data for Complaint Details grid
+        $complaintDetailsData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'ComplaintDetails'])->firstOrNew();
+        $complaintDetailsData->market_id = $griddata;
+        $complaintDetailsData->identifer = 'ComplaintDetails';
+        $complaintDetailsData->data = $request->complaint_details; // assuming your form data is coming as 'complaint_details'
+        $complaintDetailsData->save();
+
+        $changecontrolDetailsData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'ChangeControlCapaDetails'])->firstOrNew();
+        $changecontrolDetailsData->market_id = $griddata;
+        $changecontrolDetailsData->identifer = 'ChangeControlCapaDetails';
+        $changecontrolDetailsData->data = $request->changecontrol_capa_details; // assuming your form data is coming as 'complaint_details'
+        $changecontrolDetailsData->save();
+        // dd($changecontrolDetailsData);
 
         toastr()->success("Record is created Successfully");
         return redirect(url('rcms/qms-dashboard'));
@@ -463,13 +493,18 @@ class MarketComplaintController extends Controller
         $productDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'ProductDetails')->first();
         $materialDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'MaterialDetails')->first();
         $historyDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'HistoryDetails')->first();
+        $qualityDetailsData_1 = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'QualityControl_1')->first();
+        $qualityDetailsData_2 = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'QualityControl_2')->first();
+        $complaintDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'ComplaintDetails')->first();
+        $changecontrolDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'ChangeControlCapaDetails')->first();
+// dd($changecontrolDetailsData);
         // $grid_data1 = DeviationGrid::where('deviation_grid_id', $id)->where('type', "Document")->first();
         // $grid_data2 = DeviationGrid::where('deviation_grid_id', $id)->where('type', "Product")->first();
         $data->initiator_name = User::where('id', $data->initiator_id)->value('name');
         $pre = MarketComplaint::all();
         $divisionName = DB::table('q_m_s_divisions')->where('id', $data->division_id)->value('name');
-        // dd($materialDetailsData);
-        return view('frontend.marketcomplaint.marketcomplaint_view', compact('data','userData','productDetailsData','materialDetailsData','historyDetailsData', 'old_record', 'pre', 'divisionName'));
+        // dd($changecontrolDetailsData);
+        return view('frontend.marketcomplaint.marketcomplaint_view', compact('data','userData','productDetailsData','materialDetailsData','historyDetailsData', 'old_record', 'pre', 'divisionName','qualityDetailsData_1','qualityDetailsData_2','complaintDetailsData','changecontrolDetailsData'));
     }
 
     public function update(Request $request, $id)
@@ -499,6 +534,10 @@ class MarketComplaintController extends Controller
         $marketcomplaint->details_of_response = $request->input('Details_of_Response');
         $marketcomplaint->further_investigation_additional_testing = $request->input('Further_investigation_Additional_testing');
         $marketcomplaint->method_tools_to_be_used_for = $request->input('Method_Tools_to_be_used_for');
+        $marketcomplaint->capa_qa_comments2 = $request->input('capa_qa_comments2');
+        $marketcomplaint->qa_review = $request->input('qa_review');
+        $marketcomplaint->head_qulitiy_comment = $request->input('head_qulitiy_comment');
+
 
          // Handle file attachments
     $attachments = $marketcomplaint->attachments ? json_decode($marketcomplaint->attachments, true) : [];
@@ -534,6 +573,31 @@ class MarketComplaintController extends Controller
         $historyDetailsData->save();
         $materialDetailsData->update();
 
+        $qualityDetailsData_1 = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'QualityControl_1'])->firstOrNew();
+        $qualityDetailsData_1->market_id = $griddata;
+        $qualityDetailsData_1->identifer = 'QualityControl_1';
+        $qualityDetailsData_1->data = $request->qualitycontrol_1;
+        $qualityDetailsData_1->save();
+
+        $qualityDetailsData_2 = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'QualityControl_2'])->firstOrNew();
+        $qualityDetailsData_2->market_id = $griddata;
+        $qualityDetailsData_2->identifer = 'QualityControl_2';
+        $qualityDetailsData_2->data = $request->qualitycontrol_2;
+        $qualityDetailsData_2->save();
+
+        // Store data for Complaint Details grid
+        $complaintDetailsData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'ComplaintDetails'])->firstOrNew();
+        $complaintDetailsData->market_id = $griddata;
+        $complaintDetailsData->identifer = 'ComplaintDetails';
+        $complaintDetailsData->data = $request->complaint_details; // assuming your form data is coming as 'complaint_details'
+        $complaintDetailsData->save();
+        // dd($complaintDetailsData);
+
+        $changecontrolDetailsData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'ChangeControlCapaDetails'])->firstOrNew();
+        $changecontrolDetailsData->market_id = $griddata;
+        $changecontrolDetailsData->identifer = 'ChangeControlCapaDetails';
+        $changecontrolDetailsData->data = $request->changecontrol_capa_details; // assuming your form data is coming as 'complaint_details'
+        $changecontrolDetailsData->save();
 
         $marketcomplaint->update();
 
