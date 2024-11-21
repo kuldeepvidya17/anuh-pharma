@@ -1352,6 +1352,38 @@
                             <div id="CCForm4" class="inner-block cctabcontent">
                                 <div class="inner-block-content">
                                     <div class="row">
+
+                                        <div class="col-lg-12">
+                                            <div class="group-input">
+                                                <label for="Initiator Group">Effectiveness Verification of CAPA:</label>
+                                                <select name="effectiveness_verification_capa" id="assignableSelect" onchange="toggleRootCauseInput()">
+                                                    <option value="">Is Effectiveness verification required?</option>
+                                                    <option value="YES" {{ $data->effectiveness_verification_capa === 'YES' ? 'selected' : '' }}>YES</option>
+                                                    <option value="NO" {{ $data->effectiveness_verification_capa === 'NO' ? 'selected' : '' }}>NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-lg-12" id="rootCauseGroup" style="{{ $data->effectiveness_verification_capa === 'YES' ? 'display: block;' : 'display: none;' }}">
+                                            <div class="group-input">
+                                                <label for="RootCause">Remark</label>
+                                                <textarea name="effectivenessRemark" id="rootCauseTextarea" rows="4" placeholder="Describe the root cause here">{{ $data->effectivenessRemark }}</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <script>
+                                            function toggleRootCauseInput() {
+                                                var selectValue = document.getElementById("assignableSelect").value;
+                                                var rootCauseGroup = document.getElementById("rootCauseGroup");
+                                        
+                                                if (selectValue === "YES") {
+                                                    rootCauseGroup.style.display = "block"; // Show the textarea if "YES" is selected
+                                                } else {
+                                                    rootCauseGroup.style.display = "none"; // Hide the textarea if "NO" or empty is selected
+                                                }
+                                            }
+                                        </script>
+
                                         <div class="col-md-12">
                                     <div class="group-input">
                                         <label for="search">

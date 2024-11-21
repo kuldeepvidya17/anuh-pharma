@@ -213,11 +213,14 @@
             @endif
             <div class="buttons-new">
                 @if ($document->stage < 7 && !(count($userRoleIds) === 1 && in_array(3, $userRoleIds)))
-                <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditReviewer" >
+                {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditReviewer" > --}}
+                    <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#" >
+                    
                     Review
                 </button>
                 @endif
-                <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditViewers">
+                {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditViewers"> --}}
+                    <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#">
                     View
                     </button>
                 <button class="button_theme1" ><a class="text-white" href="{{ url('capashow/' . $document->id)  }}"> Back
