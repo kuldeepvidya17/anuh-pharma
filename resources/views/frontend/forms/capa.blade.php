@@ -115,10 +115,14 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="RLS Record Number">Record Number</label>
+                                        {{-- <label for="RLS Record Number">Record Number</label>
+                                        <input disabled type="text" name="record_number"
+                                            value="{{ Helpers::getDivisionName(session()->get('division')) }}/CAPA/{{ date('Y') }}/{{ $record_number }}"> --}}
+
+                                        {{-- <div class="static">QMS-EMEA/CAPA/{{ date('Y') }}/{{ $record_number }}</div> --}}
+                                        <label for="RLS Record Number">CAPA No.</label>
                                         <input disabled type="text" name="record_number"
                                             value="{{ Helpers::getDivisionName(session()->get('division')) }}/CAPA/{{ date('Y') }}/{{ $record_number }}">
-                                        {{-- <div class="static">QMS-EMEA/CAPA/{{ date('Y') }}/{{ $record_number }}</div> --}}
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -145,35 +149,8 @@
                                         <input type="hidden" value="{{ date('Y-m-d') }}" name="intiation_date">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="group-input">
-                                        <label for="search">
-                                            Assigned To <span class="text-danger"></span>
-                                        </label>
-                                        <select id="select-state" placeholder="Select..." name="assign_to">
-                                            <option value="">Select a value</option>
-                                            @foreach ($users as $value)
-                                                <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('assign_to')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <!-- <div class="col-md-6 new-date-data-field">
-                                    <div class="group-input input-date ">
-                                        <label for="due-date">Due Date<span class="text-danger">*</span></label>
-                                        <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small>
-                                        </div>
-                                        <div class="calenderauditee">
-                                            <input type="text" id="due_date" readonly
-                                                placeholder="DD-MMM-YYYY" />
-                                            <input type="date" name="due_date" class="hide-input"
-                                                oninput="handleDateInput(this, 'due_date')" />
-                                        </div>
-                                    </div>
-                                </div> -->
+                              
+                               
                                 <div class="col-lg-6 new-date-data-field">
                                     <div class="group-input input-date">
                                         <label for="Date Due"> Due Date</label>
@@ -186,65 +163,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Initiator Group">Initiator Group</label>
-                                        <select name="initiator_Group" id="initiator_group">
-                                            <option value="">-- Select --</option>
-                                            <option value="CQA" @if (old('initiator_Group') == 'CQA') selected @endif>
-                                                Corporate Quality Assurance</option>
-                                            <option value="QAB" @if (old('initiator_Group') == 'QAB') selected @endif>Quality
-                                                Assurance Biopharma</option>
-                                            <option value="CQC" @if (old('initiator_Group') == 'CQA') selected @endif>Central
-                                                Quality Control</option>
-                                            <option value="CQC" @if (old('initiator_Group') == 'CQC') selected @endif>
-                                                Manufacturing</option>
-                                            <option value="PSG" @if (old('initiator_Group') == 'PSG') selected @endif>Plasma
-                                                Sourcing Group</option>
-                                            <option value="CS" @if (old('initiator_Group') == 'CS') selected @endif>
-                                                Central
-                                                Stores</option>
-                                            <option value="ITG" @if (old('initiator_Group') == 'ITG') selected @endif>
-                                                Information Technology Group</option>
-                                            <option value="MM" @if (old('initiator_Group') == 'MM') selected @endif>
-                                                Molecular Medicine</option>
-                                            <option value="CL" @if (old('initiator_Group') == 'CL') selected @endif>
-                                                Central
-                                                Laboratory</option>
-                                            <option value="TT" @if (old('initiator_Group') == 'TT') selected @endif>Tech
-                                                Team</option>
-                                            <option value="QA" @if (old('initiator_Group') == 'QA') selected @endif>
-                                                Quality Assurance</option>
-                                            <option value="QM" @if (old('initiator_Group') == 'QM') selected @endif>
-                                                Quality Management</option>
-                                            <option value="IA" @if (old('initiator_Group') == 'IA') selected @endif>IT
-                                                Administration</option>
-                                            <option value="ACC" @if (old('initiator_Group') == 'ACC') selected @endif>
-                                                Accounting</option>
-                                            <option value="LOG" @if (old('initiator_Group') == 'LOG') selected @endif>
-                                                Logistics</option>
-                                            <option value="SM" @if (old('initiator_Group') == 'SM') selected @endif>
-                                                Senior Management</option>
-                                            <option value="BA" @if (old('initiator_Group') == 'BA') selected @endif>
-                                                Business Administration</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Initiator Group Code">Initiator Group Code</label>
-                                        <input type="text" name="initiator_group_code" id="initiator_group_code"
-                                            value="" >
-                                    </div>
-                                </div>
-                                {{-- <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="Short Description">Short Description<span
-                                                class="text-danger">*</span></label>
-                                        <div><small class="text-primary">Please mention brief summary</small></div>
-                                        <textarea name="short_description"></textarea>
-                                    </div>
-                                </div> --}}
+
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Short Description">Short Description<span
@@ -254,286 +173,402 @@
                                     </div>
                                 </div>  
                                     <p id="docnameError" style="color:red">**Short Description is required</p>
-                                <div class="col-12">
+                               
+                                <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="severity-level">Severity Level</label>
-                                        <span class="text-primary">Severity levels in a QMS record gauge issue seriousness, guiding priority for corrective actions. Ranging from low to high, they ensure quality standards and mitigate critical risks.</span>
-                                        <select name="severity_level_form">
-                                            <option value="0">-- Select --</option>
-                                            <option value="minor">Minor</option>
-                                            <option value="major">Major</option>
-                                            <option value="critical">Critical</option>
+                                        <label for="Initiator Group">Department</label>
+                                        <select name="initiator_group" id="initiator_group">
+                                            <option value="">-- Select --</option>
+                                            <option value="CQA" @if (old('initiator_group') == 'CQA') selected @endif>
+                                                Corporate Quality Assurance</option>
+                                            <option value="QAB" @if (old('initiator_group') == 'QAB') selected @endif>Quality
+                                                Assurance Biopharma</option>
+                                            <option value="CQC" @if (old('initiator_group') == 'CQA') selected @endif>Central
+                                                Quality Control</option>
+                                            <option value="CQC" @if (old('initiator_group') == 'CQC') selected @endif>
+                                                Manufacturing</option>
+                                            <option value="PSG" @if (old('initiator_group') == 'PSG') selected @endif>Plasma
+                                                Sourcing Group</option>
+                                            <option value="CS" @if (old('initiator_group') == 'CS') selected @endif>
+                                                Central
+                                                Stores</option>
+                                            <option value="ITG" @if (old('initiator_group') == 'ITG') selected @endif>
+                                                Information Technology Group</option>
+                                            <option value="MM" @if (old('initiator_group') == 'MM') selected @endif>
+                                                Molecular Medicine</option>
+                                            <option value="CL" @if (old('initiator_group') == 'CL') selected @endif>
+                                                Central
+                                                Laboratory</option>
+                                            <option value="TT" @if (old('initiator_group') == 'TT') selected @endif>Tech
+                                                Team</option>
+                                            <option value="QA" @if (old('initiator_group') == 'QA') selected @endif>
+                                                Quality Assurance</option>
+                                            <option value="QM" @if (old('initiator_group') == 'QM') selected @endif>
+                                                Quality Management</option>
+                                            <option value="IA" @if (old('initiator_group') == 'IA') selected @endif>IT
+                                                Administration</option>
+                                            <option value="ACC" @if (old('initiator_group') == 'ACC') selected @endif>
+                                                Accounting</option>
+                                            <option value="LOG" @if (old('initiator_group') == 'LOG') selected @endif>
+                                                Logistics</option>
+                                            <option value="SM" @if (old('initiator_group') == 'SM') selected @endif>
+                                                Senior Management</option>
+                                            <option value="BA" @if (old('initiator_group') == 'BA') selected @endif>
+                                                Business Administration</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="Initiator Group">Initiated Through</label>
-                                        <div><small class="text-primary">Please select related information</small></div>
-                                        <select name="initiated_through"
-                                            onchange="otherController(this.value, 'others', 'initiated_through_req')">
-                                            <option value="">Enter Your Selection Here</option>
-                                            <option value="internal_audit">Internal Audit</option>
-                                            <option value="external_audit">External Audit</option>
-                                            <option value="recall">Recall</option>
-                                            <option value="return">Return</option>
-                                            <option value="deviation">Deviation</option>
-                                            <option value="complaint">Complaint</option>
-                                            <option value="regulatory">Regulatory</option>
-                                            <option value="lab-incident">Lab Incident</option>
-                                            <option value="improvement">Improvement</option>
-                                            <option value="others">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input" id="initiated_through_req">
-                                        <label for="initiated_through">Others<span
-                                                class="text-danger d-none">*</span></label>
-                                        <textarea name="initiated_through_req"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="repeat">Repeat</label>
-                                        <div><small class="text-primary">Please select yes if it is has recurred in past
-                                                six months</small></div>
-                                        <select name="repeat"
-                                            onchange="otherController(this.value, 'Yes', 'repeat_nature')">
-                                            <option value="">Enter Your Selection Here</option>
-                                            <option value="Yes">Yes</option>
-                                            <option value="No">No</option>
-                                            <option value="NA">NA</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input" id="repeat_nature">
-                                        <label for="repeat_nature">Repeat Nature<span
-                                                class="text-danger d-none">*</span></label>
-                                        <textarea name="repeat_nature"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="Problem Description">Problem Description</label>
-                                        <textarea name="problem_description"></textarea>
-                                    </div>
-                                </div>
-                                                      {{-- <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="CAPA Team">CAPA Team</label>
-                                        <select multiple id="select-state" placeholder="Select..." name="capa_team[]">
-                                            <option value="">Select a value</option>
-                                            @foreach ($users as $value)
-                                                <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div> --}}
-                                <div class="col-6">
-                                    <div class="group-input">
-                                        <label for="CAPA Team">CAPA Team</label>
-                                        <select multiple name="capa_team[]" placeholder="Select CAPA Team"
-                                            data-search="false" data-silent-initial-value-set="true" id="Audit">
-                                            @foreach ($users as $data)
-                                                <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                {{-- <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="CAPA Related Records">CAPA Related Records</label>
-                                        <div class="related-record-block">
-                                            <select  multiple id="capa_related_record" name="capa_related_record[]" id="">
-
-                                                @foreach ($old_record as $new)
-                                                    <option value="{{ $new->id }}"  >
-                                                        {{ Helpers::getDivisionName($new->division_id) }}/CAPA/{{date('Y')}}/{{ Helpers::recordFormat($new->record) }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </div> --}}
-                                <div class="col-lg-12">
-                                    <div class="group-input">
-                                        <label for="Reference Records">Reference Records</label>
-                               <select multiple id="capa_related_record" name="capa_related_record[]" id="">
-                             <option value="">--Select---</option>
-                                            @foreach ($old_record as $new)
-                                                <option value="{{ $new->id }}">
-                                                    {{ Helpers::getDivisionName($new->division_id) }}/CAPA/{{ date('Y') }}/{{ Helpers::recordFormat($new->record) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        {{-- <div class="related-record-block">
-                                            <input type="text" name="capa_related_record">
-                                            <div data-bs-toggle="modal" data-bs-target="#related-records-modal">
-                                                Add
-                                            </div>
-                                        </div> --}}
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="Initial Observation">Initial Observation</label>
-                                        <textarea name="initial_observation"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Interim Containnment">Interim Containnment</label>
-                                        <select name="interim_containnment"
-                                            onchange="otherController(this.value, 'required', 'containment_comments')">
-                                            <option value="">Enter Your Selection Here</option>
-                                            <option value="required">Required</option>
-                                            <option value="not-required">Not Required</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input" id="containment_comments">
-                                        <label for="Containment Comments">
-                                            Containment Comments <span class="text-danger d-none">*</span>
-                                        </label>
-                                        <textarea name="containment_comments" id="containment_comments"></textarea>
+                                        <label for="Initiator Group Code">Department Group Code</label>
+                                        <input type="text" name="initiator_group_code" id="initiator_group_code"
+                                            value="" >
                                     </div>
                                 </div>
                               
+                                {{-- <div class="col-lg-6 new-date-data-field">
+                                    <div class="group-input input-date">
+                                        <label for="Date Due">Proposed Date of Completion</label>
+                                         <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small></div>
+                                        <div class="calenderauditee">
+                                            <input type="text" id="due_date" readonly
+                                                placeholder="DD-MMM-YYYY" />
+                                            <input type="date" name="due_date" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
+                                                oninput="handleDateInput(this, 'due_date')" />
+                                        </div>
+                                    </div>
+                                </div> --}}
+                               
+                              
+
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="Initiator Group">Source of CAPA</label>
+                                            <div><small class="text-primary">Please select related information</small></div>
+                                            <select name="source_of_capa" onchange="toggleOtherField(this.value)">
+                                                <option value="">Enter Your Selection Here</option>
+                                                <option value="deviation">Deviation</option>
+                                                <option value="Self_Inspection">Self Inspection</option>
+                                                <option value="market_complaint">Market Complaint</option>
+                                                <option value="oot">OOT</option>
+                                                <option value="External_Regulatory">External / Regulatory Audit Observation</option>
+                                                <option value="oos">OOS</option>
+                                                <option value="Input_from_Employees">Input from the Employees</option>
+                                                <option value="others">Others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">
+                                        <div class="group-input" id="initiated_through_req" style="display: none;">
+                                            <label for="initiated_through">Others<span class="text-danger d-none">*</span></label>
+                                            <textarea name="others"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <script>
+                                        // JavaScript function to show/hide the 'Others' text area
+                                        function toggleOtherField(value) {
+                                            var othersField = document.getElementById("initiated_through_req");
+                                    
+                                            // If 'Others' is selected, show the 'Others' field
+                                            if (value === "others") {
+                                                othersField.style.display = "block";
+                                            } else {
+                                                othersField.style.display = "none";
+                                            }
+                                        }
+                                    </script>
+                                    
+                                <div class="col-lg-6">
+                                    <div class="group-input" id="initiated_through_req">
+                                        <label for="initiated_through">Source Document Name / No
+                                               </label>
+                                        <textarea name="source_document_name"></textarea>
+                                    </div>
+                                </div>
+
+                               
+                                <div class="col-12 sub-head">
+                                    Proposed Corrective Action
+                                </div>
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="CAPA Attachments">CAPA Attachment</label>
-                                        <div><small class="text-primary">Please Attach all relevant or supporting
-                                                documents</small></div>
-                                        {{-- <input multiple type="file" id="myfile" name="capa_attachment[]"> --}}
-                                        <div class="file-attachment-field">
-                                            <div class="file-attachment-list" id="capa_attachment"></div>
-                                            <div class="add-btn">
-                                                <div>Add</div>
-                                                <input type="file" id="myfile" name="capa_attachment[]"
-                                                    oninput="addMultipleFiles(this, 'capa_attachment')" multiple>
-                                            </div>
+                                        <label for="Corrective Action Details">
+                                            Corrective Action Details
+                                            <button type="button" id="corrective_action_add">+</button>
+                                        </label>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="corrective_action_details" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 100px;">Sr. No.</th>
+                                                        <th>Action</th>
+                                                        <th>Responsibility (Department)</th>
+                                                        <th>Target Date</th>
+                                                        <th>Completion Date</th>
+                                                        <th>Implementation Verified by QA</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Initial Row Placeholder -->
+                                                    <tr>
+                                                        <td><input disabled type="text" name="corrective_action_details[0][serial]" value="1"></td>
+                                                        <td><input type="text" name="corrective_action_details[0][action]"></td>
+                                                        <td><input type="text" name="corrective_action_details[0][responsibility]"></td>
+                                                        <td><input type="date" name="corrective_action_details[0][target_date]"></td>
+                                                        <td><input type="date" name="corrective_action_details[0][completion_date]"></td>
+                                                        <td><input type="text" name="corrective_action_details[0][verified_by_qa]"></td>
+                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <script>
+                                    $(document).ready(function() {
+                                        // Add new row in Corrective Action Details table
+                                        $('#corrective_action_add').click(function(e) {
+                                            e.preventDefault();
+                                
+                                            function generateCorrectiveActionTableRow(serialNumber) {
+                                                var html = 
+                                                    '<tr>' +
+                                                    '<td><input disabled type="text" name="corrective_action_details[' + serialNumber + '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                    '<td><input type="text" name="corrective_action_details[' + serialNumber + '][action]"></td>' +
+                                                    '<td><input type="text" name="corrective_action_details[' + serialNumber + '][responsibility]"></td>' +
+                                                    '<td><input type="date" name="corrective_action_details[' + serialNumber + '][target_date]"></td>' +
+                                                    '<td><input type="date" name="corrective_action_details[' + serialNumber + '][completion_date]"></td>' +
+                                                    '<td><input type="text" name="corrective_action_details[' + serialNumber + '][verified_by_qa]"></td>' +
+                                                    '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                    '</tr>';
+                                                return html;
+                                            }
+                                
+                                            var tableBody = $('#corrective_action_details tbody');
+                                            var rowCount = tableBody.children('tr').length;
+                                            var newRow = generateCorrectiveActionTableRow(rowCount);
+                                            tableBody.append(newRow);
+                                        });
+                                
+                                        // Remove row in Corrective Action Details table
+                                        $(document).on('click', '.removeRowBtn', function() {
+                                            $(this).closest('tr').remove();
+                                        });
+                                    });
+                                </script>
+                                
+                                
+                                
+                               
+                               
+                              
+                                
+                               
+                                
+                                
+
+                                
+                                <div class="col-12 sub-head">
+                                    Proposed Preventive Action
+                                </div>
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Comments"> CAPA QA Comments </label>
-                                        <textarea name="capa_qa_comments"></textarea>
+                                        <label for="Proposed Preventive Action">
+                                            Proposed Preventive Action
+                                            <button type="button" id="preventive_action_add">+</button>
+                                        </label>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="preventive_action_details" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 100px;">Sr. No</th>
+                                                        <th>Action</th>
+                                                        <th>Responsibility (Department)</th>
+                                                        <th>Target Date</th>
+                                                        <th>Completion Date</th>
+                                                        <th>Implementation Verified by QA</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Initial Row Placeholder -->
+                                                    <tr>
+                                                        <td><input disabled type="text" name="preventive_action_details[0][serial]" value="1"></td>
+                                                        <td><input type="text" name="preventive_action_details[0][action]"></td>
+                                                        <td><input type="text" name="preventive_action_details[0][responsibility]"></td>
+                                                        <td><input type="date" name="preventive_action_details[0][target_date]"></td>
+                                                        <td><input type="date" name="preventive_action_details[0][completion_date]"></td>
+                                                        <td><input type="text" name="preventive_action_details[0][verified_by_qa]"></td>
+                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="button-block">
-                                <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
-                                {{-- <button type="button" id="ChangeNextButton" class="nextButton">Next</button> --}}
-                                <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
+                                
+                                <script>
+                                    $(document).ready(function() {
+                                        // Add new row in Preventive Action Details table
+                                        $('#preventive_action_add').click(function(e) {
+                                            e.preventDefault();
+                                
+                                            function generatePreventiveActionTableRow(serialNumber) {
+                                                var html = 
+                                                    '<tr>' +
+                                                    '<td><input disabled type="text" name="preventive_action_details[' + serialNumber + '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                    '<td><input type="text" name="preventive_action_details[' + serialNumber + '][action]"></td>' +
+                                                    '<td><input type="text" name="preventive_action_details[' + serialNumber + '][responsibility]"></td>' +
+                                                    '<td><input type="date" name="preventive_action_details[' + serialNumber + '][target_date]"></td>' +
+                                                    '<td><input type="date" name="preventive_action_details[' + serialNumber + '][completion_date]"></td>' +
+                                                    '<td><input type="text" name="preventive_action_details[' + serialNumber + '][verified_by_qa]"></td>' +
+                                                    '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                    '</tr>';
+                                                return html;
+                                            }
+                                
+                                            var tableBody = $('#preventive_action_details tbody');
+                                            var rowCount = tableBody.children('tr').length;
+                                            var newRow = generatePreventiveActionTableRow(rowCount);
+                                            tableBody.append(newRow);
+                                        });
+                                
+                                        // Remove row in Preventive Action Details table
+                                        $(document).on('click', '.removeRowBtn', function() {
+                                            $(this).closest('tr').remove();
+                                        });
+                                    });
+                                </script>
+                                
+                                
+                                
+                                
+                              
+                                
+                                <div class="col-12 sub-head">
+                                    Implementation of Corrective Action by means of:
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Corrective Action Details">
+                                            Corrective Action Details
+                                            <button type="button" id="ImplementatioCorrective_action_add">+</button>
+                                        </label>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="implementation_corrective_action_details" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 100px;">Sr. No.</th>
+                                                        <th>Action Plan</th>
+                                                        <th>Implemented through</th>
+                                                        <th>Implemented date</th>
+                                                        <th>Verification of Implementation</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Initial Row Placeholder -->
+                                                    <tr>
+                                                        <td><input disabled type="text" name="implementation_corrective_action_details[0][serial]" value="1"></td>
+                                                        <td><input type="text" name="implementation_corrective_action_details[0][action_plan]"></td>
+                                                        <td><input type="text" name="implementation_corrective_action_details[0][implemented_through]"></td>
+                                                        <td><input type="date" name="implementation_corrective_action_details[0][implemented_date]"></td>
+                                                        <td><input type="text" name="implementation_corrective_action_details[0][verification_of_implementation]"></td>
+                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <script>
+                                    $(document).ready(function() {
+                                        // Add new row in Corrective Action Details table
+                                        $('#ImplementatioCorrective_action_add').click(function(e) {
+                                            e.preventDefault();
+                                
+                                            function generateCorrectiveActionTableRow(serialNumber) {
+                                                var html = 
+                                                    '<tr>' +
+                                                    '<td><input disabled type="text" name="implementation_corrective_action_details[' + serialNumber + '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                    '<td><input type="text" name="implementation_corrective_action_details[' + serialNumber + '][action_plan]"></td>' +
+                                                    '<td><input type="text" name="implementation_corrective_action_details[' + serialNumber + '][implemented_through]"></td>' +
+                                                    '<td><input type="date" name="implementation_corrective_action_details[' + serialNumber + '][implemented_date]"></td>' +
+                                                    '<td><input type="text" name="implementation_corrective_action_details[' + serialNumber + '][verification_of_implementation]"></td>' +
+                                                    '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                    '</tr>';
+                                                return html;
+                                            }
+                                
+                                            var tableBody = $('#implementation_corrective_action_details tbody');
+                                            var rowCount = tableBody.children('tr').length;
+                                            var newRow = generateCorrectiveActionTableRow(rowCount);
+                                            tableBody.append(newRow);
+                                        });
+                                
+                                        // Remove row in Corrective Action Details table
+                                        $(document).on('click', '.removeRowBtn', function() {
+                                            $(this).closest('tr').remove();
+                                        });
+                                    });
+                                </script>
+                                
 
-                            </div>
+                                
+
+                                
+                            </div> 
+                           
+                        </div>
+                        <div class="button-block">
+                            <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
+                            {{-- <button type="button" id="ChangeNextButton" class="nextButton">Next</button> --}}
+                            <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white"> Exit </a> </button>
+
                         </div>
                     </div>
+                    
 
                     <!-- Product Information content -->
                     <div id="CCForm2" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="row">
-                                {{-- <div class="col-12 sub-head">
-                                    Product Details
+                                <div class="col-12 sub-head">
+                                    Closure of the CAPA
                                 </div>
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Product Details">
-                                            Product Details<button type="button" name="ann"
-                                                id="product">+</button>
-                                        </label>
-                                        <table class="table table-bordered" id="product_details">
-                                            <thead>
-                                                <tr>
-                                                    <th>Row #</th>
-                                                    <th>Product Name</th>
-                                                    <th>Batch No./Lot No./AR No.</th>
-                                                    <th>Manufacturing Date</th>
-                                                    <th>Date Of Expiry</th>
-                                                    <th>Batch Disposition Decision</th>
-                                                    <th>Remark</th>
-                                                    <th>Batch Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                            {{-- <tbody>
-                                                <td><input disabled type="text" name="serial_number[]" value="1">
-                                                </td>
-                                                <td> <select name="product_name[]" id="product_name">
-                                                        <option value="">-- Select value --</option>
-                                                        <option value="PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/">
-                                                            PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/
-                                                        </option>
-                                                        <option value="BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION">
-                                                            BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION
-                                                        </option>
-                                                        <option value="CAFFEINECITRATEORALSOLUTION USP 60MG/3ML">
-                                                            CAFFEINECITRATEORALSOLUTION USP 60MG/3ML
-                                                        </option>
-                                                        <option value="BRIMONIDINE TART. OPH SOL 0.1%W/V (CB)">BRIMONIDINE
-                                                            TART. OPH SOL 0.1%W/V (CB)
-                                                        </option>
-                                                        <option value="DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO">
-                                                            DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO
-                                                        </option>
-                                                    </select></td>
-                                                <td>
-                                                    <select name="product_batch_no[]" id="batch_no">
-                                                        <option value="">select value</option>
-                                                        <option value="DCAU0030">DCAU0030</option>
-                                                        <option value="BDZH0007">BDZH0007</option>
-                                                        <option value="BDZH0006">BDZH0006</option>
-                                                        <option value="BJJH0004A">BJJH0004A</option>
-                                                        <option value="DCAU0036">DCAU0036</option>
-                                                    </select>
-                                                </td>
-                                                <!-- <td><input type="date" name="product_mfg_date[]"></td>
-                                                <td><input type="date" name="product_expiry_date[]"></td> -->
-                                                <td>
-                                                    <div class="group-input new-date-data-field mb-0">
-                                                        <div class="input-date ">
-                                                            <div class="calenderauditee">
-                                                                <input type="text"  class="test" id="material_mfg_date" readonly placeholder="DD-MMM-YYYY" />
-                                                                <input type="date"   id="material_mfg_date_checkdate" name="material_mfg_date[]" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"class="hide-input" 
-                                                                oninput="handleDateInput(this, `material_mfg_date`);checkDate('material_mfg_date_checkdate','material_expiry_date_checkdate')" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td> 
-                                                <td>
-                                                    <div class="group-input new-date-data-field mb-0">
-                                                        <div class="input-date ">
-                                                            <div  class="calenderauditee">
-                                                                <input type="text"  class="test" id="material_expiry_date" readonly placeholder="DD-MMM-YYYY" />
-                                                                <input type="date" id="material_expiry_date_checkdate"name="material_expiry_date[]" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input" 
-                                                                 oninput="handleDateInput(this, `material_expiry_date`);checkDate('material_mfg_date_checkdate','material_expiry_date_checkdate')" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td><input type="text" name="product_batch_desposition[]"></td>
-                                                <td><input type="text" name="product_remark[]"></td>
-                                                <td>
-                                                    <select name="product_batch_status[]" id="">
-                                                        <option value="">-- Select value --</option>
-                                                        <option value="Hold">Hold</option>
-                                                        <option value="Release">Release</option>
-                                                        <option value="Quarantine">Quarantine</option>
-                                                    </select>
-                                                </td>
-                                            </tbody> --}}
-                                        </table>
+                                        <label for="comments_new">Comments</label>
+                                        <textarea name="comments_cloasure"></textarea>
                                     </div>
-                                {{-- </div> --}}
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Details">Head Quality / Designee</label>
+                                        <input type="text" name="head_quality">
+                                    </div>
+                                </div>
+
                                 <div class="col-12 sub-head">
+                                    Extension (if required) 
+                                </div>
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="due_date_extension">Justification</label>
+                                        
+                                        <textarea name="justification"></textarea>
+                                    </div>
+                                </div>
+
+                               
+                                {{-- </div> --}}
+                                {{-- <div class="col-12 sub-head">
                                     Material Details
                                 </div>
                                 <div class="col-12">
@@ -558,73 +593,7 @@
                                             <tbody>
 
                                             </tbody>
-                                            {{-- <tbody>
-                                                <td><input disabled type="text" name="serial_number[]" value="1">
-                                                </td>
-                                                <td> <select name="material_name[]" id="material_name">
-                                                        <option value="">-- Select value --</option>
-                                                        <option value="PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/">
-                                                            PLACEBEFOREBIMATOPROSTOPH.SOLO.01%W/
-                                                        </option>
-                                                        <option value="BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION">
-                                                            BIMATOPROSTANDTIMOLOLMALEATEEDSOLUTION
-                                                        </option>
-                                                        <option value="CAFFEINECITRATEORALSOLUTION USP 60MG/3ML">
-                                                            CAFFEINECITRATEORALSOLUTION USP 60MG/3ML
-                                                        </option>
-                                                        <option value="BRIMONIDINE TART. OPH SOL 0.1%W/V (CB)">BRIMONIDINE
-                                                            TART. OPH SOL 0.1%W/V (CB)
-                                                        </option>
-                                                        <option value="DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO">
-                                                            DORZOLAMIDEPFREE20MG/MLEDSOLSINGLEDOSECO
-                                                        </option>
-                                                    </select></td>
-                                                <td>
-                                                    <select name="material_batch_no[]" id="batch_no">
-                                                        <option value="">select value</option>
-                                                        <option value="DCAU0030">DCAU0030</option>
-                                                        <option value="BDZH0007">BDZH0007</option>
-                                                        <option value="BDZH0006">BDZH0006</option>
-                                                        <option value="BJJH0004A">BJJH0004A</option>
-                                                        <option value="DCAU0036">DCAU0036</option>
-                                                    </select>
-                                                </td>
-                                                <!-- <td><input type="date" name="material_mfg_date[]"></td>
-                                                <td><input type="date" name="material_expiry_date[]"></td> -->
-                                                <td>
-                                                    <div class="group-input new-date-data-field mb-0">
-                                                        <div class="input-date ">
-                                                            <div class="calenderauditee">
-                                                                <input type="text"  class="test" id="material_mfg_date" readonly placeholder="DD-MMM-YYYY" />
-                                                                <input type="date"   id="material_mfg_date_checkdate" name="material_mfg_date[]" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"class="hide-input" 
-                                                                oninput="handleDateInput(this, `material_mfg_date`);checkDate('material_mfg_date_checkdate','material_expiry_date_checkdate')" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td> 
-                                                <td>
-                                                    <div class="group-input new-date-data-field mb-0">
-                                                        <div class="input-date ">
-                                                            <div  class="calenderauditee">
-                                                                <input type="text"  class="test" id="material_expiry_date" readonly placeholder="DD-MMM-YYYY" />
-                                                                <input type="date" id="material_expiry_date_checkdate"name="material_expiry_date[]" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input" 
-                                                                 oninput="handleDateInput(this, `material_expiry_date`);checkDate('material_mfg_date_checkdate','material_expiry_date_checkdate')" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                
-                                                <td><input type="text" name="material_batch_desposition[]"></td>
-                                                <td><input type="text" name="material_remark[]"></td>
-                                                <td>
-                                                    <select name="material_batch_status[]" id="batch_status">
-                                                        <option value="">-- Select value --</option>
-                                                        <option value="Hold">Hold</option>
-                                                        <option value="Release">Release</option>
-                                                        <option value="quarantine">Quarantine</option>
-                                                    </select>
-                                                </td>
-                                            </tbody> --}}
+                                           
                                         </table>
                                     </div>
                                 </div>
@@ -658,22 +627,8 @@
                                             </tbody> 
                                         </table>
                                     </div>
-                                </div>
-                                <div class="col-12 sub-head">
-                                    Other type CAPA Details
-                                </div>
-                                <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="Details">Details</label>
-                                        <input type="text" name="details_new">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="Comments"> CAPA QA Comments </label>
-                                        <textarea name="capa_qa_comments2"></textarea>
-                                    </div>
-                                </div>
+                                </div> --}}
+                                
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
@@ -688,6 +643,7 @@
                     <div id="CCForm3" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="row">
+                                
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="Project Datails Application">Project Datails Application</label>
@@ -753,6 +709,37 @@
                     <div id="CCForm4" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="group-input">
+                                        <label for="Initiator Group">Effectiveness Verification of CAPA:</label>
+                                        <select name="effectiveness_verification_capa"  id="assignableSelect"
+                                            onchange="toggleRootCauseInput()">
+                                            <option value=" ">Is Effectiveness verification required?</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12" id="rootCauseGroup" style="display: none;">
+                                    <div class="group-input">
+                                        <label for="RootCause">Remark</label>
+                                        <textarea name="effectivenessRemark"  id="rootCauseTextarea" rows="4" placeholder="Describe the root cause here"></textarea>
+                                    </div>
+                                </div>
+                                <script>
+                                    function toggleRootCauseInput() {
+                                        var selectValue = document.getElementById("assignableSelect").value;
+                                        var rootCauseGroup = document.getElementById("rootCauseGroup");
+
+                                        if (selectValue === "YES") {
+                                            rootCauseGroup.style.display = "block"; // Show the textarea if "YES" is selected
+                                        } else {
+                                            rootCauseGroup.style.display = "none"; // Hide the textarea if "NO" or "NA" is selected
+                                        }
+                                    }
+                                </script>
+                                    
                                 <div class="col-md-12">
                                     <div class="group-input">
                                         <label for="search">
@@ -1050,17 +1037,31 @@
                                         <textarea name="qa_review"></textarea>
                                     </div>
                                 </div>
+
+                                {{-- <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="QA Review & Closure">Remark</label>
+                                        <textarea name="qa_Remark"></textarea>
+                                    </div>
+                                </div> --}}
+
+                                {{-- <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="QA Review & Closure"> Closure Conclusion by Head Quality / Designee</label>
+                                        <textarea name="qa_review"></textarea>
+                                    </div>
+                                </div> --}}
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Closure Attachments">Closure Attachment</label>
+                                        <label for="CAPA Attachments">CAPA Attachments </label>
                                         <div><small class="text-primary">Please Attach all relevant or supporting
                                                 documents</small></div>
-                                        {{-- <input multiple type="file" id="myfile" name="closure_attachment[]"> --}}
+                                        
                                         <div class="file-attachment-field">
                                             <div class="file-attachment-list" id="closure_attachment"></div>
                                             <div class="add-btn">
                                                 <div>Add</div>
-                                                <input type="file" id="myfile" name="closure_attachment[]"
+                                                <input type="file" id="closure_attachment" name="closure_attachment[]"
                                                     oninput="addMultipleFiles(this, 'closure_attachment')" multiple>
                                             </div>
                                         </div>
@@ -1111,15 +1112,16 @@
                                 </div> -->
                                 <div class="col-12 sub-head">
                                     Extension Justification
-                                </div>
-                                <div class="col-12">
+                                </div> 
+                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="due_date_extension">Due Date Extension Justification</label>
                                         <div><small class="text-primary">Please Mention justification if due date is
                                                 crossed</small></div>
                                         <textarea name="due_date_extension"></textarea>
                                     </div>
-                                </div>
+                                </div> 
+                                
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
