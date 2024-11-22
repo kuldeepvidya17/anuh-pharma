@@ -339,8 +339,9 @@
             var newRow = generateTableRow(rowCount + 1);
             tableBody.append(newRow);
         });
-    });
-</script>
+     });
+   </script>
+
     <script>
         $(document).ready(function() {
             $('#investigation_Details').click(function(e) {
@@ -385,6 +386,7 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
             $('#root_cause_Details').click(function(e) {
@@ -427,8 +429,9 @@
             });
         });
     </script>
-     <script>
-        function calculateRiskAnalysis(selectElement) {
+    <script>
+        function calculateRiskAnalysis(selectElement)
+        {
             console.log('test call')
             let row = selectElement.closest('tr');
 
@@ -437,7 +440,6 @@
             let N = parseFloat(document.getElementById('analysisN').value) || 0;
 
             let result = R * P * N;
-
             document.getElementById('analysisRPN').value = result;
         }
     </script>
@@ -608,25 +610,29 @@
                         {{-- <button class="button_theme1" onclick="window.print();return false;"
                             class="new-doc-btn">Print</button> --}}
                         <button class="button_theme1"> <a class="text-white"
-                                href="{{ url('DeviationAuditTrial', $data->id) }}"> {{-- add here url for auditTrail i.e. href="{{ url('CapaAuditTrial', $data->id) }}" --}}
-                                Audit Trail </a> </button>
+                                href="{{ url('DeviationAuditTrial', $data->id) }}">Audit Trail </a> </button>
 
                         @if ($data->stage == 1 && (in_array(3, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
                                 Submit
                             </button>
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal" >
+                                Cancellation Request
+                            </button>
+                        @elseif($data->stage ==12 && (in_array(3, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">
                                 Cancel
                             </button>
+
                         @elseif($data->stage == 2 && (in_array(4, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#more-info-required-modal">
                                 More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                HOD Review Complete
+                                HOD Initial Review Complete
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">
-                                Cancel
+                                Cancellation Request
                             </button>
                         @elseif($data->stage == 3 && (in_array(7, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#more-info-required-modal">
@@ -635,98 +641,64 @@
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
                                 QA Initial Review Complete
                             </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cft-not-reqired">
-                                CFT Review Not Required
-                            </button>
-                            {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal">
-                                Child
-                            </button> --}}
+                       
                         @elseif(
                             $data->stage == 4 &&
                                 (in_array(5, $userRoleIds) || in_array(18, $userRoleIds) || in_array(Auth::user()->id, $valuesArray)))
-                            @if (!$cftCompleteUser)
+                            {{--@if (!$cftCompleteUser) --}}
                                 <button class="button_theme1" data-bs-toggle="modal"
                                     data-bs-target="#more-info-required-modal">
                                     More Info Required
                                 </button>
                                 <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                    CFT Review Complete
+                                    Initiator Update Complete
                                 </button>
-                            @endif
+                            {{--@endif --}}
                         @elseif($data->stage == 5 && (in_array(7, $userRoleIds) || in_array(18, $userRoleIds)))
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#sendToInitiator">
-                                Send to Opened
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#hodsend">
-                                Send to HOD
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#qasend">
-                                Send to QA Initial Review
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#more-info-required-modal">
+                                More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                QA Secondary Review Complete
+                                HOD Review Complete
                             </button>
-                            {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal">
-                                Child
-                            </button> --}}
+                          
                         @elseif($data->stage == 6 && (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#more-info-required-modal">
                                 More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                QAH Primary Approved Completed
+                                QA Review Complete
                             </button>
                         @elseif($data->stage == 7 && (in_array(3, $userRoleIds) || in_array(18, $userRoleIds)))
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#sendToInitiator">
-                                Send to Opened
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#hodsend">
-                                Send to HOD Review
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#qasend">
-                                Send to QA Initial Review
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#more-info-required-modal">
+                                More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Initiator Updated Complete
+                                CFT Review Complete
                             </button>
-                            @elseif($data->stage == 8 && (in_array(4, $userRoleIds) || in_array(18, $userRoleIds)))
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#sendToInitiator">
-                                Send to Opened
+                          
+                        @elseif($data->stage == 8 && (in_array(4, $userRoleIds) || in_array(18, $userRoleIds)))
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">
+                                More Info Required
                             </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#pending-initiator-update">
-                            Send to Pending Initiator Update
-                            </button>
+                          
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                            HOD Final Review Complete
+                               HOD Final Review Complete
                             </button>
                         @elseif($data->stage == 9 && (in_array(7, $userRoleIds) || in_array(18, $userRoleIds)))
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#sendToInitiator">
-                                Send to Opened
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#hodsend">
-                                Send to HOD Review
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#pending-initiator-update">
-                                Send to Pending Initiator Update
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#more-info-required-modal">
+                                More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
                                 QA Final Review Complete
-                            </button>
+                            </button> 
                         @elseif($data->stage == 10 && (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#sendToInitiator">
-                                Send to Opened
+                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">
+                                More Info Required
                             </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#hodsend">
-                                Send to HOD Review
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#qasend">
-                                Send to QA Initial Review
-                            </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#pending-initiator-update">
-                            Send to Pending Initiator Update
-                            </button>
+                           
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                            QA Final Approval Complete
+                                Approval Complete
                             </button>
                         
                         @endif
@@ -745,71 +717,93 @@
                         </div>
                     @else
                         <div class="progress-bars" style="font-size: 11px;">
-                            @if ($data->stage >= 1)
-                                <div class="active">Opened</div>
+                            {{-- Check for Pending Cancellation and Closed-Cancelled --}}
+                            @if ($data->stage == 12 || $data->stage == 0)
+                                {{-- Pending Cancellation --}}
+                                @if ($data->stage == 12)
+                                    <div class="active">Pending Cancellation</div>
+                                @else
+                                    <div class="">Pending Cancellation</div>
+                                @endif
+                
+                                {{-- Closed-Cancelled --}}
+                                @if ($data->stage == 0)
+                                    <div class="bg-danger">Closed-Cancelled</div>
+                                @else
+                                    <div class="">Closed-Cancelled</div>
+                                @endif
                             @else
-                                <div class="">Opened</div>
+                                {{-- Normal Workflow Stages --}}
+                                @if ($data->stage >= 1)
+                                    <div class="active">Opened</div>
+                                @else
+                                    <div class="">Opened</div>
+                                @endif
+                
+                                @if ($data->stage >= 2)
+                                    <div class="active">HOD Initial Review</div>
+                                @else
+                                    <div class="">HOD Initial Review</div>
+                                @endif
+                
+                                @if ($data->stage >= 3)
+                                    <div class="active">Initial QA Review</div>
+                                @else
+                                    <div class="">Initial QA Review</div>
+                                @endif
+                
+                                @if ($data->stage >= 4)
+                                    <div class="active">Pending Initiator Update</div>
+                                @else
+                                    <div class="">Pending Initiator Update</div>
+                                @endif
+                
+                                @if ($data->stage >= 5)
+                                    <div class="active">Pending HOD Review</div>
+                                @else
+                                    <div class="">Pending HOD Review</div>
+                                @endif
+                
+                                @if ($data->stage >= 6)
+                                    <div class="active">Pending QA Review</div>
+                                @else
+                                    <div class="">Pending QA Review</div>
+                                @endif
+                
+                                @if ($data->stage >= 7)
+                                    <div class="active">Pending CFT Review</div>
+                                @else
+                                    <div class="">Pending CFT Review</div>
+                                @endif
+                
+                                @if ($data->stage >= 8)
+                                    <div class="active">HOD Final Review</div>
+                                @else
+                                    <div class="">HOD Final Review</div>
+                                @endif
+                
+                                @if ($data->stage >= 9)
+                                    <div class="active">QA Final Review</div>
+                                @else
+                                    <div class="">QA Final Review</div>
+                                @endif
+                
+                                @if ($data->stage >= 10)
+                                    <div class="active">QAH Final Approval</div>
+                                @else
+                                    <div class="">QAH Final Approval</div>
+                                @endif
+                
+                                @if ($data->stage >= 11)
+                                    <div class="bg-danger">Closed - Done</div>
+                                @else
+                                    <div class="">Closed - Done</div>
+                                @endif
                             @endif
-
-                            @if ($data->stage >= 2)
-                                <div class="active">HOD Review </div>
-                            @else
-                                <div class="">HOD Review</div>
-                            @endif
-
-                            @if ($data->stage >= 3)
-                                <div class="active">QA Initial Review</div>
-                            @else
-                                <div class="">QA Initial Review</div>
-                            @endif
-
-                            @if ($data->stage >= 4)
-                                <div class="active">CFT Review</div>
-                            @else
-                                <div class="">CFT Review</div>
-                            @endif
-
-
-                            @if ($data->stage >= 5)
-                                <div class="active">QA Secondary Review</div>
-                            @else
-                                <div class="">QA Secondary Review</div>
-                            @endif
-                            @if ($data->stage >= 6)
-                                <div class="active">QA Head/Manager Designee Primary Approval</div>
-                            @else
-                                <div class="">QA Head/Manager Designee Primary Approval</div>
-                            @endif
-                            @if ($data->stage >= 7)
-                                <div class="active">Pending Initiator Update</div>
-                            @else
-                                <div class="">Pending Initiator Update</div>
-                            @endif
-                            @if ($data->stage >= 8)
-                                <div class="active">HOD Final Review</div>
-                            @else
-                                <div class="">HOD Final Review</div>
-                            @endif
-                            @if ($data->stage >= 9)
-                                <div class="active">QA Final Review</div>
-                            @else
-                                <div class="">QA Final Review</div>
-                            @endif
-                            @if ($data->stage >= 10)
-                                <div class="active">QA Final Approval</div>
-                            @else
-                                <div class="">QA Final Approval</div>
-                            @endif
-                            @if ($data->stage >= 11)
-                                <div class="bg-danger">Closed - Done</div>
-                            @else
-                                <div class="">Closed - Done</div>
-                            @endif
+                        </div>
                     @endif
-
-
                 </div>
-                {{-- @endif --}}
+                                               {{-- @endif --}}
                 {{-- ---------------------------------------------------------------------------------------- --}}
             </div>
         </div>
@@ -970,14 +964,14 @@
 
                                     <div class="col-lg-6">
                                         <div class="group-input">
-                                            <label for="RLS Record Number"><b>Record Number</b></label>
-                                            @if ($data->stage >= 3)
+                                            <label for="RLS Record Number"><b>Deviation No.</b></label>
+                                            {{--@if ($data->stage >= 3) --}}
                                                 <input disabled type="text" name="record_number"
                                                     value="{{ Helpers::getDivisionName($data->division_id) }}/DEV/{{ Helpers::year($data->created_at) }}/{{ $data->record }}">
                                                 {{-- <div class="static">QMS-EMEA/CAPA/{{ date('Y') }}/{{ $record_number }}</div> --}}
-                                            @else
+                                            {{--@else
                                                 <input disabled type="text" name="record_number">
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     </div>
 
@@ -1022,7 +1016,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-12 new-date-data-field">
+                                    <div class="col-lg-6 new-date-data-field">
                                         <div class="group-input input-date">
                                             <label for="Due Date">Due Date</label>
                                             <div><small class="text-primary">If revising Due Date, kindly mention revision
@@ -1073,7 +1067,7 @@
                                     </div>
                                 </div> --}}
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                                 <div class="group-input">
                                                     <label for="Initiator Group"><b>Department</b><span class="text-danger">*</span></label>
                                                     <select name="Initiator_Group" id="initiator_group" required onchange="showOtherInput()">
@@ -1104,20 +1098,20 @@
 
                                             <script>
                                                  function showOtherInput() {
-            var selectElement = document.getElementById("initiator_group");
-            var otherInputGroup = document.getElementById("other_input_group");
+                                                    var selectElement = document.getElementById("initiator_group");
+                                                    var otherInputGroup = document.getElementById("other_input_group");
 
-            if (selectElement.value === "Any Other") {
-                otherInputGroup.style.display = "block";
-            } else {
-                otherInputGroup.style.display = "none";
-            }
-        }
+                                                    if (selectElement.value === "Any Other") {
+                                                        otherInputGroup.style.display = "block";
+                                                    } else {
+                                                        otherInputGroup.style.display = "none";
+                                                    }
+                                                }
 
-        // Ensure the field is hidden when the page loads
-        document.addEventListener("DOMContentLoaded", function() {
-            showOtherInput();
-        });
+                                                // Ensure the field is hidden when the page loads
+                                                document.addEventListener("DOMContentLoaded", function() {
+                                                    showOtherInput();
+                                                });
 
                                             </script>
                                      
@@ -1178,7 +1172,7 @@
                                         @enderror
                                     </div> -->
                                     
-                                    <div class="col-lg-6 new-date-data-field">
+                                   {{-- <div class="col-lg-6 new-date-data-field">
                                         <div class="group-input input-date">
                                             <label for="Deviation date">Deviation Observed On<span
                                                 class="text-danger">*</span></label>
@@ -1189,9 +1183,9 @@
                                         @error('Deviation_date')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="col-lg-6 new-time-data-field">
+                                   {{-- <div class="col-lg-6 new-time-data-field">
                                         <div class="group-input input-time">
                                             <label for="deviation_time">Deviation Observed On (Time) <span
                                                     class="text-danger">*</span></label>
@@ -1203,10 +1197,10 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
 
-                                    <div class="col-lg-6 new-time-data-field">
+                                  {{-- <div class="col-lg-6 new-time-data-field">
                                         <div
                                             class="group-input input-time @error('Delay_Justification') @else delayJustificationBlock @enderror">
                                             <label for="deviation_time">Delay Justification <span class="text-danger">*</span></label>
@@ -1215,11 +1209,9 @@
                                         @error('Delay_Justification')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
-                                    </div>
-
-
-
-                                    <script>
+                                    </div> --}}
+                                    
+                                   {{-- <script>
                                         flatpickr("#deviation_time", {
                                             enableTime: true,
                                             noCalendar: true,
@@ -1227,8 +1219,8 @@
                                             minuteIncrement: 1 // Set minute increment to 1
 
                                         });
-                                    </script>
-                                    <div class="col-lg-6">
+                                    </script> --}}
+                                   {{-- <div class="col-lg-6">
                                         <div class="group-input">
                                             @php
                                                 $users = DB::table('users')->get();
@@ -1242,9 +1234,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     
-                                    <div class="col-lg-6 new-date-data-field">
+                                   {{-- <div class="col-lg-6 new-date-data-field">
                                         <div class="group-input input-date">
                                             <label for="Audit Schedule End Date">Deviation Reported on<span
                                                 class="text-danger">*</span></label>    
@@ -1258,7 +1250,7 @@
                                                     oninput="handleDateInput(this, 'Deviation_reported_date')" />
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- <div class="col-lg-6 new-date-data-field">
                                         <div class="group-input input-date">
@@ -1275,7 +1267,7 @@
                                         </div>
                                     </div> -->
                                     
-                                    <script>
+                                   {{-- <script>
                                         $(document).ready(function() {
                                             // Hide the delayJustificationBlock initially
                                             $('.delayJustificationBlock').hide();
@@ -1311,49 +1303,43 @@
                                         $('input[name=Deviation_date], input[name=Deviation_reported_date]').on('change', function() {
                                             checkDateDifference();
                                         });
-                                        </script>
-
-
-
-
+                                        </script> --}}
                                     <div class="col-lg-6">
                                         <div class="group-input">
-                                            <label for="audit type">Deviation Related To <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="audit type">Deviation Requested For</label>
                                             <select multiple
                                                 name="audit_type[]"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }}
                                                 id="audit_type">
                                                 {{-- <option value="">Enter Your Selection Here</option> --}}
-                                                
                                                 <option
-                                                    value="Facility"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }}
-                                                    {{ strpos($data->audit_type, 'Facility') !== false ? 'selected' : '' }}>
-                                                    Facility</option>
-                                                <option value="Equipment/Instrument"
-                                                    {{ strpos($data->audit_type, 'Equipment/Instrument') !== false ? 'selected' : '' }}>
-                                                    Equipment/Instrument</option>
-                                                <option value="DocError"
-                                                    {{ strpos($data->audit_type, 'DocError') !== false ? 'selected' : '' }}>
-                                                    Document</option>
-                                                <option value="STP/ADS_instruction"
-                                                    {{ strpos($data->audit_type, 'STP/ADS_instruction') !== false ? 'selected' : '' }}>
-                                                    STP/ADS instruction</option>
-                                                <option value="Packaging&Labelling"
-                                                    {{ strpos($data->audit_type, 'Packaging&Labelling') !== false ? 'selected' : '' }}>
-                                                    Packaging & Labelling</option>
-                                                <option value="Material_System"
-                                                    {{ strpos($data->audit_type, 'Material_System') !== false ? 'selected' : '' }}>
-                                                    Material System</option>
-                                                <option value="Laboratory_Instrument/System"
-                                                    {{ strpos($data->audit_type, 'Laboratory_Instrument/System') !== false ? 'selected' : '' }}>
-                                                    Laboratory Instrument/System</option>
-                                                <option value="Utility_System"
-                                                    {{ strpos($data->audit_type, 'Utility_System') !== false ? 'selected' : '' }}>
-                                                    Utility System</option>
-                                                <option value="Computer_System"
-                                                    {{ strpos($data->audit_type, 'Computer_System') !== false ? 'selected' : '' }}>
-                                                    Computer System</option>
-                                                <option value="Document"
+                                                    value="Facilities"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }}
+                                                    {{ strpos($data->audit_type, 'Facilities') !== false ? 'selected' : '' }}>
+                                                    Facilities</option>
+                                                <option value="Equipment/utilities/Instrument"
+                                                    {{ strpos($data->audit_type, 'Equipment/utilities/Instrument') !== false ? 'selected' : '' }}>
+                                                    Equipment/utilities/Instrument</option>
+                                                <option value="Environmental"
+                                                    {{ strpos($data->audit_type, 'Environmental') !== false ? 'selected' : '' }}>
+                                                    Environmental</option>
+                                                <option value="Statutory Compliances"
+                                                    {{ strpos($data->audit_type, 'Statutory Compliances') !== false ? 'selected' : '' }}>
+                                                    Statutory Compliances</option>
+                                                <option value="Manufacturing/process,SOP’s"
+                                                    {{ strpos($data->audit_type, 'Manufacturing/process,SOP’s') !== false ? 'selected' : '' }}>
+                                                    Manufacturing/process,SOP’s</option>
+                                                <option value="Yield"
+                                                    {{ strpos($data->audit_type, 'Yield') !== false ? 'selected' : '' }}>
+                                                    Yield</option>
+                                                <option value="Quality"
+                                                    {{ strpos($data->audit_type, 'Quality') !== false ? 'selected' : '' }}>
+                                                    Quality</option>
+                                                <option value="Calibration"
+                                                    {{ strpos($data->audit_type, 'Calibration') !== false ? 'selected' : '' }}>
+                                                    Calibration</option>
+                                                <option value="Specifications,Test Procedures"
+                                                    {{ strpos($data->audit_type, 'Specifications,Test Procedures') !== false ? 'selected' : '' }}>
+                                                    Specifications,Test Procedures</option>
+                                               {{-- <option value="Document"
                                                     {{ strpos($data->audit_type, 'Document') !== false ? 'selected' : '' }}>
                                                     Document</option>
                                                 <option value="Data integrity"
@@ -1370,7 +1356,7 @@
                                                     Water System</option>
                                                 <option value="Anyother(specify)"
                                                     {{ strpos($data->audit_type, 'Anyother(specify)') !== false ? 'selected' : '' }}>
-                                                    Anyother(specify)</option>
+                                                    Anyother(specify)</option> --}}
                                             </select>
                                         </div>
                                         @error('audit_type')
@@ -1378,8 +1364,111 @@
                                         @enderror
                                     </div>
 
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="Name of Product">Name of Product</label>
+                                            <input id="docname" type="text" name="name_product" value="{{$data->name_product}}" maxlength="255">
+                                        </div>
+                                        @error('name_product')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-                                    <div class="col-lg-6" id="others_block"
+                                    <div class="col-12" id="productDetailsGroup">
+                                        <div class="group-input">
+                                            <label for="productDetails">
+                                                Product Details
+                                                <button type="button" name="addProductRow" id="addProductRowButton">+</button>
+                                            </label>
+                                            <table class="table table-bordered" id="productDetailsTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Batch Nos.</th>
+                                                        <th>Mfg. Date</th>
+                                                        <th>Exp. Date</th>
+                                                        <th>Batch Size</th>
+                                                        <th>Market</th>
+                                                        <th>Remarks</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (is_array($productDetailsData) && !empty($productDetailsData))
+                                                      @foreach($productDetailsData as $index => $product)
+                                                        <tr>
+                                                            <td><input type="text" name="productBatchNos[]" id="productBatchNos_{{ $loop->iteration }}" class="form-control" value="{{ $product['batch_no'] }}"></td>
+                                                            <td><input type="date" name="productMfgDate[]" id="productMfgDate_{{ $loop->iteration }}" class="form-control" value="{{ $product['mfg_date'] }}"></td>
+                                                            <td><input type="date" name="productExpDate[]" id="productExpDate_{{ $loop->iteration }}" class="form-control" value="{{ $product['exp_date'] }}"></td>
+                                                            <td><input type="number" name="productBatchSize[]" id="productBatchSize_{{ $loop->iteration }}" class="form-control" value="{{ $product['batch_size'] }}"></td>
+                                                            <td><input type="text" name="productMarket[]" id="productMarket_{{ $loop->iteration }}" class="form-control" value="{{ $product['market'] }}"></td>
+                                                            <td><input type="text" name="productRemarks[]" id="productRemarks_{{ $loop->iteration }}" class="form-control" value="{{ $product['remarks'] }}"></td>
+                                                        </tr>
+                                                      @endforeach
+                                                    @else
+                                                        <!-- Default empty row -->
+                                                        <tr>
+                                                            <td><input type="text" name="productBatchNos[]" id="productBatchNos_1" class="form-control" placeholder="Batch Nos."></td>
+                                                            <td><input type="date" name="productMfgDate[]" id="productMfgDate_1" class="form-control"></td>
+                                                            <td><input type="date" name="productExpDate[]" id="productExpDate_1" class="form-control"></td>
+                                                            <td><input type="number" name="productBatchSize[]" id="productBatchSize_1" class="form-control" placeholder="Batch Size"></td>
+                                                            <td><input type="text" name="productMarket[]" id="productMarket_1" class="form-control" placeholder="Market"></td>
+                                                            <td><input type="text" name="productRemarks[]" id="productRemarks_1" class="form-control" placeholder="Remarks"></td>
+                                                        </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <script>
+                                        function addDateValidation(rowId) {
+                                            const mfgDateInput = document.getElementById(`productMfgDate_${rowId}`);
+                                            const expDateInput = document.getElementById(`productExpDate_${rowId}`);
+                                    
+                                            // Set event listener on the Mfg. Date input
+                                            mfgDateInput.addEventListener("change", function () {
+                                                if (mfgDateInput.value) {
+                                                    const mfgDate = new Date(mfgDateInput.value);
+                                    
+                                                    // Set the Exp. Date's min attribute to one day after the Mfg. Date
+                                                    const minExpDate = new Date(mfgDate);
+                                                    minExpDate.setDate(minExpDate.getDate() + 1);
+                                                    expDateInput.min = minExpDate.toISOString().split("T")[0];
+                                                }
+                                            });
+                                        }
+                                    
+                                        // Apply validation to existing rows
+                                        document.querySelectorAll("tbody tr").forEach((row, index) => {
+                                            addDateValidation(index + 1);
+                                        });
+                                    
+                                        // Add new row dynamically
+                                        document.getElementById("addProductRowButton").addEventListener("click", function (event) {
+                                            event.preventDefault(); // Prevent default button behavior
+                                    
+                                            const tableBody = document.querySelector("#productDetailsTable tbody");
+                                            const rowCount = tableBody.rows.length + 1; // Calculate the new row count
+                                    
+                                            // Create a new row dynamically
+                                            const newRow = document.createElement("tr");
+                                            newRow.innerHTML = `
+                                                <td><input type="text" name="productBatchNos[]" id="productBatchNos_${rowCount}" class="form-control" placeholder="Batch Nos."></td>
+                                                <td><input type="date" name="productMfgDate[]" id="productMfgDate_${rowCount}" class="form-control"></td>
+                                                <td><input type="date" name="productExpDate[]" id="productExpDate_${rowCount}" class="form-control"></td>
+                                                <td><input type="number" name="productBatchSize[]" id="productBatchSize_${rowCount}" class="form-control" placeholder="Batch Size"></td>
+                                                <td><input type="text" name="productMarket[]" id="productMarket_${rowCount}" class="form-control" placeholder="Market"></td>
+                                                <td><input type="text" name="productRemarks[]" id="productRemarks_${rowCount}" class="form-control" placeholder="Remarks"></td>
+                                            `;
+                                    
+                                            tableBody.appendChild(newRow); // Append the new row
+                                    
+                                            // Apply date validation to the new row
+                                            addDateValidation(rowCount);
+                                        });
+                                    </script>
+                                    
+                                    
+                                {{-- <div class="col-lg-6" id="others_block"
                                     @if (strstr($data->audit_type, 'Anyother(specify)') === false) style="display: none" @endif>
                                         <div class="group-input">
                                             <label for="others">Others <span id="asteriskInOther"
@@ -1392,9 +1481,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
-                                    <script>
+                                   {{-- <script>
                                         document.addEventListener('DOMContentLoaded', function() {
                                             var selectField = document.getElementById('audit_type');
                                             var inputsToToggle = [];
@@ -1423,8 +1512,8 @@
                                                 asteriskIcon.style.display = isRequired ? 'inline' : 'none';
                                             });
                                         });
-                                    </script>
-                                    <div class="col-lg-12">
+                                    </script> --}}
+                                   {{-- <div class="col-lg-12">
                                         <div class="group-input">
                                             <label for="Facility/Equipment"> Facility/ Equipment/ Instrument/ System
                                                 Details Required? <span class="text-danger">*</span></label>
@@ -1441,8 +1530,20 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div> --}}
+
+                                    <div class="col-12">
+                                        <div class="group-input">
+                                            <label for="Name of Product">Stage of deviation</label>
+                                            <input id="docname" type="text" name="deviation_stage" value="{{$data->deviation_stage}}"  maxlength="255">
+                                        </div>
+                                        @error('deviation_stage')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    <div class="group-input" id="facilityRow"
+
+
+                                    {{--<div class="group-input" id="facilityRow"
                                         @if ($data->Facility_Equipment == 'no') style="display: none" @endif>
                                         <label for="audit-agenda-grid">
                                             Facility/ Equipment/ Instrument/ System Details <span id="asteriskInvifaci"
@@ -1850,7 +1951,7 @@
                                             asteriskIcon.style.display = isRequired ? 'inline' : 'none';
                                         });
                                     });
-                                </script>
+                                </script> --}}
 
                                     {{-- <div class="col-6">
                                     <div class="group-input">
@@ -1858,10 +1959,10 @@
                                         <textarea class="tiny"  name="Description_Deviation[]" value="{{$data->Description_Deviation}}"></textarea>
                                     </div>
                                 </div> --}}
-                               <div class="col-md-12">
+
+                                    <div class="col-md-12">
                                         <div class="group-input">
-                                            <label for="Description Deviation">Description of Deviation <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="Description Deviation">Description of Deviation </label>
                                             <div><small class="text-primary">Please insert "NA" in the data field if it
                                                     does not require completion</small></div>
                                             <textarea class={{$data->stage == 1 || $data->stage == 11? 'tiny QAInitialRemark' : 'tiny-disable' }}
@@ -1871,6 +1972,51 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="col-12">
+                                        <div class="group-input">
+                                            <label for="docname">Date/shift of Deviation Occurrence/ Noticed</label>
+                                            <input id="docname" type="text" name="deviation_shift" value="{{ $data->deviation_shift ?? '' }}" maxlength="255">
+                                        </div>
+                                        @error('deviation_shift')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="group-input">
+                                            <label for="Description Deviation">Existing Procedure (With References)</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it
+                                                    does not require completion</small></div>
+                                            <textarea class={{$data->stage == 1 || $data->stage == 11? 'tiny QAInitialRemark' : 'tiny-disable' }}
+                                                name="existing_procedure[]"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} id="summernote-1">{{ $data->existing_procedure }}</textarea>
+                                        </div>
+                                        @error('existing_procedure')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+
+                                   {{-- <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="summernote-1">Existing Procedure (With References)</label>
+                                            <div>
+                                                <small class="text-primary">
+                                                    Please insert "NA" in the data field if it does not require completion
+                                                </small>
+                                            </div>
+                                            <textarea 
+                                                class="tiny-disable" 
+                                                name="existing_procedure[]" 
+                                                id="summernote-1" 
+                                                required>{{ old('existing_procedure.0', $data->existing_procedure ?? '') }}</textarea>
+                                        </div>
+                                        @error('existing_procedure.0')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+                                    
+
                                     <!-- <div class="col-md-12 mb-3">
                                         <div class="group-input">
                                             <label for="Production feedback">Production Feedback <span class="text-danger">*</span></label>
@@ -1885,19 +2031,23 @@
                                         <textarea class="tiny" name="Immediate_Action[]" value="{{$data->Immediate_Action}}"></textarea>
                                     </div>
                                 </div> --}}
-                                   <div class="col-md-12">
-                                        <div class="group-input">
-                                            <label for="Immediate Action">Immediate Action (if any) <span
-                                                    class="text-danger">*</span></label>
-                                            <div><small class="text-primary">Please insert "NA" in the data field if it
-                                                    does not require completion</small></div>
-                                            <textarea class={{$data->stage == 1 || $data->stage == 11? 'tiny QAInitialRemark' : 'tiny-disable' }} name="Immediate_Action[]" {{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }}
-                                                id="summernote-2">{{ $data->Immediate_Action }}</textarea>
-                                        </div>
-                                        @error('Immediate_Action')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                <div class="col-md-12">
+                                    <div class="group-input">
+                                        <label for="summernote-2">Immediate Action taken if any (In consultation with Quality Head/Designee)</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div>
+                                        <textarea 
+                                            class="{{ ($data->stage == 1 || $data->stage == 11) ? 'tiny QAInitialRemark' : 'tiny-disable' }}" 
+                                            name="Immediate_Action[]" 
+                                            id="summernote-2" 
+                                            {{ ($data->stage == 0 || $data->stage == 11) ? 'disabled' : '' }}>
+                                            {{ old('Immediate_Action.0', $data->Immediate_Action ?? '') }}
+                                        </textarea>
                                     </div>
+                                    @error('Immediate_Action.0')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                
 
                                     {{-- <div class="col-6">
                                 <div class="group-input">
@@ -1906,7 +2056,7 @@
                                     </div>
                                 </div> --}}
 
-                                    <div class="col-md-12">
+                                   {{-- <div class="col-md-12">
                                         <div class="group-input">
                                             <label for="Preliminary Impact">Preliminary Impact of Deviation <span
                                                     class="text-danger">*</span></label>
@@ -1918,17 +2068,770 @@
                                         @error('Preliminary_Impact')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                     {{-- EXISTING ATTACHMENTS START --}}
-                                    @if ($data->initial_file)
+                                    {{--@if ($data->initial_file)
                                         @foreach (json_decode($data->initial_file) as $file)
                                             <input id="initialFile-{{ $loop->index  }}" type="hidden" name="existing_initial_file[{{ $loop->index  }}]" value="{{ $file }}">
                                         @endforeach
-                                    @endif
+                                    @endif --}}
                                     {{-- EXISTING ATTACHMENTS END --}}
 
-                                    <div class="col-12">
+                                  {{-- <div class="col-lg-12">
+                                        <div class="group-input">
+                                            <label for="investigation_approach">Identification of Cross-functional departments :</label>
+                                            <select 
+                                                multiple 
+                                                name="identification_cross_funct[]" 
+                                                id="investigation_approach" 
+                                                class="form-control"
+                                            >
+                                                <option value="Stores" {{ in_array('Stores', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>Stores</option>
+                                                <option value="Production" {{ in_array('Production', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>Production</option>
+                                                <option value="Maintenance" {{ in_array('Maintenance', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>Maintenance</option>
+                                                <option value="Administration" {{ in_array('Administration', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>Administration</option>
+                                                <option value="QA" {{ in_array('QA', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>QA</option>
+                                                <option value="QC" {{ in_array('QC', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>QC</option>
+                                                <option value="EHS" {{ in_array('EHS', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>EHS</option>
+                                                <option value="IT" {{ in_array('IT', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>IT</option>
+                                                <option value="GM Works/VP Technical" {{ in_array('GM Works/VP Technical', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>GM Works/VP Technical</option>
+                                                <option value="Regulatory Affairs" {{ in_array('Regulatory Affairs', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>Regulatory Affairs</option>
+                                                <option value="R & D" {{ in_array('R & D', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>R & D</option>
+                                                <option value="Others" {{ in_array('Others', old('identification_cross_funct', (array)($data->identification_cross_funct ?? []))) ? 'selected' : '' }}>Others</option>
+                                            </select>
+                                        </div>
+                                        @error('identification_cross_funct')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="investigation approach">Identification of Cross Functional Departments</label>
+                                            <select name="identification_cross_funct" id="risk_assessment" class="form-control">
+                                                <option value="">Enter Your Selection Here</option>
+                                                <option value="Stores" {{ $data->identification_cross_funct == 'Stores' ? 'selected' : '' }}>Stores</option>
+                                                <option value="Production" {{ $data->identification_cross_funct == 'Production' ? 'selected' : '' }}>Production</option>
+                                                <option value="Maintenance" {{ $data->identification_cross_funct == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
+                                                <option value="Administration" {{ $data->identification_cross_funct == 'Administration' ? 'selected' : '' }}>Administration</option>
+                                                <option value="QA" {{ $data->identification_cross_funct == 'QA' ? 'selected' : '' }}>QA</option>
+                                                <option value="QC" {{ $data->identification_cross_funct == 'QC' ? 'selected' : '' }}>QC</option>
+                                                <option value="EHS" {{ $data->identification_cross_funct == 'EHS' ? 'selected' : '' }}>EHS</option>
+                                                <option value="IT" {{ $data->identification_cross_funct == 'IT' ? 'selected' : '' }}>IT</option>
+                                                <option value="GM Works/VP Technical" {{ $data->identification_cross_funct == 'GM Works/VP Technical' ? 'selected' : '' }}>GM Works/VP Technical</option>
+                                                <option value="Regulatory Affairs" {{ $data->identification_cross_funct == 'Regulatory Affairs' ? 'selected' : '' }}>Regulatory Affairs</option>
+                                                <option value="R & D" {{ $data->identification_cross_funct == 'R & D' ? 'selected' : '' }}>R & D</option>
+                                                <option value="Others" {{ $data->identification_cross_funct == 'Others' ? 'selected' : '' }}>Others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                                                    
+
+                                   {{-- <div class="col-lg-12">
+                                        <div class="group-input">
+                                            <label for="investigation_approach">Tools of Investigation and Root cause Determination:</label>
+                                            <select 
+                                                multiple 
+                                                name="investigation_tools[]" 
+                                                id="investigation_approach" 
+                                                class="form-control"
+                                            >
+                                                <option value="Why-Why Chart" {{ in_array('Why-Why Chart', old('investigation_tools', (array)($data->investigation_tools ?? []))) ? 'selected' : '' }}>
+                                                    Why-Why Chart
+                                                </option>
+                                                <option value="Fishbone or Ishikawa Diagram" {{ in_array('Fishbone or Ishikawa Diagram', old('investigation_tools', (array)($data->investigation_tools ?? []))) ? 'selected' : '' }}>
+                                                    Fishbone or Ishikawa Diagram
+                                                </option>
+                                                <option value="Any other" {{ in_array('Any other', old('investigation_tools', (array)($data->investigation_tools ?? []))) ? 'selected' : '' }}>
+                                                    Any other Specify
+                                                </option>
+                                            </select>
+                                        </div>
+                                        @error('investigation_tools')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="Initiator Group">Tools of Investigation and Root Cause Determination</label>
+                                            <select name="investigation_tools" id="risk_assessment" class="form-control">
+                                                <option value=" " {{ old('investigation_tools', $data->investigation_tools ?? '') == ' ' ? 'selected' : '' }}>Select</option>
+                                                <option value="Why-Why Chart" 
+                                                    {{ old('investigation_tools', $data->investigation_tools ?? '') == 'Why-Why Chart' ? 'selected' : '' }}>
+                                                    Why-Why Chart
+                                                </option>
+                                                <option value="Fishbone or Ishikawa Diagram" 
+                                                    {{ old('investigation_tools', $data->investigation_tools ?? '') == 'Fishbone or Ishikawa Diagram' ? 'selected' : '' }}>
+                                                    Fishbone or Ishikawa Diagram
+                                                </option>
+                                                <option value="Any other" 
+                                                    {{ old('investigation_tools', $data->investigation_tools ?? '') == 'Any other' ? 'selected' : '' }}>
+                                                    Any other Specify
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                   {{-- <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="Immediate_Action">Summary of Investigation Findings</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div>
+                                            <textarea 
+                                                class="tiny-disable" 
+                                                name="summary[]" 
+                                                id="summernote-2" 
+                                                required
+                                            >{{ old('summary[]', $data->summary ?? '') }}</textarea>
+                                        </div>
+                                        @error('summary')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-md-12">
+                                        <div class="group-input">
+                                            <label for="Description Deviation">Summary of Investigation Findings</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it
+                                                    does not require completion</small></div>
+                                            <textarea class={{$data->stage == 1 || $data->stage == 11? 'tiny QAInitialRemark' : 'tiny-disable' }}
+                                                name="summary[]"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} id="summernote-1">{{ $data->summary }}</textarea>
+                                        </div>
+                                        @error('summary')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+
+                                   {{-- <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="Immediate_Action">Root Cause (Based on outcome of investigation)</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div>
+                                            <textarea 
+                                                class="tiny-disable" 
+                                                name="Root[]" 
+                                                id="summernote-2" 
+                                                required
+                                            >{{ old('Root[]', $data->Root ?? '') }}</textarea>
+                                        </div>
+                                        @error('Root')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-md-12">
+                                        <div class="group-input">
+                                            <label for="Description Deviation">Root Cause (Based on outcome of investigation)</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div>
+                                            <textarea class={{$data->stage == 1 || $data->stage == 11? 'tiny QAInitialRemark' : 'tiny-disable' }}
+                                                name="Root[]"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} id="summernote-1">{{ $data->Root }}</textarea>
+                                        </div>
+                                        @error('Root')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                   {{-- <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="Immediate_Action">Impact Assessment (In coordination with Quality Head / Designee)</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div>
+                                            <textarea 
+                                                class="tiny-disable" 
+                                                name="Impact[]" 
+                                                id="summernote-2" 
+                                                required
+                                            >{{ old('Impact[]', $data->Impact ?? '') }}</textarea>
+                                        </div>
+                                        @error('Impact')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-md-12">
+                                        <div class="group-input">
+                                            <label for="Description Deviation">Impact Assessment (In coordination with Quality Head / Designee)</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it
+                                                    does not require completion</small></div>
+                                            <textarea class={{$data->stage == 1 || $data->stage == 11? 'tiny QAInitialRemark' : 'tiny-disable' }}
+                                                name="Impact[]"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} id="summernote-1">{{ $data->Impact }}</textarea>
+                                        </div>
+                                        @error('Impact')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+
+                                    <div class="col-lg-12">
+                                        <div class="group-input">
+                                            <label for="Initiator Group">Impact on Other Batches</label>
+                                            <select name="Impact_other" id="assignableSelect" onchange="toggleRootCauseInput()">
+                                                <option value=" " {{ old('Impact_other', $data->Impact_other ?? '') == ' ' ? 'selected' : '' }}>Select</option>
+                                                <option value="YES" {{ old('Impact_other', $data->Impact_other ?? '') == 'YES' ? 'selected' : '' }}>YES</option>
+                                                <option value="NO" {{ old('Impact_other', $data->Impact_other ?? '') == 'NO' ? 'selected' : '' }}>NO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-12" id="rootCauseGroup" style="display: none;">
+                                        <div class="group-input">
+                                            <label for="RootCause">Batch No</label>
+                                            <input id="RootCause" type="text" name="batch_no" maxlength="255" value="{{ old('batch_no', $data->batch_no ?? '') }}">
+                                        </div>
+                                    </div>
+                                    
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            function toggleRootCauseInput() {
+                                                var selectValue = document.getElementById("assignableSelect").value;
+                                                var rootCauseGroup = document.getElementById("rootCauseGroup");
+
+                                                if (selectValue === "YES") {
+                                                    rootCauseGroup.style.display = "block";
+                                                } else {
+                                                    rootCauseGroup.style.display = "none";
+                                                }
+                                            }
+
+                                            // Call the function on page load to handle the initial state
+                                            toggleRootCauseInput();
+
+                                            // Attach the event listener
+                                            document.getElementById("assignableSelect").addEventListener('change', toggleRootCauseInput);
+                                        });
+
+                                    </script>
+                                   
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Material Details">
+                                            Previous History of product-specific or similar nature of Deviation (If any)
+                                            <button type="button" name="addRow" id="addRowButton">+</button>
+                                        </label>
+                                        <table class="table table-bordered" id="material_details">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>Deviation Date</th>
+                                                    <th>Deviation Details</th>
+                                                    <th>Action Taken</th>
+                                                    <th>Status</th>
+                                                    <th>Remark</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (is_array($previousHistoryData) && !empty($previousHistoryData))
+                                                    @foreach($previousHistoryData as $index => $product)
+                                                        <tr>
+                                                            <td>{{ $index + 1 }}</td>
+                                                            <td><input type="date" name="deviation_date[]" id="deviationDate_{{ $loop->iteration }}" class="form-control" value="{{ $product['deviation_date'] }}" required></td>
+                                                            <td><input type="text" name="deviation_details[]" id="deviationDetails_{{ $loop->iteration }}" class="form-control" value="{{ $product['deviation_details'] }}" required></td>
+                                                            <td><input type="text" name="action_taken[]" id="actionTaken_{{ $loop->iteration }}" class="form-control" value="{{ $product['action_taken'] }}" required></td>
+                                                            <td>
+                                                                <select name="status[]" class="form-control" required>
+                                                                    <option value="" selected disabled>Select Status</option>
+                                                                    <option value="Open" {{ $product['status'] == 'Open' ? 'selected' : '' }}>Open</option>
+                                                                    <option value="Closed" {{ $product['status'] == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                    <option value="In Progress" {{ $product['status'] == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" name="remark[]" id="remark_{{ $loop->iteration }}" class="form-control" value="{{ $product['remark'] }}"></td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td><input type="date" name="deviation_date[]" id="deviationDate_1" class="form-control" required></td>
+                                                        <td><input type="text" name="deviation_details[]" id="deviationDetails_1" class="form-control" placeholder="Deviation Details" required></td>
+                                                        <td><input type="text" name="action_taken[]" id="actionTaken_1" class="form-control" placeholder="Action Taken" required></td>
+                                                        <td>
+                                                            <select name="status[]" class="form-control" required>
+                                                                <option value="" selected disabled>Select Status</option>
+                                                                <option value="Open">Open</option>
+                                                                <option value="Closed">Closed</option>
+                                                                <option value="In Progress">In Progress</option>
+                                                            </select>
+                                                        </td>
+                                                        <td><input type="text" name="remark[]" id="remark_1" class="form-control" placeholder="Remarks"></td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        let rowCount = document.querySelectorAll("#material_details tbody tr").length || 1;
+                                
+                                        // Add row button
+                                        document.getElementById("addRowButton").addEventListener("click", function() {
+                                            rowCount++;
+                                
+                                            // Create a new row
+                                            const newRow = document.createElement("tr");
+                                            newRow.innerHTML = `
+                                                <td>${rowCount}</td>
+                                                <td><input type="date" name="deviation_date[]" id="deviationDate_${rowCount}" class="form-control" required></td>
+                                                <td><input type="text" name="deviation_details[]" id="deviationDetails_${rowCount}" class="form-control" placeholder="Deviation Details" required></td>
+                                                <td><input type="text" name="action_taken[]" id="actionTaken_${rowCount}" class="form-control" placeholder="Action Taken" required></td>
+                                                <td>
+                                                    <select name="status[]" id="status_${rowCount}" class="form-control" required>
+                                                        <option value="" selected disabled>Select Status</option>
+                                                        <option value="Open">Open</option>
+                                                        <option value="Closed">Closed</option>
+                                                        <option value="In Progress">In Progress</option>
+                                                    </select>
+                                                </td>
+                                                <td><input type="text" name="remark[]" id="remark_${rowCount}" class="form-control" placeholder="Remarks"></td>
+                                            `;
+                                
+                                            // Append the new row to the table body
+                                            document.querySelector("#material_details tbody").appendChild(newRow);
+                                        });
+                                    });
+                                </script>
+                                
+                                    
+
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="deviation_type">Type of Deviation</label>
+                                            <select name="deviation_type" id="assignableSelect">
+                                                <option value=" " {{ old('deviation_type', $data->deviation_type ?? '') == ' ' ? 'selected' : '' }}>Select</option>
+                                                <option value="Critical" {{ old('deviation_type', $data->deviation_type ?? '') == 'Critical' ? 'selected' : '' }}>Critical</option>
+                                                <option value="Major" {{ old('deviation_type', $data->deviation_type ?? '') == 'Major' ? 'selected' : '' }}>Major</option>
+                                                <option value="Minor" {{ old('deviation_type', $data->deviation_type ?? '') == 'Minor' ? 'selected' : '' }}>Minor</option>
+                                            </select>
+                                        </div>
+                                        @error('deviation_type')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="risk_assessment">Risk Assessment (If required)</label>
+                                            <select name="risk_assessment" id="risk_assessment">
+                                                <option value=" " {{ old('risk_assessment', $data->risk_assessment ?? '') == ' ' ? 'selected' : '' }}>Select</option>
+                                                <option value="Yes" {{ old('risk_assessment', $data->risk_assessment ?? '') == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                <option value="No" {{ old('risk_assessment', $data->risk_assessment ?? '') == 'No' ? 'selected' : '' }}>No</option>
+                                            </select>
+                                        </div>
+                                        @error('risk_assessment')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+
+                                   {{-- <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="Immediate_Action">Corrective Action Taken (In coordination with QA)</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div>
+                                            <textarea class="tiny-disable" name="Corrective_Action[]" id="summernote-2" required>{{ old('Corrective_Action', $data->Corrective_Action ?? '') }}</textarea>
+                                        </div>
+                                        @error('Corrective_Action')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-md-12">
+                                        <div class="group-input">
+                                            <label for="Description Deviation">Corrective Action Taken (In coordination with QA)</label>
+                                            <div><small class="text-primary">Please insert "NA" in the data field if it
+                                                    does not require completion</small></div>
+                                            <textarea class={{$data->stage == 1 || $data->stage == 11? 'tiny QAInitialRemark' : 'tiny-disable' }}
+                                                name="Corrective_Action[]"{{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} id="summernote-1">{{ $data->Corrective_Action }}</textarea>
+                                        </div>
+                                        @error('Corrective_Action')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+
+                                    <div class="col-12" id="actionsPlanGroup">
+                                        <div class="group-input">
+                                            <label for="ActionsPlan">
+                                                Actions Plan
+                                                <button type="button" name="addRow" id="addActionRowButton">+</button>
+                                            </label>
+                                            <table class="table table-bordered" id="actionsPlanTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sr. No.</th>
+                                                        <th>Description of Action</th>
+                                                        <th>Responsible Department</th>
+                                                        <th>Planned Date</th>
+                                                        <th>Remark</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (is_array($actionsplanData) && !empty($actionsplanData))
+                                                        @foreach($actionsplanData as $index => $product)
+                                                            <tr>
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td><input type="text" name="action_description[]" id="actionDescription_{{ $loop->iteration }}" class="form-control" value="{{ $product['action_description'] }}" placeholder="Enter action description" required></td>
+                                                                <td><input type="text" name="responsible_department[]" id="responsibleDepartment_{{ $loop->iteration }}" class="form-control" value="{{ $product['responsible_department'] }}" placeholder="Enter department" required></td>
+                                                                <td><input type="date" name="planned_date[]" id="plannedDate_{{ $loop->iteration }}" class="form-control" value="{{ $product['planned_date'] }}" required></td>
+                                                                <td><input type="text" name="actionremark[]" id="remark_{{ $loop->iteration }}" class="form-control" value="{{ $product['actionremark'] }}" placeholder="Enter remarks"></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        <!-- Default empty row -->
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td><input type="text" name="action_description[]" id="actionDescription_1" class="form-control" placeholder="Enter action description" required></td>
+                                                            <td><input type="text" name="responsible_department[]" id="responsibleDepartment_1" class="form-control" placeholder="Enter department" required></td>
+                                                            <td><input type="date" name="planned_date[]" id="plannedDate_1" class="form-control" required></td>
+                                                            <td><input type="text" name="actionremark[]" id="remark_1" class="form-control" placeholder="Enter remarks"></td>
+                                                        </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function() {
+                                            let rowCount = document.querySelectorAll("#actionsPlanTable tbody tr").length || 1;
+                                    
+                                            // Add row button
+                                            document.getElementById("addActionRowButton").addEventListener("click", function() {
+                                                rowCount++;
+                                    
+                                                // Create a new row
+                                                const newRow = document.createElement("tr");
+                                                newRow.innerHTML = `
+                                                    <td>${rowCount}</td>
+                                                    <td><input type="text" name="action_description[]" id="actionDescription_${rowCount}" class="form-control" placeholder="Enter action description"  required></td>
+                                                    <td><input type="text" name="responsible_department[]" id="responsibleDepartment_${rowCount}" class="form-control" placeholder="Deviation Details" required></td>
+                                                    <td><input type="date" name="planned_date[]" id="plannedDate_${rowCount}" class="form-control" required></td>
+                                                    <td><input type="text" name="actionremark[]" id="remark_${rowCount}" class="form-control" placeholder="Remarks"></td>
+                                                `;
+                                    
+                                                // Append the new row to the table body
+                                                document.querySelector("#actionsPlanTable tbody").appendChild(newRow);
+                                            });
+                                        });
+                                    </script>
+                                    
+                                    {{-- <script>
+                                        document.addEventListener("DOMContentLoaded", function() {
+                                            let tableBody = document.querySelector("#actionsPlanTable tbody");
+                                    
+                                            // Add row button functionality
+                                            document.getElementById("addActionRowButton").addEventListener("click", function() {
+                                                let rowCount = tableBody.querySelectorAll("tr").length + 1;
+                                    
+                                                // Create a new table row
+                                                const newRow = document.createElement("tr");
+                                                newRow.innerHTML = `
+                                                    <td>${rowCount}</td>
+                                                    <td><input type="text" name="action_description[]" id="actionDescription_${rowCount}" class="form-control" placeholder="Enter action description" required></td>
+                                                    <td><input type="text" name="responsible_department[]" id="responsibleDepartment_${rowCount}" class="form-control" placeholder="Enter department" required></td>
+                                                    <td><input type="date" name="planned_date[]" id="plannedDate_${rowCount}" class="form-control" required></td>
+                                                    <td><input type="text" name="remark[]" id="remark_${rowCount}" class="form-control" placeholder="Enter remarks"></td>
+                                                `;
+                                    
+                                                // Append the new row to the table body
+                                                tableBody.appendChild(newRow);
+                                            });
+                                        });
+                                    </script> --}}
+                                                                        
+                                   {{-- <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="audit_type">Deviation Approval</label>
+                                            <select multiple name="deviation_approval[]" id="audit_type">
+                                                <option value="Deviation (and CAPA) Approved" 
+                                                    @if(in_array('Deviation (and CAPA) Approved', old('deviation_approval', (array)($data->deviation_approval ?? [])))) selected @endif>
+                                                    Deviation (and CAPA) Approved
+                                                </option>
+                                                <option value="Deviation (and CAPA) not approved" 
+                                                    @if(in_array('Deviation (and CAPA) not approved', old('deviation_approval', (array)($data->deviation_approval ?? [])))) selected @endif>
+                                                    Deviation (and CAPA) not approved
+                                                </option>
+                                            </select>
+                                        </div>
+                                        @error('deviation_approval')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-lg-12">
+                                        <div class="group-input">
+                                            <label for="Initiator Group">Deviation Approval</label>
+                                            <select name="deviation_approval" id="deviation_appr" class="form-control">
+                                                <option value=" ">Select</option>
+                                                <option value="Deviation (and CAPA) Approved" 
+                                                    {{ $data->deviation_approval == 'Deviation (and CAPA) Approved' ? 'selected' : '' }}>
+                                                    Deviation (and CAPA) Approved
+                                                </option>
+                                                <option value="Deviation (and CAPA) not approved" 
+                                                    {{ $data->deviation_approval == 'Deviation (and CAPA) not approved' ? 'selected' : '' }}>
+                                                    Deviation (and CAPA) not approved
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+
+                                    <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="comments">Comments</label>
+                                            <textarea name="comments" id="comments">{{ old('comments', $data->comments ?? '') }}</textarea>
+                                        </div>
+                                        @error('comments')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+
+                                   {{-- <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="audit_type">Notification to Customer / Regulatory:</label>
+                                            <select multiple name="notification[]" id="audit_type">
+                                                <option value="Required" {{ in_array('Required', old('notification', (array)($data->notification ?? []))) ? 'selected' : '' }}>Required</option>
+                                                <option value="Not Required" {{ in_array('Not Required', old('notification', (array)($data->notification ?? []))) ? 'selected' : '' }}>Not Required</option>
+                                            </select>
+                                        </div>
+                                        @error('notification')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div> --}}
+                                    <div class="col-lg-12">
+                                        <div class="group-input">
+                                            <label for="Initiator Group">Notification to Customer / Regulatory</label>
+                                            <select name="notification" id="risk_assessment" class="form-control">
+                                                <option value=" ">Select</option>
+                                                <option value="Required" 
+                                                    {{ $data->notification == 'Required' ? 'selected' : '' }}>
+                                                    Required
+                                                </option>
+                                                <option value="Not Required" 
+                                                    {{ $data->notification == 'Not Required' ? 'selected' : '' }}>
+                                                    Not Required
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="comments">Verification of Closure</label>
+                                            <textarea name="closure_verification" id="comments">{{ old('closure_verification', $data->closure_verification ?? '') }}</textarea>
+                                        </div>
+                                        @error('closure_verification')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                   
+                                    <div class="col-12" id="trackingActionPlanGroup">
+                                        <div class="group-input">
+                                            <label for="trackingActionPlan">
+                                                Tracking sheet for completion of action plan impacted due to said deviation:
+                                                <button type="button" name="addRow" id="addTrackingActionRowButton">+</button>
+                                            </label>
+                                            <table class="table table-bordered" id="trackingActionPlanTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sr. No.</th>
+                                                        <th>Description of Action</th>
+                                                        <th>Responsible Department</th>
+                                                        <th>Planned Date</th>
+                                                        <th>Completion Date</th>
+                                                        <th>Verified By / On (QA)</th>
+                                                        <th>Remarks</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (is_array($trackingplanData) && !empty($trackingplanData))
+                                                        @foreach($trackingplanData as $index => $product)
+                                                            <tr>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td><input type="text" name="action_des[]" id="actionDescription_{{ $loop->iteration }}" class="form-control" value="{{ $product['action_des'] }}" placeholder="Enter action description" required></td>
+                                                                <td><input type="text" name="res_department[]" id="responsibleDepartment_{{ $loop->iteration }}" class="form-control" value="{{ $product['res_department'] }}" placeholder="Enter department" required></td>
+                                                                <td><input type="date" name="plan_date[]" id="plannedDate_{{ $loop->iteration }}" class="form-control planned-date" value="{{ $product['plan_date'] }}" required></td>
+                                                                <td><input type="date" name="completion_date[]" id="completionDate_{{ $loop->iteration }}" class="form-control completion-date" value="{{ $product['completion_date'] }}"></td>
+                                                                <td><input type="text" name="verified_by[]" id="verifiedBy_{{ $loop->iteration }}" class="form-control" value="{{ $product['verified_by'] }}" placeholder="Verified by / on (QA)"></td>
+                                                                <td><input type="text" name="trackingsheetremark[]" id="remark_{{ $loop->iteration }}" class="form-control" value="{{ $product['trackingsheetremark'] }}" placeholder="Enter remarks"></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        <!-- Default empty row -->
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td><input type="text" name="action_des[]" id="actionDescription_1" class="form-control" placeholder="Enter action description" required></td>
+                                                            <td><input type="text" name="res_department[]" id="responsibleDepartment_1" class="form-control" placeholder="Enter department" required></td>
+                                                            <td><input type="date" name="plan_date[]" id="plannedDate_1" class="form-control planned-date" required></td>
+                                                            <td><input type="date" name="completion_date[]" id="completionDate_1" class="form-control completion-date"></td>
+                                                            <td><input type="text" name="verified_by[]" id="verifiedBy_1" class="form-control" placeholder="Verified by / on (QA)"></td>
+                                                            <td><input type="text" name="trackingsheetremark[]" id="remark_1" class="form-control" placeholder="Enter remarks"></td>
+                                                        </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const tableBody = document.querySelector("#trackingActionPlanTable tbody");
+                                    
+                                            // Add row button functionality
+                                            document.getElementById("addTrackingActionRowButton").addEventListener("click", function () {
+                                                const rowCount = tableBody.querySelectorAll("tr").length + 1;
+                                    
+                                                // Create a new table row
+                                                const newRow = document.createElement("tr");
+                                                newRow.innerHTML = `
+                                                    <td>${rowCount}</td>
+                                                    <td><input type="text" name="action_des[]" id="actionDescription_${rowCount}" class="form-control" placeholder="Enter action description" required></td>
+                                                    <td><input type="text" name="res_department[]" id="responsibleDepartment_${rowCount}" class="form-control" placeholder="Enter department" required></td>
+                                                    <td><input type="date" name="plan_date[]" id="plannedDate_${rowCount}" class="form-control planned-date" required></td>
+                                                    <td><input type="date" name="completion_date[]" id="completionDate_${rowCount}" class="form-control completion-date"></td>
+                                                    <td><input type="text" name="verified_by[]" id="verifiedBy_${rowCount}" class="form-control" placeholder="Verified by / on (QA)"></td>
+                                                    <td><input type="text" name="trackingsheetremark[]" id="remark_${rowCount}" class="form-control" placeholder="Enter remarks"></td>
+                                                `;
+                                    
+                                                // Append the new row to the table body
+                                                tableBody.appendChild(newRow);
+                                    
+                                                // Apply validation logic for the newly added row
+                                                addDateValidation(newRow);
+                                            });
+                                    
+                                            // Function to apply date validation
+                                            const addDateValidation = (row) => {
+                                                const plannedDateInput = row.querySelector('.planned-date');
+                                                const completionDateInput = row.querySelector('.completion-date');
+                                    
+                                                // Planned Date change handler
+                                                plannedDateInput.addEventListener("change", function () {
+                                                    if (plannedDateInput.value) {
+                                                        const plannedDate = new Date(plannedDateInput.value);
+                                    
+                                                        // Set the minimum date for Completion Date to be strictly after the Planned Date
+                                                        const minCompletionDate = new Date(plannedDate);
+                                                        minCompletionDate.setDate(minCompletionDate.getDate() + 1); // Ensure Completion Date is strictly after the Planned Date
+                                                        completionDateInput.min = minCompletionDate.toISOString().split("T")[0]; // Set the min value
+                                                    }
+                                                });
+                                    
+                                                // Completion Date change handler
+                                                completionDateInput.addEventListener("change", function () {
+                                                    if (plannedDateInput.value && completionDateInput.value) {
+                                                        const plannedDate = new Date(plannedDateInput.value);
+                                                        const completionDate = new Date(completionDateInput.value);
+                                    
+                                                        // Check if Completion Date is less than or equal to the Planned Date
+                                                        if (completionDate <= plannedDate) {
+                                                            alert("Completion Date must be strictly after Planned Date.");
+                                                            completionDateInput.value = ""; // Reset invalid value
+                                                        }
+                                                    }
+                                                });
+                                            };
+                                    
+                                            // Apply validation for existing rows
+                                            tableBody.querySelectorAll("tr").forEach((row) => {
+                                                addDateValidation(row);
+                                            });
+                                        });
+                                    </script>
+                                    
+                                                                                                            
+                                    
+                                    
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="comments">Extension (if required) with justification from concerned department head</label>
+                                            <div><small class="text-primary">(If not closed within Target completion date)</small></div>
+                                            <textarea name="Extension_justification" id="comments">{{ old('Extension_justification', $data->Extension_justification ?? '') }}</textarea>
+                                        </div>
+                                        @error('Extension_justification')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                    
+
+                                    <div class="col-lg-12">
+                                        <div class="group-input">
+                                            <label for="feedback">Feedback received from Customer / Regulatory</label>
+                                            <div><small class="text-primary">(if recommended by Head Quality)</small></div>
+                                            <select name="feedback" id="risk_assessment">
+                                                <option value=" ">Select</option>
+                                                <option value="Yes" {{ old('feedback', $data->feedback ?? '') == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                <option value="No" {{ old('feedback', $data->feedback ?? '') == 'No' ? 'selected' : '' }}>No</option>
+                                            </select>
+                                        </div>
+                                        @error('feedback')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                    
+
+                                    <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="comments">Comments (QA)</label>
+                                            <textarea name="qa_comments">{{ old('qa_comments', $data->qa_comments ?? '') }}</textarea>
+                                        </div>
+                                        @error('qa_comments')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                    
+
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="closure_evidences">Closure evidences attached</label>
+                                            <select name="closure_evidences" id="closure_evidences">
+                                                <option value=" ">Select</option>
+                                                <option value="Yes" {{ old('closure_evidences', $data->closure_evidences ?? '') == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                <option value="No" {{ old('closure_evidences', $data->closure_evidences ?? '') == 'No' ? 'selected' : '' }}>No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    
+
+                                    <div class="col-lg-6">
+                                        <div class="group-input">
+                                            <label for="closure_enclosed">Closure evidence (pl. specify) enclosed</label>
+                                            <select name="closure_enclosed" id="closure_enclosed">
+                                                <option value=" ">Select</option>
+                                                <option value="Yes" {{ old('closure_enclosed', $data->closure_enclosed ?? '') == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                <option value="No" {{ old('closure_enclosed', $data->closure_enclosed ?? '') == 'No' ? 'selected' : '' }}>No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    
+
+                                    <div class="col-md-12 mb-3">
+                                        <div class="group-input">
+                                            <label for="comments">Closure comments</label>
+                                            <textarea name="comments_closure" >{{ old('comments_closure', $data->comments_closure ?? '') }}</textarea>
+                                        </div>
+                                        @error('comments_closure')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                    
+
+                                    </div>
+
+
+                                  {{--  <div class="col-12">
                                         <div class="group-input">
                                             <label for="Inv Attachments">Initial Attachments</label>
                                             <div><small class="text-primary">Please Attach all relevant or supporting
@@ -1973,10 +2876,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     
-                                    <div class="col-12">
+                                   {{-- <div class="col-12">
                                         <div class="group-input">
                                             <label for="why-why-chart">
                                                 More Info Required
@@ -2012,15 +2915,15 @@
                                                         <tr>
                                                         
      
-        <tr>
-            <td>HOD Review</td>
-            <td>{{ $data->id }}</td>
-            <td>{{ $data->qa_more_info_required_by }}</td>
-            <td>{{ $data->qa_more_info_required_email ?? '' }}</td>
-            <td>{{ $data->qa_more_info_required_on ?? '' }}</td>
-            <td>{{ $data->comment }}</td>
-            <td>{{ $data->status }}</td>
-        </tr>
+                                                        <tr>
+                                                            <td>HOD Review</td>
+                                                            <td>{{ $data->id }}</td>
+                                                            <td>{{ $data->qa_more_info_required_by }}</td>
+                                                            <td>{{ $data->qa_more_info_required_email ?? '' }}</td>
+                                                            <td>{{ $data->qa_more_info_required_on ?? '' }}</td>
+                                                            <td>{{ $data->comment }}</td>
+                                                            <td>{{ $data->status }}</td>
+                                                        </tr>
      
                                                     
                                                         <tr>
@@ -2044,7 +2947,7 @@
 
 
 
-                                    {{-- <div class="col-lg-12">
+                                    <div class="col-lg-12">
                                         <div class="group-input">
                                             <label for="Audit Attachments">Initial Attachments</label>
                                             <div><small class="text-primary">Please Attach all relevant or supporting
@@ -2058,8 +2961,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> --}}
-                                </div>
+                                    </div> 
+                                </div> --}}
+
                                 <div class="button-block">
                                     <button  type="submit"{{ $data->stage == 0 ||  $data->stage == 11 ? 'disabled' : '' }}
                                         id="ChangesaveButton01" class="saveButton saveAuditFormBtn d-flex"
@@ -11531,7 +12435,7 @@
                     <label for="QA Feedbacks">HOD Final Remarks <span style="display: {{ $data->stage == 8 ? 'inline' : 'none' }}" class="text-danger">*</span></label>
                     <div><small class="text-primary">Please insert "NA" in the data field if it does
                             not require completion</small></div>
-                    <textarea class={{$data->stage == 8 || $data->stage == 11? 'tiny' : 'tiny-disable' }} {{ $data->stage == 8 ? 'required' : 'disabled' }} name="hod_final_remarks" id="summernote-14">{{ $data->hod_final_remarks }}</textarea>
+                    <textarea  name="hod_final_remarks" id="summernote-14">{{ $data->hod_final_remarks }}</textarea>
                 </div>
             </div>
             @if ($data->hod_final_attachments)
@@ -11900,8 +12804,8 @@
         @endforeach
     @else
         <!-- <td><input disabled type="text" name="failure_mode_qrms[0][serial]" value=""></td> -->
-        <td><input disabled type="text"name="serial[]"
-                {{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} value="{{ $key + 1 }}"></td>
+        {{-- <td><input disabled type="text"name="serial[]" --}}
+                {{-- {{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} value="{{ $key + 1 }}"></td> --}}
         <td><input type="text" class="numberDetail" name="failure_mode_qrms[0][risk_factor]"></td>
         <td><input type="text" class="Document_Remarks" name="failure_mode_qrms[0][risk_element]"></td>
         <td><input type="text" class="Document_Remarks" name="failure_mode_qrms[0][probale_of_risk_element]"></td>
@@ -12145,8 +13049,8 @@
             </tr>
         @endforeach
     @else
-        <td><input disabled type="text"name="serial[]"
-                {{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} value="{{ $key + 1 }}"></td>
+        {{-- <td><input disabled type="text"name="serial[]"
+                {{ $data->stage == 0 || $data->stage == 11 ? 'disabled' : '' }} value="{{ $key + 1 }}"></td> --}}
 
         <td><input type="text" class="numberDetail" name="matrix_qrms[0][risk_Assesment]"></td>
         <td><input type="text" class="Document_Remarks" name="matrix_qrms[0][review_schedule]"></td>
@@ -12794,11 +13698,11 @@
                                 @enderror
                             </div>
 
-                                    <div class="col-md-12">
+                                  {{--  <div class="col-md-12">
                                         <div class="group-input">
                                             <label for="Description Deviation">Description of Deviation 
-                                                {{-- <span
-                                                    class="text-danger">*</span> --}}
+                                                <span
+                                                    class="text-danger">*</span>
                                                 </label>
                                             <div><small class="text-primary">Please insert "NA" in the data field if it
                                                     does not require completion</small></div>
@@ -12808,7 +13712,7 @@
                                         @error('Description_Deviation')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
 
                                     <div class="col-md-12">
@@ -12827,11 +13731,11 @@
                                         @enderror
                                     </div>
             
-                                    <div class="col-md-12">
+                                    {{--<div class="col-md-12">
                                         <div class="group-input">
                                             <label for="Immediate Action">Immediate Action (if any)
-                                                 {{-- <span
-                                                    class="text-danger">*</span> --}}
+                                                 <span
+                                                    class="text-danger">*</span>
                                                 </label>
                                             <div><small class="text-primary">Please insert "NA" in the data field if it
                                                     does not require completion</small></div>
@@ -12841,7 +13745,7 @@
                                         @error('Immediate_Action')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
 
                         <div class="button-block">
@@ -14102,7 +15006,7 @@
 
                             </div>
                             <div style="background: #0000ff1f;" class="mini_buttons">
-                                HOD Review
+                                HOD Initial Review
                             </div>
                             <div class="down-logo">
                                 <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
@@ -14110,47 +15014,61 @@
 
                             </div>
                             <div style="background: #0000ff1f;" class="mini_buttons">
-                                QA Initial Review
+                                Initial QA Review
                             </div>
                             <div class="down-logo">
                                 <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
                                     class="w-100 h-100">
 
                             </div>
-                            <div style="background: #0000ff1f;" class="mini_buttons">
-                                CFT Review
-                            </div>
-                            <div class="down-logo">
-                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
-                                    class="w-100 h-100">
-
-                            </div>
-                            <div style="background: #0000ff1f;" class="mini_buttons">
-                                QA Secondary Review
-                            </div>
-                            <div class="down-logo">
-                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
-                                    class="w-100 h-100">
-
-                            </div>
-                            <div style="background: #0000ff1f;" class="mini_buttons">
-                                QA Head/Manager Designee Primary Approval
-                            </div>
-                            <div class="down-logo">
-                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
-                                    class="w-100 h-100">
-                            </div>
-
                             <div style="background: #0000ff1f;" class="mini_buttons">
                                 Pending Initiator Update
                             </div>
                             <div class="down-logo">
                                 <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
                                     class="w-100 h-100">
+
+                            </div>
+                            <div style="background: #0000ff1f;" class="mini_buttons">
+                                Pending HOD Review
+                            </div>
+                            <div class="down-logo">
+                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
+                                    class="w-100 h-100">
+
+                            </div>
+                            <div style="background: #0000ff1f;" class="mini_buttons">
+                                Pending QA Review
+                            </div>
+                            <div class="down-logo">
+                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
+                                    class="w-100 h-100">
                             </div>
 
                             <div style="background: #0000ff1f;" class="mini_buttons">
-                                QA Final Approval
+                                Pending CFT Review
+                            </div>
+                            <div class="down-logo">
+                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
+                                    class="w-100 h-100">
+                            </div>
+
+                            <div style="background: #0000ff1f;" class="mini_buttons">
+                                HOD Final Review
+                            </div>
+                            <div class="down-logo">
+                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
+                                    class="w-100 h-100">
+                            </div>
+                            <div style="background: #0000ff1f;" class="mini_buttons">
+                                QA Final Review
+                            </div>
+                            <div class="down-logo">
+                                <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."
+                                    class="w-100 h-100">
+                            </div>
+                            <div style="background: #0000ff1f;" class="mini_buttons">
+                                QAH Final Approval
                             </div>
                             <div class="down-logo">
                                 <img class="dawn_arrow" src="{{ asset('user/images/down.gif') }}" alt="..."

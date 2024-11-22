@@ -161,6 +161,7 @@ Route::group(['prefix' => 'rcms'], function () {
             //Route::resource('deviation', DeviationController::class);
             Route::get('devshow/{id}', [DeviationController::class, 'devshow'])->name('devshow');
             Route::post('deviation/stage/{id}', [DeviationController::class, 'deviation_send_stage'])->name('deviation_send_stage');
+            Route::post('deviation/update/{id}', [DeviationController::class, 'updateStage'])->name('update_stage');
             Route::post('deviation/cancel/{id}', [DeviationController::class, 'deviationCancel'])->name('deviationCancel');
             // Route::post('deviation/cftnotrequired/{id}', [DeviationController::class, 'deviationIsCFTRequired'])->name('deviationIsCFTRequired');
             Route::post('deviation/reject/{id}', [DeviationController::class, 'deviation_reject'])->name('deviation_reject');
