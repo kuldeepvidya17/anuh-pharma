@@ -21,6 +21,7 @@ use App\Models\RcmDocHistory;
 use App\Models\RiskLevelKeywords;
 use App\Models\RoleGroup;
 use App\Models\User;
+use App\Models\ActionsPlan;
 // use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
@@ -62,7 +63,6 @@ class CCController extends Controller
 
     public function create()
     {
-
         $riskData = RiskLevelKeywords::all();
         $record_number = ((RecordNumber::first()->value('counter')) + 1);
         $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
@@ -113,24 +113,88 @@ class CCController extends Controller
         $openState->other_comment = $request->other_comment; 
         $openState->supervisor_comment = $request->supervisor_comment;
 
+        //new data fields
+        if (is_array($request->audit_type)) {
+            $openState->audit_type = implode(',', $request->audit_type);
+        }
+        $openState->title = $request->title;
+        $openState->doc_no = $request->doc_no;
+        $openState->Existing_Stage = implode(',', $request->Existing_Stage);
+        $openState->Proposed_changes = implode(',', $request->Proposed_changes);
+        $openState->justification_changes = implode(',', $request->justification_changes);
+        $openState->review_initiating = implode(',', $request->review_initiating);
+        $openState->identification_cross_funct = $request->identification_cross_funct;
+        $openState->evaluation = implode(',', $request->review_initiating);
+        $openState->outcome_risk = implode(',', $request->outcome_risk);
+        $openState->proposal_change = $request->proposal_change;
+        $openState->change_category = $request->change_category;
+        $openState->reason_categorization = $request->reason_categorization;
+        $openState->intimation = $request->intimation;
+        $openState->acknowledgement = implode(',', $request->acknowledgement);
+        $openState->justification_extension = implode(',', $request->justification_extension);
+        $openState->closure_remark = implode(',', $request->closure_remark);
+        $openState->effectiveness = $request->effectiveness;
+        $openState->remark = implode(',', $request->remark);
+        $openState->closure_conclusion = implode(',', $request->closure_conclusion);
+
+        // Iterate over the rows and save each one
+        // foreach ($request->action_description as $index => $description) {
+        //     ActionsPlan::create([
+        //         'action_description' => $description,
+        //         'responsible_department' => $request->responsible_department[$index],
+        //         'planned_date' => $request->planned_date[$index],
+        //         'actual_date' => $request->actual_date[$index] ?? null,
+        //         'evidence_attached' => $request->evidence_attached[$index],
+        //         'hod_sign_date' => $request->hod_sign_date[$index] ?? null,
+        //         'qa_verification' => $request->qa_verification[$index] ?? null,
+        //         'reference_annexures' => $request->reference_annexures[$index] ?? null,
+        //     ]);
+        // }
+
+        $actionsPlanData = [];
+        if ($request->has('action_description')) {
+            foreach ($request->action_description as $index => $description) {
+                $actionsPlanData[] = [
+                    'action_description' => $description,
+                    'responsible_department' => $request->responsible_department[$index],
+                    'planned_date' => $request->planned_date[$index],
+                    'actual_date' => $request->actual_date[$index] ?? null,
+                    'evidence_attached' => $request->evidence_attached[$index],
+                    'hod_sign_date' => $request->hod_sign_date[$index] ?? null,
+                    'qa_verification' => $request->qa_verification[$index] ?? null,
+                    'reference_annexures' => $request->reference_annexures[$index] ?? null,
+                ];
+            }
+        }
+
+        // Store the data as JSON in the database
+        $actionsPlanGridData = ActionsPlan::where([ 
+            'identifier' => "ActionsPlan",
+        ])->firstOrCreate();
+
+        $actionsPlanGridData->identifier = "ActionsPlan";
+        $actionsPlanGridData->data = $actionsPlanData; // Storing data as JSON
+        $actionsPlanGridData->save();
+
+        
         $openState->type_chnage = $request->type_chnage;
         $openState->qa_comments = $request->qa_comments;
         //$openState->related_records = json_encode($request->related_records);
-        $openState->related_records = implode(',', $request->related_records);
-        $openState->qa_head = json_encode($request->qa_head);
+        // $openState->related_records = implode(',', $request->related_records);
+        // $openState->qa_head = json_encode($request->qa_head);
 
-        $openState->qa_eval_comments = json_encode($request->qa_eval_comments);
+        // $openState->qa_eval_comments = json_encode($request->qa_eval_comments);
         //$openState->qa_eval_attach = json_encode($request->qa_eval_attach);
         $openState->training_required = $request->training_required;
         $openState->train_comments = $request->train_comments;
 
-       $openState->Microbiology = $request->Microbiology;
-       if ($request->Microbiology_Person) {
-           $openState->Microbiology_Person = implode(',', $request->Microbiology_Person);
-       } else {
-           toastr()->warning('CFT reviewers can not be empty');
-           return back();
-       }
+    //    $openState->Microbiology = $request->Microbiology;
+    //    if ($request->Microbiology_Person) {
+    //        $openState->Microbiology_Person = implode(',', $request->Microbiology_Person);
+    //    } else {
+    //        toastr()->warning('CFT reviewers can not be empty');
+    //        return back();
+    //    }
         $openState->goup_review = $request->goup_review;
         $openState->Production = $request->Production;
         $openState->Production_Person = $request->Production_Person;
@@ -138,10 +202,10 @@ class CCController extends Controller
         $openState->Quality_Approver_Person = $request->Quality_Approver_Person;
         $openState->bd_domestic = $request->bd_domestic;
         $openState->Bd_Person = $request->Bd_Person;
-        $openState->additional_attachments = json_encode($request->additional_attachments);
+        // $openState->additional_attachments = json_encode($request->additional_attachments);
 
         $openState->cft_comments = $request->cft_comments; 
-        $openState->cft_attchament = json_encode($request->cft_attchament);
+        // $openState->cft_attchament = json_encode($request->cft_attchament);
         $openState->qa_commentss = $request->qa_commentss;
         $openState->designee_comments = $request->designee_comments;
         $openState->Warehouse_comments = $request->Warehouse_comments;
@@ -150,7 +214,7 @@ class CCController extends Controller
         $openState->Validation_comments = $request->Validation_comments;
         $openState->Others_comments = $request->Others_comments;
         $openState->Group_comments = $request->Group_comments;
-        $openState->group_attachments = json_encode($request->group_attachments);
+        // $openState->group_attachments = json_encode($request->group_attachments);
 
         $openState->risk_identification = $request->risk_identification;
         $openState->severity = $request->severity;
@@ -162,28 +226,34 @@ class CCController extends Controller
 
         $openState->qa_appro_comments = $request->qa_appro_comments;
         $openState->feedback = $request->feedback;
-        $openState->tran_attach = json_encode($request->tran_attach);
+        // $openState->tran_attach = json_encode($request->tran_attach);
 
         $openState->qa_closure_comments = $request->qa_closure_comments;
-        $openState->attach_list = json_encode($request->attach_list);
+        // $openState->attach_list = json_encode($request->attach_list);
         $openState->effective_check = $request->effective_check;
         $openState->effective_check_date = $request->effective_check_date;
         $openState->Effectiveness_checker = $request->Effectiveness_checker;
         $openState->effective_check_plan = $request->effective_check_plan;
         $openState->due_date_extension = $request->due_date_extension;
 
-
-        if (!empty($request->in_attachment)) {
-            $files = [];
-            if ($request->hasfile('in_attachment')) {
-                foreach ($request->file('in_attachment') as $file) {
-                    $name = "CC" . '-in_attachment' . rand(1, 100) . '.' . $file->getClientOriginalExtension();
-                    $file->move('upload/', $name);
-                    $files[] = $name;
-                }
-            }
-            $openState->in_attachment = json_encode($files);
-        }
+        $openState->impact_on = json_encode($request->impact_on); // Storing checkbox group as JSON
+        $openState->impact_on_facility = json_encode($request->impact_on_facility);
+        $openState->impact_on_documents = json_encode($request->impact_on_documents);
+        $openState->risk_assessment = $request->risk_assessment;
+        $openState->risk_justification = $request->risk_justification;
+        $openState->others = $request->others;
+        
+        // if (!empty($request->in_attachment)) {
+        //     $files = [];
+        //     if ($request->hasfile('in_attachment')) {
+        //         foreach ($request->file('in_attachment') as $file) {
+        //             $name = "CC" . '-in_attachment' . rand(1, 100) . '.' . $file->getClientOriginalExtension();
+        //             $file->move('upload/', $name);
+        //             $files[] = $name;
+        //         }
+        //     }
+        //     $openState->in_attachment = json_encode($files);
+        // }
  
         $openState->status = 'Opened';
         $openState->stage = 1;
@@ -277,12 +347,12 @@ class CCController extends Controller
              $info->Microbiology = $request->Microbiology;
             
          }
-         if ($request->Microbiology_Person) {
-             $info->Microbiology_Person = implode(',', $request->Microbiology_Person);
-         } else {
-             toastr()->warning('CFT reviewers can not be empty');
-             return back();
-         }
+        //  if ($request->Microbiology_Person) {
+        //      $info->Microbiology_Person = implode(',', $request->Microbiology_Person);
+        //  } else {
+        //      toastr()->warning('CFT reviewers can not be empty');
+        //      return back();
+        //  }
         
         $info->bd_domestic = $request->bd_domestic;
         $info->Bd_Person = $request->Bd_Person;
@@ -642,7 +712,6 @@ class CCController extends Controller
         $history->origin_state = $openState->status;
         $history->save();
         
-
         $history = new RcmDocHistory;
         $history->cc_id = $evaluation->id;
         $history->activity_type = 'Training Comments';
@@ -1095,7 +1164,6 @@ class CCController extends Controller
 
     public function show($id)
     {
-
         $data = CC::find($id);
         $cc_lid = $data->id;
         $data->assign_to_name = User::where('id', $data->assign_to)->value('name');
@@ -1107,6 +1175,15 @@ class CCController extends Controller
         $assessment = RiskAssessment::where('cc_id', $id)->first();
         $approcomments = QaApprovalComments::where('cc_id', $id)->first();
         $closure = ChangeClosure::where('cc_id', $id)->first();
+
+        $actionsPlanGridData= ActionsPlan::where([
+            'identifier' => 'ProductDetails'
+        ])->first();
+        
+        $actionsPlanGridData = $actionsPlanGridData && is_string($actionsPlanGridData->data)
+            ? json_decode($actionsPlanGridData->data, true) 
+            : ($actionsPlanGridData->data ?? []);
+
         $hod = User::get();
         $cft = User::get();
         $cft_aff = [];
@@ -1131,6 +1208,7 @@ class CCController extends Controller
             "cft_aff",
             "due_date_extension",
             "cc_lid",
+            "actionsPlanGridData",
             "pre"
         ));
     }
