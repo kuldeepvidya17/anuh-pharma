@@ -92,334 +92,111 @@ class MarketComplaintController extends Controller
         $marketcomplaint->acknowledgment_sent = $request->input('acknowledgment_sent');
         $marketcomplaint->analysis_physical_examination = $request->input('analysis_physical_examination');
        
-        $marketcomplaint->identification_cross_functional = $request->input('Identification_Cross_functional');
-        $marketcomplaint->preliminary_investigation_report = $request->input('Preliminary_Investigation_Report');
-        $marketcomplaint->further_response_received = $request->input('Further_Response_Received');
-        $marketcomplaint->details_of_response = $request->input('Details_of_Response');
-        $marketcomplaint->further_investigation_additional_testing = $request->input('Further_investigation_Additional_testing');
-        $marketcomplaint->method_tools_to_be_used_for = $request->input('Method_Tools_to_be_used_for');
+        $marketcomplaint->identification_cross_functional = $request->input('identification_cross_functional');
+        $marketcomplaint->preliminary_investigation_report = $request->input('preliminary_investigation_report');
+        $marketcomplaint->further_response_received = $request->input('further_response_received');
+        // $marketcomplaint->details_of_response = $request->input('details_of_response');
+        $marketcomplaint->further_investigation_additional_testing = $request->input('further_investigation_additional_testing');
+        $marketcomplaint->method_tools_to_be_used_for = $request->input('method_tools_to_be_used_for');
         $marketcomplaint->capa_qa_comments2 = $request->input('capa_qa_comments2');
         $marketcomplaint->qa_review = $request->input('qa_review');
+        $marketcomplaint->Details_of_Response = $request->input('Details_of_Response');
         $marketcomplaint->head_qulitiy_comment = $request->input('head_qulitiy_comment');
+        $marketcomplaint->re_categoruzation_of_complaint = $request->input('re_categoruzation_of_complaint');
+        $marketcomplaint->reson_for_re_cate = $request->input('reson_for_re_cate');
+        $marketcomplaint->due_date_extension = $request->input('due_date_extension');
 
 
         $marketcomplaint->type="MarketComplaint";
         $marketcomplaint->stage=1;
         $marketcomplaint->status = "Opened";
 
-        $attachments = [];
-        if ($request->hasFile('attachment')) {
-            foreach ($request->file('attachment') as $file) {
-                $path = $file->store('attachments', 'public');
-                $attachments[] = $path;
+        // $attachments = [];
+        // if ($request->hasFile('attachment')) {
+        //     foreach ($request->file('attachment') as $file) {
+        //         $path = $file->store('attachments', 'public');
+        //         $attachments[] = $path;
+        //     }
+        //     $marketcomplaint->attachments = json_encode($attachments);
+        // }
+
+        if (!empty($request->attachment)) {
+            $files = [];
+            if ($request->hasFile('attachment')) {
+                foreach ($request->file('attachment') as $file) {
+                    // Generate a unique name for the file
+                    $name = $request->name . 'attachment' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                    // Move the file to the upload directory
+                    $file->move(public_path('upload/'), $name);
+
+                    // Add the file name to the array
+                    $files[] = $name;
+                }
             }
-            $marketcomplaint->attachments = json_encode($attachments);
+            // Encode the file names array to JSON and assign it to the model
+            $marketcomplaint->attachments = json_encode($files);
         }
         // dd($marketcomplaint);
     
         $marketcomplaint->save();
 
         // --------------------audit trail show data fileds start -------------------------
-        $history = new MarketComplaintAuditTrial();
-        $history->market_id = $marketcomplaint->id;
-        $history->activity_type = 'Record Number';
-        $history->previous = "Null";
-        $history->current = Helpers::getDivisionName(session()->get('division')) . "/MC/" . Helpers::year($marketcomplaint->created_at) . "/" . str_pad($marketcomplaint->record, 4, '0', STR_PAD_LEFT);
-        $history->comment = "Not Applicable";
-        $history->user_id = Auth::user()->id;
-        $history->user_name = Auth::user()->name;
-        $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-        $history->origin_state = $marketcomplaint->status;
-        $history->change_to =   "Opened";
-        $history->change_from = "Initiator";
-        $history->action_name = 'Create';
-        $history->save();
+       // Define the fields and their respective activity types
+            $fields = [
+                'record_number' => 'Record Number',
+                'division_id' => 'Site/Location Code',
+                'division_code' => 'Initiator',
+                'intiation_date' => 'Date of Initiation',
+                'assign_to' => 'Assigned To',
+                'short_description' => 'Short Description',
+                'due_date' => 'Due Date',
+                'initiator_group' => 'Department Group',
+                'initiator_group_code' => 'Department Group Code',
+               
+                'nameAddressagency' => 'Name & Address of the complainant agency',
+                'nameDesgnationCom' => 'Name & Designation complainer',
+                'phone_no' => 'Phone No',
+                'email_address' => 'Email Address',
+                'sample_recd' => 'Sample Recd',
+                'test_results_recd' => 'Test Results recd',
+                'severity_level_form' => 'Classification based on receipt of complaint',
+                'acknowledgment_sent' => 'Acknowledgment sent to customer through marketing department by Head QA',
+                'analysis_physical_examination' => 'Analysis / Physical examination of control sample to be done',
+                'identification_cross_functional' => 'Identification of Cross functional departments by QA for review of root cause of Market complaint',
+                'preliminary_investigation_report' => 'Preliminary Investigation Report sent by QA to complainant on',
+                'attachment' => 'Attachment',
+                'further_response_received' => 'Further Response Received from customer',
+                'Details_of_Response' => 'Details of Response',
+                'further_investigation_additional_testing' => 'Further investigation / Additional testing required',
+                'method_tools_to_be_used_for' => 'Method / Tools to be used for investigation',
+                'capa_qa_comments2' => 'Comments',
+                'head_qulitiy_comment' => 'Head Quality Comment',
+                'qa_review' => 'QA Review & Closure',
+                'closure_attachment' => 'Closure Attachment',
+                'due_date_extension' => 'Due Date Extension Justification',
+            ];
 
-        if (!empty($marketcomplaint->short_description)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Short Description';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->short_description;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
+            // Loop through each field and create an audit trail entry
+            foreach ($fields as $field => $activity_type) {
+                if (!empty($marketcomplaint->$field)) {
+                    $history = new MarketComplaintAuditTrial();
+                    $history->market_id = $marketcomplaint->id;
+                    $history->activity_type = $activity_type;
+                    $history->previous = "Null";
+                    $history->current = $marketcomplaint->$field;
+                    $history->comment = "Not Applicable";
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $marketcomplaint->status;
+                    $history->change_to = "Opened";
+                    $history->change_from = "Initiation";
+                    $history->action_name = "Create";
+                    $history->save();
+                }
+            }
 
-        if (!empty($marketcomplaint->nameAddressagency)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Name & Address of the complainant agency';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->nameAddressagency;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->nameDesgnationCom)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Name & Designation complainer';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->nameDesgnationCom;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->phone_no)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Phone No';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->phone_no;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->email_address)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Email Address';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->email_address;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->sample_recd)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Sample Recd';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->sample_recd;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->test_results_recd)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Test Results recd';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->test_results_recd;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->severity_level_form)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Classification based on receipt of complaint';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->severity_level_form;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->acknowledgment_sent)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Acknowledgment sent to customer through marketing department by Head QA';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->acknowledgment_sent;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->analysis_physical_examination)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Analysis / Physical examination of control sample to be done';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->analysis_physical_examination;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->Identification_Cross_functional)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Identification of Cross functional departments by QA for review of root cause of Market complaint';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->Identification_Cross_functional;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-
-        if (!empty($marketcomplaint->Preliminary_Investigation_Report)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Preliminary Investigation Report sent by QA to complainant on';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->Preliminary_Investigation_Report;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        } if (!empty($marketcomplaint->attachment)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Attachment';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->attachment;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        } if (!empty($marketcomplaint->Further_Response_Received)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = ' Further Response Received from customer';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->Further_Response_Received;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        } if (!empty($marketcomplaint->Details_of_Response)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Details of Response';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->Details_of_Response;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
-        if (!empty($marketcomplaint->Further_investigation_Additional_testing)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Further investigation / Additional testing required';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->Further_investigation_Additional_testing;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }if (!empty($marketcomplaint->Method_Tools_to_be_used_for)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Method / Tools to be used for investigation';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->Method_Tools_to_be_used_for;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }if (!empty($marketcomplaint->Details_of_Response)) {
-            $history = new MarketComplaintAuditTrial();
-            $history->market_id = $marketcomplaint->id;
-            $history->activity_type = 'Details of Response';
-            $history->previous = "Null";
-            $history->current = $marketcomplaint->Details_of_Response;
-            $history->comment = "Not Applicable";
-            $history->user_id = Auth::user()->id;
-            $history->user_name = Auth::user()->name;
-            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            $history->origin_state = $marketcomplaint->status;
-            $history->change_to = "Opened";
-            $history->change_from = "Initiation";
-            $history->action_name = "Create";
-            $history->save();
-        }
 
         //------------------------audit trail show end ---------------------------------
 
@@ -475,6 +252,12 @@ class MarketComplaintController extends Controller
         $changecontrolDetailsData->data = $request->changecontrol_capa_details; // assuming your form data is coming as 'complaint_details'
         $changecontrolDetailsData->save();
         // dd($changecontrolDetailsData);
+        $closureVerificationData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'ClosureVerificationDetails'])->firstOrNew();
+        $closureVerificationData->market_id = $griddata;
+        $closureVerificationData->identifer = 'ClosureVerificationDetails';
+        $closureVerificationData->data = $request->closureverification_details; // assuming your form data is coming as 'closureverification_details'
+        $closureVerificationData->save();
+
 
         toastr()->success("Record is created Successfully");
         return redirect(url('rcms/qms-dashboard'));
@@ -485,6 +268,7 @@ class MarketComplaintController extends Controller
     {
         $old_record = MarketComplaint::select('id', 'division_id', 'record')->get();
         $data = MarketComplaint::find($id);
+        // dd($data->attachments);
         $userData = User::all();
         // $data1 = DeviationCft::where('deviation_id', $id)->latest()->first();
         // return $data1;
@@ -497,6 +281,7 @@ class MarketComplaintController extends Controller
         $qualityDetailsData_2 = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'QualityControl_2')->first();
         $complaintDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'ComplaintDetails')->first();
         $changecontrolDetailsData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'ChangeControlCapaDetails')->first();
+        $closureVerificationData = MarketComplaintGrids::where('market_id', $id)->where('identifer', 'ClosureVerificationDetails')->first();
 // dd($changecontrolDetailsData);
         // $grid_data1 = DeviationGrid::where('deviation_grid_id', $id)->where('type', "Document")->first();
         // $grid_data2 = DeviationGrid::where('deviation_grid_id', $id)->where('type', "Product")->first();
@@ -504,7 +289,7 @@ class MarketComplaintController extends Controller
         $pre = MarketComplaint::all();
         $divisionName = DB::table('q_m_s_divisions')->where('id', $data->division_id)->value('name');
         // dd($changecontrolDetailsData);
-        return view('frontend.marketcomplaint.marketcomplaint_view', compact('data','userData','productDetailsData','materialDetailsData','historyDetailsData', 'old_record', 'pre', 'divisionName','qualityDetailsData_1','qualityDetailsData_2','complaintDetailsData','changecontrolDetailsData'));
+        return view('frontend.marketcomplaint.marketcomplaint_view', compact('data','userData','productDetailsData','materialDetailsData','historyDetailsData', 'old_record', 'pre', 'divisionName','qualityDetailsData_1','qualityDetailsData_2','complaintDetailsData','changecontrolDetailsData','closureVerificationData'));
     }
 
     public function update(Request $request, $id)
@@ -514,6 +299,9 @@ class MarketComplaintController extends Controller
         $marketcomplaint = MarketComplaint::find($id);
         $marketcomplaint->assign_to = $request->input('assign_to');
         // $marketcomplaint->due_date = $request->input('due_date');
+        $marketcomplaint->initiation_date = $request->input('initiation_date');
+        $marketcomplaint->assign_to = $request->input('assign_to');
+        $marketcomplaint->due_date = $request->input('due_date');
         $marketcomplaint->initiator_group = $request->input('initiator_group');
         $marketcomplaint->initiator_group_code = $request->input('initiator_group_code');
         $marketcomplaint->short_description = $request->input('short_description');
@@ -526,28 +314,53 @@ class MarketComplaintController extends Controller
         $marketcomplaint->severity_level_form = $request->input('severity_level_form');
         $marketcomplaint->acknowledgment_sent = $request->input('acknowledgment_sent');
         $marketcomplaint->analysis_physical_examination = $request->input('analysis_physical_examination');
-
-
-        $marketcomplaint->identification_cross_functional = $request->input('Identification_Cross_functional');
-        $marketcomplaint->preliminary_investigation_report = $request->input('Preliminary_Investigation_Report');
-        $marketcomplaint->further_response_received = $request->input('Further_Response_Received');
-        $marketcomplaint->details_of_response = $request->input('Details_of_Response');
-        $marketcomplaint->further_investigation_additional_testing = $request->input('Further_investigation_Additional_testing');
-        $marketcomplaint->method_tools_to_be_used_for = $request->input('Method_Tools_to_be_used_for');
+       
+        $marketcomplaint->identification_cross_functional = $request->input('identification_cross_functional');
+        $marketcomplaint->preliminary_investigation_report = $request->input('preliminary_investigation_report');
+        $marketcomplaint->further_response_received = $request->input('further_response_received');
+        $marketcomplaint->details_of_response = $request->input('details_of_response');
+        $marketcomplaint->further_investigation_additional_testing = $request->input('further_investigation_additional_testing');
+        $marketcomplaint->method_tools_to_be_used_for = $request->input('method_tools_to_be_used_for');
         $marketcomplaint->capa_qa_comments2 = $request->input('capa_qa_comments2');
         $marketcomplaint->qa_review = $request->input('qa_review');
+        $marketcomplaint->Details_of_Response = $request->input('Details_of_Response');
         $marketcomplaint->head_qulitiy_comment = $request->input('head_qulitiy_comment');
+        $marketcomplaint->re_categoruzation_of_complaint = $request->input('re_categoruzation_of_complaint');
+        $marketcomplaint->reson_for_re_cate = $request->input('reson_for_re_cate');
+        $marketcomplaint->due_date_extension = $request->input('due_date_extension');
 
-
+// dd($marketcomplaint->further_investigation_additional_testing ,$marketcomplaint->further_response_received);
          // Handle file attachments
-    $attachments = $marketcomplaint->attachments ? json_decode($marketcomplaint->attachments, true) : [];
-    if ($request->hasFile('attachment')) {
-        foreach ($request->file('attachment') as $file) {
-            $path = $file->store('attachments', 'public');
-            $attachments[] = $path;
+    // $attachments = $marketcomplaint->attachments ? json_decode($marketcomplaint->attachments, true) : [];
+    // if ($request->hasFile('attachment')) {
+    //     foreach ($request->file('attachment') as $file) {
+    //         $path = $file->store('attachments', 'public');
+    //         $attachments[] = $path;
+    //     }
+    // }
+    // $marketcomplaint->attachments = json_encode($attachments);
+
+
+
+    if (!empty($request->attachment) || !empty($request->deleted_attachments_gi)) {
+        $existingFiles = json_decode($marketcomplaint->attachment, true) ?? [];
+                if (!empty($request->deleted_attachments_gi)) {
+            $filesToDelete = explode(',', $request->deleted_attachments_gi);
+            $existingFiles = array_filter($existingFiles, function($file) use ($filesToDelete) {
+                return !in_array($file, $filesToDelete);
+            });
         }
+        $newFiles = [];
+        if ($request->hasFile('attachment')) {
+            foreach ($request->file('attachment') as $file) {
+                $name = $request->name . 'attachment' . rand(1, 100) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/'), $name);
+                $newFiles[] = $name;
+            }
+        }
+        $allFiles = array_merge($existingFiles, $newFiles);
+        $marketcomplaint->attachments = json_encode($allFiles);
     }
-    $marketcomplaint->attachments = json_encode($attachments);
 
         //=================grid updated --------------------
         $griddata = $marketcomplaint->id;
@@ -599,55 +412,121 @@ class MarketComplaintController extends Controller
         $changecontrolDetailsData->data = $request->changecontrol_capa_details; // assuming your form data is coming as 'complaint_details'
         $changecontrolDetailsData->save();
 
-        $marketcomplaint->update();
+        $closureVerificationData = MarketComplaintGrids::where(['market_id' => $griddata, 'identifer' => 'ClosureVerificationDetails'])->firstOrNew();
+        $closureVerificationData->market_id = $griddata;
+        $closureVerificationData->identifer = 'ClosureVerificationDetails';
+        $closureVerificationData->data = $request->closureverification_details; // assuming your form data is coming as 'closureverification_details'
+        $closureVerificationData->save();
+
+
+       
 
 
 
         // -------audit trrail show start update -----------
+        // dd($marketcomplaint->Method_Tools_to_be_used_for);/
+// dd($marketcomplaint->method_tools_to_be_used_for);
+        
+// dd($lastmarketcomplaint->Method_Tools_to_be_used_for,  $marketcomplaint->method_tools_to_be_used_for);
+        // if ($lastmarketcomplaint->Method_Tools_to_be_used_for != $marketcomplaint->method_tools_to_be_used_for) {
+            
+        //     $history = new MarketComplaintAuditTrial();
+        //     $history->market_id = $marketcomplaint->id;
+        //     $history->activity_type = 'Method / Tools to be used for investigation';
+        //     $history->previous = $lastmarketcomplaint->Method_Tools_to_be_used_for;
+        //     $history->current = $marketcomplaint->Method_Tools_to_be_used_for;
+        //     $history->comment = $request->additional_inform_comment;
+        //     $history->user_id = Auth::user()->id;
+        //     $history->user_name = Auth::user()->name;
+        //     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+        //     $history->origin_state = $lastmarketcomplaint->status;
+        //     $history->change_to = "Not Applicable";
+        //     $history->change_from = $lastmarketcomplaint->status;
+        //     if (is_null($lastmarketcomplaint->Method_Tools_to_be_used_for) || $lastmarketcomplaint->Method_Tools_to_be_used_for === '') {
+        //         $history->action_name = "New";
+        //     } else {
+        //         $history->action_name = "Update";
+        //     }
+
+        //     $history->save();
+        // }
+
         $fields = [
+            'record_number' => 'Record Number',
+            'division_id' => 'Site/Location Code',
+            'division_code' => 'Initiator',
+            'intiation_date' => 'Date of Initiation',
+            'assign_to' => 'Assigned To',
             'short_description' => 'Short Description',
+            'due_date' => 'Due Date',
+            'initiator_group' => 'Department Group',
+            'initiator_group_code' => 'Department Group Code',
             'nameAddressagency' => 'Name & Address of the complainant agency',
             'nameDesgnationCom' => 'Name & Designation complainer',
             'phone_no' => 'Phone No',
             'email_address' => 'Email Address',
             'sample_recd' => 'Sample Recd',
-            'test_results_recd' => 'Test Results Recd',
+            'test_results_recd' => 'Test Results recd',
             'severity_level_form' => 'Classification based on receipt of complaint',
             'acknowledgment_sent' => 'Acknowledgment sent to customer through marketing department by Head QA',
             'analysis_physical_examination' => 'Analysis / Physical examination of control sample to be done',
-            'Identification_Cross_functional' => 'Identification of Cross functional departments by QA for review of root cause of Market complaint',
-            'Preliminary_Investigation_Report' => 'Preliminary Investigation Report sent by QA to complainant on',
+            'identification_cross_functional' => 'Identification of Cross functional departments by QA for review of root cause of Market complaint',
+            'preliminary_investigation_report' => 'Preliminary Investigation Report sent by QA to complainant on',
             'attachment' => 'Attachment',
-            'Further_Response_Received' => 'Further Response Received from customer',
+            'further_response_received' => 'Further Response Received from customer',
             'Details_of_Response' => 'Details of Response',
-            'Further_investigation_Additional_testing' => 'Further investigation / Additional testing required',
-            'Method_Tools_to_be_used_for' => 'Method / Tools to be used for investigation',
+            'further_investigation_additional_testing' => 'Further investigation / Additional testing required',
+            'method_tools_to_be_used_for' => 'Method / Tools to be used for investigation',
+            'capa_qa_comments2' => 'Comments',
+            'head_qulitiy_comment' => 'Head Quality Comment',
+            'qa_review' => 'QA Review & Closure',
+            'closure_attachment' => 'Closure Attachment',
+            'due_date_extension' => 'Due Date Extension Justification',
         ];
-
+        
+        // Retrieve the last saved market complaint for comparison
+        $lastmarketcomplaint = MarketComplaint::find($marketcomplaint->id);
+        
+        // Loop through each field and create an audit trail entry
         foreach ($fields as $field => $activity_type) {
-            if ($lastmarketcomplaint->$field != $marketcomplaint->$field || !empty($request->comment)) {
-                $history = new MarketComplaintAuditTrial;
-                $history->market_id = $id;
+            $previousValue = $lastmarketcomplaint->$field ?? null;
+            $currentValue = $marketcomplaint->$field ?? null;
+        
+            // Check if the field value has changed
+            if ($previousValue !== $currentValue) {
+                $history = new MarketComplaintAuditTrial();
+                $history->market_id = $marketcomplaint->id;
                 $history->activity_type = $activity_type;
-                $history->previous = $lastmarketcomplaint->$field;
-                $history->current = $marketcomplaint->$field;
-                $history->comment = $request->comment;
+                $history->previous = $previousValue ?? "Null";
+                $history->current = $currentValue ?? "Null";
+                $history->comment = "Not Applicable";
                 $history->user_id = Auth::user()->id;
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastmarketcomplaint->status;
-                $history->change_to = "Not Applicable";
-                $history->change_from = $lastmarketcomplaint->status;
-                $history->action_name = 'Update';
+                $history->origin_state = $marketcomplaint->status;
+                $history->change_to = "Opened";
+                $history->change_from = "Initiation";
+        
+                // Determine the action type (New or Update)
+                if (is_null($previousValue) || $previousValue === '') {
+                    $history->action_name = "New";
+                } else {
+                    $history->action_name = "Update";
+                }
+        
                 $history->save();
             }
         }
-        // -------audit trrail show end update -----------
+        
+        $marketcomplaint->update();
+
+        
 
         toastr()->success('Record is Update Successfully');
 
         return back();
     }
+
 
 
     public static function singleReport($id)

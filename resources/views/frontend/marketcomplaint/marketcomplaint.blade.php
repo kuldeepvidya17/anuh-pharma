@@ -1114,6 +1114,72 @@
                                 </div>
                             </div>
 
+                            <div class="col-12 sub-head">
+                                CLOSURE VERIFICATION:
+                            </div>
+                            <div class="col-12">
+                                <div class="group-input">
+                                    <label for="Closure Verification Details">
+                                        Closure Verification Details
+                                        <button type="button" id="closureverification_add">+</button>
+                                    </label>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="closureverification_details" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 100px;">Sr.No.</th>
+                                                    <th>Title of documents</th>
+                                                    <th>Reference Annexure</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Default first row (optional) -->
+                                                <tr>
+                                                    <td><input disabled type="text" name="closureverification_details[0][row]" value="1"></td>
+                                                    <td><input type="text" name="closureverification_details[0][title_of_documents]"></td>
+                                                    <td><input type="text" name="closureverification_details[0][reference_annexure]"></td>
+                                                    <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                $(document).ready(function() {
+                                    // Add new row in Closure Verification table
+                                    $('#closureverification_add').click(function(e) {
+                                        e.preventDefault();
+                            
+                                        function generateClosureVerificationTableRow(serialNumber) {
+                                            var html =
+                                                '<tr>' +
+                                                '<td><input disabled type="text" name="closureverification_details[' + serialNumber +
+                                                '][row]" value="' + (serialNumber + 1) + '"></td>' +
+                                                '<td><input type="text" name="closureverification_details[' + serialNumber +
+                                                '][title_of_documents]"></td>' +
+                                                '<td><input type="text" name="closureverification_details[' + serialNumber +
+                                                '][reference_annexure]"></td>' +
+                                                '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                '</tr>';
+                                            return html;
+                                        }
+                            
+                                        var tableBody = $('#closureverification_details tbody');
+                                        var rowCount = tableBody.children('tr').length;
+                                        var newRow = generateClosureVerificationTableRow(rowCount);
+                                        tableBody.append(newRow);
+                                    });
+                            
+                                    // Remove row in Closure Verification table
+                                    $(document).on('click', '.removeRowBtn', function() {
+                                        $(this).closest('tr').remove();
+                                    });
+                                });
+                            </script>
+                            
+
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>

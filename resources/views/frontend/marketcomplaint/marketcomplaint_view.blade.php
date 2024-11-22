@@ -1081,8 +1081,8 @@
                                                 <div class="file-attachment-field">
                                                     <!-- List of Existing Attachments -->
                                                     <div class="file-attachment-list" id="attachment">
-                                                        @if ($data->attachment)
-                                                            @foreach(json_decode($data->attachment) as $file)
+                                                        @if ($data->attachments)
+                                                            @foreach(json_decode($data->attachments) as $file)
                                                                 <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
                                                                     <b>{{ $file }}</b>
                                                                     <a href="{{ asset('upload/' . $file) }}" target="_blank">
@@ -1494,7 +1494,84 @@
                                     </div>
                                 </div>
     
-
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Closure Verification Details">
+                                            Closure Verification Details
+                                            <button type="button" id="closureverification_add">+</button>
+                                        </label>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="closureverification_details" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 100px;">Sr.No.</th>
+                                                        <th>Title of documents</th>
+                                                        <th>Reference Annexure</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (!empty($closureVerificationData->data) && is_array($closureVerificationData->data))
+                                                        @foreach ($closureVerificationData->data as $index => $detail)
+                                                            <tr>
+                                                                <td>
+                                                                    <input disabled type="text" name="closureverification_details[{{ $index }}][row]" value="{{ $index + 1 }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="closureverification_details[{{ $index }}][title_of_documents]" value="{{ $detail['title_of_documents'] ?? '' }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="closureverification_details[{{ $index }}][reference_annexure]" value="{{ $detail['reference_annexure'] ?? '' }}">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="removeRowBtn">Remove</button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        <tr>
+                                                            <td><input disabled type="text" name="closureverification_details[0][row]" value="1"></td>
+                                                            <td><input type="text" name="closureverification_details[0][title_of_documents]" value=""></td>
+                                                            <td><input type="text" name="closureverification_details[0][reference_annexure]" value=""></td>
+                                                            <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                        </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <script>
+                                    $(document).ready(function() {
+                                        // Add new row in Closure Verification Details table
+                                        $('#closureverification_add').click(function(e) {
+                                            e.preventDefault();
+                                
+                                            function generateClosureVerificationTableRow(serialNumber) {
+                                                return (
+                                                    '<tr>' +
+                                                    '<td><input disabled type="text" name="closureverification_details[' + serialNumber + '][row]" value="' + (serialNumber + 1) + '"></td>' +
+                                                    '<td><input type="text" name="closureverification_details[' + serialNumber + '][title_of_documents]"></td>' +
+                                                    '<td><input type="text" name="closureverification_details[' + serialNumber + '][reference_annexure]"></td>' +
+                                                    '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                    '</tr>'
+                                                );
+                                            }
+                                
+                                            var tableBody = $('#closureverification_details tbody');
+                                            var rowCount = tableBody.children('tr').length;
+                                            var newRow = generateClosureVerificationTableRow(rowCount);
+                                            tableBody.append(newRow);
+                                        });
+                                
+                                        // Remove row in Closure Verification Details table
+                                        $(document).on('click', '.removeRowBtn', function() {
+                                            $(this).closest('tr').remove();
+                                        });
+                                    });
+                                </script>
+                                
                                                                     
 
 
