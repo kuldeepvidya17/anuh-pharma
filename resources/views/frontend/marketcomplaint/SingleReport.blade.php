@@ -161,7 +161,7 @@
         <table>
             <tr>
                 <td class="w-70 head">
-                    Capa Report
+                    Market Complaint Report
                 </td>
                 <td class="w-30">
                     <div class="logo">
@@ -174,10 +174,10 @@
         <table>
             <tr>
                 <td class="w-30">
-                    <strong> Capa No.</strong>
+                    <strong> Market Complaint No.</strong>
                 </td>
                 <td class="w-40">
-                    {{ Helpers::divisionNameForQMS($data->division_id) }}/DEV/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
+                    {{ Helpers::divisionNameForQMS($data->division_id) }}/MC/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
                 </td>
                 <td class="w-30">
                     <strong>Record No.</strong> {{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
@@ -230,57 +230,282 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="w-20">Department</th>
+                        
+                        <th class="w-20">Department Group</th>
                         <td class="w-30">
                             @if ($data->initiator_group)
-                                {{ Helpers::getFullDepartmentName($data->Initiator_Group) }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                        <th class="w-20">Short Description</th>
-                        <td class="w-30">
-                            @if ($data->short_description)
-                                {{ $data->short_description }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-
-                        {{-- <th class="w-20">Department Code</th> --}}
-                        {{-- <td class="w-30">@if ($data->initiator_group_code){{ $data->initiator_group_code }} @else Not Applicable @endif</td> --}}
+                            {{ Helpers::getFullDepartmentName($data->initiator_group) }}
+                        @else
+                            Not Applicable
+                        @endif                        </td>
+                        <th class="w-20">Department Group Code</th>
+                        <td class="w-30">{{ $data->initiator_group_code ? $data->initiator_group_code : '' }} </td>
                     </tr>
-                   
+
+                </table>
+                
+
+                <div class="block-head">
+                    Product Plan
+                </div>
+                <div class="border-table" style="margin-bottom: 15px;">
+                    <div class="table-responsive">
+                        <!-- First Half of the Table -->
+                        <table class="table table-bordered" id="product_details" style="width: 100%;">
+                            <thead>
+                                <tr class="table_bg">
+                                    <th style="width: 15px;">Row #</th>
+                                    <th style="width: 100px;">Product Name</th>
+                                    <th style="width: 100px;">Batch No</th>
+                                    <th style="width: 100px;">Mfg. Date</th>
+                                    <th style="width: 120px;">Exp. Date / Retest Date</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($productdeta && is_array($productdeta))
+                                    @php $serialNumber = 1; @endphp
+                                    @foreach($productdeta as $key => $detail)
+                                        <tr>
+                                            <td>{{ $serialNumber++ }}</td>
+                                            <td>{{ $detail['product_name'] ?? 'Not Applicable' }}</td>
+                                            <td>{{ $detail['batch_no'] ?? 'Not Applicable' }}</td>
+                                            <td>{{ $detail['mfg_date'] ?? 'Not Applicable' }}</td>
+                                            <td>{{ $detail['exp_date'] ?? 'Not Applicable' }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Not Applicable</td>
+                                        <td>Not Applicable</td>
+                                        <td>Not Applicable</td>
+                                        <td>Not Applicable</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                
+                        <!-- Second Half of the Table -->
+                        <table class="table table-bordered" id="product_dispatch" style="width: 100%; margin-top: 15px;">
+                            <thead>
+                                <tr class="table_bg">
+                                    <th style="width: 15px;">Row #</th>
+                                    <th style="width: 80px;">Batch Size</th>
+                                    <th style="width: 100px;">Dispatch Date</th>
+                                    <th style="width: 80px;">Dispatch Qty.</th>
+                                    <th style="width: 120px;">Date of Completion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($productdeta && is_array($productdeta))
+                                @php $serialNumber = 1; @endphp
+                                    @foreach($productdeta as $key => $detail)
+                                        <tr> 
+                                            <td>{{ $serialNumber++ }}</td>
+                                            <td>{{ $detail['batch_size'] ?? 'Not Applicable' }}</td>
+                                            <td>{{ $detail['dispatch_date'] ?? 'Not Applicable' }}</td>
+                                            <td>{{ $detail['dispatch_qty'] ?? 'Not Applicable' }}</td>
+                                            <td>{{ $detail['completion_date'] ?? 'Not Applicable' }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr> <td>1</td>
+                                        <td>Not Applicable</td>
+                                        <td>Not Applicable</td>
+                                        <td>Not Applicable</td>
+                                        <td>Not Applicable</td>
+
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+                
+                   <table>
+                    <th class="w-20">Short Description</th>
+                    <td class="w-30">
+                        @if ($data->short_description)
+                            {{ $data->short_description }}
+                        @else
+                            Not Applicable
+                        @endif
+                    </td>
+                   </table>
+                <table>
                     <tr>
-                        <th class="w-20"> Source of CAPA</th>
-                        <td class="w-30">
-                            @if ($data->source_of_capa)
-                            {{ $data->source_of_capa}}
+                        <th class="w-20">Name & Address of The Complainant Agency</th>
+                            @if ($data->nameAddressagency)
+                            {{ \Carbon\Carbon::parse($data->nameAddressagency)->format('d-m-Y') }}
                         @else
                             Not Applicable
                         @endif
                         </td>
-                        <th class="w-20"> Others</th>
-                        <td class="w-30">
-                            @if ($data->others)
-                                {{ $data->others }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <th class="w-20"> Source Document Name / No</th>
-                        <td class="w-30"> @if ($data->source_document_name)
-                            {{ $data->source_document_name }}
+                        <th class="w-20"> Name & Designation complainer</th>
+                        <td class="w-30"> @if ($data->nameDesgnationCom)
+                            {{ $data->nameDesgnationCom }}
                         @else
                             Not Applicable
                         @endif</td>
                        
 
+                    </tr>
+                    <tr>
+                        
+                        <th class="w-20">Phone No</th>
+                        <td>
+                            @if ($data->phone_no)
+                            {{ $data->phone_no }}
+                        @else
+                            Not Applicable
+                        @endif
+                        </td>
 
-                   
+
+                        {{-- <td class="w-30">@if ($data->Facility){{ $data->Facility }} @else Not Applicable @endif</td> --}}
+
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Email address </th>
+                        <td class="w-30">
+                            @if ($data->email_address)
+                            {{ $data->email_address }}
+                        @else
+                            Not Applicable
+                        @endif
+                        </td>
+                        <th class="w-20">Sample Recd</th>
+                        <td class="w-30">
+                            @if ($data->sample_recd)
+                                {{ $data->sample_recd }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <th class="w-20"> Test Results recd</th>
+                        <td class="w-30">
+                            @if ($data->test_results_recd)
+                                {{ $data->test_results_recd }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Classification Based on Receipt of Complaint</th>
+                        <td class="w-30">
+                            @if ($data->severity_level_form)
+                                {{ $data->severity_level_form }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+
+                    </tr>
+                    <tr>
+
+                        <th class="w-20">Acknowledgment Sent to Customer Through Marketing Department by Head QA</th>
+                        <td class="w-30">
+                            @if ($data->acknowledgment_sent)
+                                {{ $data->acknowledgment_sent }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+              
+                <div class="block-head">
+                    Previous History of Product Specific 
+                </div>
+                <div class="border-table" style="margin-bottom: 15px;">
+                    <div class="table-responsive">
+                        <!-- First Half of the Table -->
+                        <table class="table table-bordered" id="product_details" style="width: 100%;">
+                                <thead>
+                                    <tr class="table_bg">
+                                        <th style="width: 15px;">Row #</th>
+                                        <th style="width: 150px;">Complaint Receipt Date</th>
+                                        <th style="width: 150px;">Complaint Received From</th>
+                                        <th style="width: 200px;">Nature of Complaint</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($historydeta && is_array($historydeta))
+                                        @php $serialNumber = 1; @endphp
+                                        @foreach($historydeta as $key => $detail)
+                                            <tr>
+                                                <td>{{ $serialNumber++ }}</td>
+                                                <td>{{ $detail['receipt_date'] ?? 'Not Applicable' }}</td>
+                                                <td>{{ $detail['received_from'] ?? 'Not Applicable' }}</td>
+                                                <td>{{ $detail['nature_of_complaint'] ?? 'Not Applicable' }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Not Applicable</td>
+                                            <td>Not Applicable</td>
+                                            <td>Not Applicable</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            
+                            <!-- Second Half of the Table -->
+                            <table class="table table-bordered" id="history_details_second" style="width: 100%; margin-top: 15px;">
+                                <thead>
+                                    <tr class="table_bg">
+                                        <th style="width: 15px;">Row #</th>
+                                        <th style="width: 150px;">CAPA Taken</th>
+                                        <th style="width: 150px;">Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($historydeta && is_array($historydeta))
+                                        @php $serialNumber = 1; @endphp
+                                        @foreach($historydeta as $key => $detail)
+                                            <tr>
+                                                <td>{{ $serialNumber++ }}</td>
+                                                <td>{{ $detail['capa_taken'] ?? 'Not Applicable' }}</td>
+                                                <td>{{ $detail['remark'] ?? 'Not Applicable' }}</td>
+                                                
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Not Applicable</td>
+                                            <td>Not Applicable</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+
+
+
+                <table>
+                    <tr>
+                        <th class="w-20">Analysis / Physical Examination of Control Sample to be Done</th>
+                        <td class="w-30">
+                            @if ($data->analysis_physical_examination)
+                                {{ $data->analysis_physical_examination }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+
+
+                    </tr>
 
 
                     {{-- <tr> --}}
@@ -291,9 +516,9 @@
 
                 </table>
                 <div class="block">
-                    {{-- <table>
+                    <table>
                         <tr>
-                            <th class="w-20">Description of Deviation</th>
+                            <th class="w-20">Comments</th>
                             <td class="w-80">
                                 @if ($data->Description_Deviation)
                                     {{ strip_tags($data->Description_Deviation) }}
@@ -303,7 +528,7 @@
                             </td>
                            </tr>
                             <tr>
-                                <th class="w-20">Immediate Action (if any)</th>
+                                <th class="w-20">QA for Review of Root Cause of Market Complaint</th>
                                 <td class="w-80">
                                     @if ($data->Immediate_Action)
                                         {{ strip_tags($data->Immediate_Action) }}
@@ -313,194 +538,93 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="w-20">Preliminary Impact of Deviation</th>
+                                <th class="w-20">Preliminary Investigation Report sent by QA to Complainant on</th>
                                 <td class="w-80">
-                                    @if ($data->Preliminary_Impact)
-                                        {{strip_tags($data->Preliminary_Impact) }}
+                                    @if ($data->Preliminary_Investigation_Report)
+                                        {{strip_tags($data->Preliminary_Investigation_Report) }}
                                     @else
                                         Not Applicable
                                     @endif
                                 </td>
                             </tr>
-                    </table> --}}
-                </div>
-                <div class="border-table" style="margin-bottom: 15px;">
-                    <div class="block-" style="margin-bottom:5px; font-weight:bold;">
-                        Proposed Corrective Action
-                    </div>
-                    <table class="table table-bordered" id="corrective_action_details" style="width: 100%;">
-                        <thead>
-                            <tr class="table_bg">
-                                <th class="w-20">Sr. No.</th>
-                                <th class="w-60">Action</th>
-                                <th class="w-60">Responsibility (Department)</th>
-                                <th class="w-60">Target Date</th>
-                                <th class="w-60">Completion Date</th>
-                                <th class="w-60">Implementation Verified by QA</th>
-                                <th class="w-20">Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if($correctiveActions && is_array($correctiveActions))
-                                @php $serialNumber = 1; @endphp
-                                @foreach($correctiveActions as $action)
-                                    <tr>
-                                        <td class="w-20">{{ $serialNumber++ }}</td>
-                                        <td class="w-60">{{ $action['action'] }}</td>
-                                        <td class="w-60">{{ $action['responsibility'] }}</td>
-                                        <td class="w-60">{{ $action['target_date'] }}</td>
-                                        <td class="w-60">{{ $action['completion_date'] }}</td>
-                                        <td class="w-60">{{ $action['verified_by_qa'] }}</td>
-                                        <td class="w-20">{{ $action['remarks'] ?? 'N/A' }}</td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td class="w-20">1</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-20">Not Applicable</td>
-                                </tr>
-                            @endif
-                        </tbody>
                     </table>
                 </div>
-                
-                <div class="border-table" style="margin-bottom: 15px;">
-                    <div class="block-" style="margin-bottom:5px; font-weight:bold;">
-                        Proposed Preventive Action
-                    </div>
-                    <table class="table table-bordered" id="preventive_action_details" style="width: 100%;">
-                        <thead>
-                            <tr class="table_bg">
-                                <th class="w-20">Sr. No.</th>
-                                <th class="w-60">Action</th>
-                                <th class="w-60">Responsibility (Department)</th>
-                                <th class="w-60">Target Date</th>
-                                <th class="w-60">Completion Date</th>
-                                <th class="w-60">Implementation Verified by QA</th>
-                                <th class="w-20">Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if($preventiveActions && is_array($preventiveActions))
-                                @php $serialNumber = 1; @endphp
-                                @foreach($preventiveActions as $action)
-                                    <tr>
-                                        <td class="w-20">{{ $serialNumber++ }}</td>
-                                        <td class="w-60">{{ $action['action'] }}</td>
-                                        <td class="w-60">{{ $action['responsibility'] }}</td>
-                                        <td class="w-60">{{ $action['target_date'] }}</td>
-                                        <td class="w-60">{{ $action['completion_date'] }}</td>
-                                        <td class="w-60">{{ $action['verified_by_qa'] }}</td>
-                                        <td class="w-20">{{ $action['remarks'] ?? 'N/A' }}</td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td class="w-20">1</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-60">Not Applicable</td>
-                                    <td class="w-20">Not Applicable</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-                
-
-                
-                
-                
+            
                 <div class="block">
                     <div class="block-head">
-                        Document Details
+                        Testing Plan
                     </div>
                     <div class="border-table">
-                        <table>
-                            <tr class="table_bg">
-                                <th class="w-10">Sr. No.</th>
-                                <th class="w-25">Number</th>
-                                <th class="w-25">Reference Document Name</th>
-                                <th class="w-25">Remarks</th>
-
+                                   <!-- First Half of the Table -->
+            <table class="table table-bordered" id="material_details_first" style="width: 100%;">
+                <thead>
+                    <tr class="table_bg">
+                        <th style="width: 15px;">Row #</th>
+                        <th style="width: 100px;">Batch No</th>
+                        <th style="width: 150px;">Physical Test to be Performed</th>
+                        <th style="width: 100px;">Observation</th>
+                        <th style="width: 120px;">Specification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if($materialdeta && is_array($materialdeta))
+                        @php $serialNumber = 1; @endphp
+                        @foreach($materialdeta as $key => $detail)
+                            <tr>
+                                <td>{{ $serialNumber++ }}</td>
+                                <td>{{ $detail['batch_no'] ?? 'Not Applicable' }}</td>
+                                <td>{{ $detail['physical_test'] ?? 'Not Applicable' }}</td>
+                                <td>{{ $detail['observation'] ?? 'Not Applicable' }}</td>
+                                <td>{{ $detail['specification'] ?? 'Not Applicable' }}</td>
                             </tr>
-                            @if (!empty($grid_data1->Number))
-                                @foreach (unserialize($grid_data1->Number) as $key => $dataDemo)
-                                    <tr>
-                                        <td class="w-15">{{ $loop->index + 1 }}</td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Number)[$key] ? unserialize($grid_data1->Number)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->ReferenceDocumentName)[$key] ? unserialize($grid_data1->ReferenceDocumentName)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Document_Remarks)[$key] ? unserialize($grid_data1->Document_Remarks)[$key] : 'Not Applicable' }}
-                                        </td>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td>1</td>
+                            <td>Not Applicable</td>
+                            <td>Not Applicable</td>
+                            <td>Not Applicable</td>
+                            <td>Not Applicable</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+            
+            <!-- Second Half of the Table -->
+            <table class="table table-bordered" id="material_details_second" style="width: 100%; margin-top: 15px;">
+                <thead>
+                    <tr class="table_bg">
+                        <th style="width: 15px;">Row #</th>
+                        <th style="width: 150px;">Batch Disposition Decision</th>
+                        <th style="width: 150px;">Remark</th>
+                        <th style="width: 100px;">Batch Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if($materialdeta && is_array($materialdeta))
+                        @php $serialNumber = 1; @endphp
+                        @foreach($materialdeta as $key => $detail)
+                            <tr>
+                                <td>{{ $serialNumber++ }}</td>
+                                <td>{{ $detail['batch_disposition_decision'] ?? 'Not Applicable' }}</td>
+                                <td>{{ $detail['remark'] ?? 'Not Applicable' }}</td>
+                                <td>{{ $detail['batch_status'] ?? 'Not Applicable' }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td>1</td>
+                            <td>Not Applicable</td>
+                            <td>Not Applicable</td>
+                            <td>Not Applicable</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
 
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-
-                                </tr>
-                            @endif
-                        </table>
                     </div>
                 </div>
-                {{-- ==================================new Added=================== --}}
-                <div class="block">
-                    <div class="block-head">
-                        Product/Batch Details
-                    </div>
-                    <div class="border-table">
-                        <table>
-                            <tr class="table_bg">
-                                <th class="w-10">Sr. No.</th>
-                                <th class="w-25">Product</th>
-                                <th class="w-25">Stage</th>
-                                <th class="w-25">Batch No.</th>
-
-                            </tr>
-                            @if (!empty($grid_data1->Number))
-                                @foreach (unserialize($grid_data1->Number) as $key => $dataDemo)
-                                    <tr>
-                                        <td class="w-15">{{ $loop->index + 1 }}</td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Number)[$key] ? unserialize($grid_data1->Number)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->ReferenceDocumentName)[$key] ? unserialize($grid_data1->ReferenceDocumentName)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Document_Remarks)[$key] ? unserialize($grid_data1->Document_Remarks)[$key] : 'Not Applicable' }}
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-
-                                </tr>
-                            @endif
-                        </table>
-                    </div>
-                </div>
+              
 
                 <div class="border-table">
                     <div class="block-head">
@@ -767,7 +891,7 @@
                         <th class="w-20">Approved Comments</th>
                         <td class="w-30">{{ $data->Approved_Comments }}</td>
 
-
+                    </tr>
 
                 </table>
             </div>

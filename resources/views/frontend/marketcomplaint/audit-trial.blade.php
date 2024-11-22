@@ -213,17 +213,14 @@
             @endif
             <div class="buttons-new">
                 @if ($document->stage < 7 && !(count($userRoleIds) === 1 && in_array(3, $userRoleIds)))
-                {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditReviewer" > --}}
-                    <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#" >
-                    
+                <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditReviewer" >
                     Review
                 </button>
                 @endif
-                {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditViewers"> --}}
-                    <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#">
+                <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#auditViewers">
                     View
                     </button>
-                <button class="button_theme1" ><a class="text-white" href="{{ url('capashow/' . $document->id)  }}"> Back
+                <button class="button_theme1" ><a class="text-white" href="{{ url('rcms/marketcomplaintshow/' . $document->id)  }}"> Back
                 </a>
                 </button>
                 <button class="button_theme1" onclick="window.print();">
@@ -337,7 +334,7 @@
               </div>
 
             <div> <strong>Record ID.</strong> {{ str_pad($document->record, 4, '0', STR_PAD_LEFT) }}</div>
-            <div style="margin-bottom: 5px;  font-weight: bold;"> Originator :{{ Auth::user()->name  }}</div>
+            <div style="margin-bottom: 5px;  font-weight: bold;"> Originator :{{ $document->record_initiator ? $document->record_initiator->name : '' }}</div>
             <div style="margin-bottom: 5px; font-weight: bold;">Short Description : {{$document->short_description}}</div>
             <div style="margin-bottom: 5px;  font-weight: bold;">Due Date :  {{$document->due_date}}</div>
          
@@ -379,12 +376,12 @@
 
                        
                         <td>
-                            <div><strong>Changed From :</strong>{!! $dataDemo->change_from ? $dataDemo->change_from : "Not Applicable" !!}</div>
+                            <div><strong>Changed From :</strong>{!! $dataDemo->change_from !!}</div>
                         </td>
 
                         <td>
                          {{-- <div><strong>Changed To :</strong>{{ !$dataDemo->action ? "Not Applicable" : $dataDemo->deviation->status}}</div> --}}
-                         <div><strong>Changed To :</strong>{!! $dataDemo->change_to ? $dataDemo->change_to :"Not Applicable"!!}</div>
+                         <div><strong>Changed To :</strong>{!! $dataDemo->change_to!!}</div>
 
                         </td>
                         <!-- ------Record Is send by Hod Review----------- -->

@@ -4,6 +4,7 @@ use App\Http\Controllers\ActionItemController;
 use App\Http\Controllers\OpenStageController;
 use App\Http\Controllers\rcms\InternalauditController;
 use App\Http\Controllers\rcms\RootCauseController;
+use App\Http\Controllers\rcms\OOSController;
 use App\Http\Controllers\TMSController;
 use App\Http\Controllers\RiskManagementController;
 use App\Http\Controllers\ChangeControlController;
@@ -198,6 +199,30 @@ Route::post('root/cancel/{id}', [RootCauseController::class, 'root_Cancel'])->na
 Route::post('root/reject/{id}', [RootCauseController::class, 'root_reject'])->name('root_reject');
 Route::get('rootAuditTrial/{id}', [RootCauseController::class, 'rootAuditTrial']);
 Route::get('auditDetailsRoot/{id}', [RootCauseController::class, 'auditDetailsroot'])->name('showrootAuditDetails');
+
+//================================ OOS OOT ====================
+Route::get('oos', [OOSController::class, 'index']);
+Route::post('oos_create', [OOSController::class, 'store'])->name('oos_create');
+Route::get('oos_view/{id}', [OOSController::class, 'show'])->name('oos_view');
+Route::post('oosupdate/{id}', [OOSController::class, 'update'])->name('oosupdate');
+Route::post('sendstage/{id}',[OOSController::class,'send_stage'])->name('send_stage');
+Route::get('AuditTrial/{id}', [OOSController::class, 'AuditTrial'])->name('audit_trial');
+Route::get('auditDetails/{id}', [OOSController::class, 'auditDetails'])->name('audit_details');
+Route::get('audit_report/{id}', [OOSController::class, 'auditReport'])->name('audit_report');
+Route::get('single_report/{id}', [OOSController::class, 'singleReport'])->name('single_report');
+
+Route::post('requestmoreinfo_back_stage/{id}',[OOSController::class,'requestmoreinfo_back_stage'])->name('requestmoreinfo_back_stage');
+Route::post('assignable_send_stage/{id}',[OOSController::class,'assignable_send_stage'])->name('assignable_send_stage');
+Route::post('cancel_stage/{id}', [OOSController::class, 'cancel_stage'])->name('cancel_stage');
+Route::post('Done_stage/{id}', [OOSController::class, 'Done_stage'])->name('Done_stage');
+Route::post('Done_One_stage/{id}', [OOSController::class, 'Done_One_stage'])->name('Done_One_stage');
+Route::post('Done_Two_stage/{id}', [OOSController::class, 'Done_Two_stage'])->name('Done_Two_stage');
+Route::post('thirdStage/{id}', [OOSController::class, 'stageChange'])->name('thirdStage');
+Route::post('reject_stage/{id}', [OOSController::class, 'reject_stage'])->name('reject_stage');
+Route::post('child/{id}', [OOSController::class, 'child'])->name('child');
+
+
+
 
 
 

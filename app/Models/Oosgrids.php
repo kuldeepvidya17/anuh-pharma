@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Capa extends Model
+class Oosgrids extends Model
 {
     use HasFactory;
+
+    protected $table = 'oosgrids';
     protected $fillable = [
-        
-        'closure_attachment',
+        'oos_id',
+        'identifier',
+        'data'
     ];
-
-    // Cast specific attributes to array
     protected $casts = [
-        
-        'closure_attachment' => 'array',
+        'data' => 'array'
     ];
-
 }
