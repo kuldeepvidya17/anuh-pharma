@@ -31,12 +31,17 @@ class FormDivisionController extends Controller
         } elseif ($request->process_name == "Deviation") {
             return redirect('deviation');   
             
+        }elseif ($request->process_name == "MarketComplaint") {
+            return redirect('rcms/marketcomplaintcreate');   
+            
         } elseif ($request->process_name == "Root Cause Analysis") {
             return redirect('root-cause-analysis');
         } elseif ($request->process_name == "Change Control") {
             return redirect()->route('CC.create');
         } elseif ($request->process_name == "Management Review") {
             return redirect('meeting');
+        }elseif ($request->process_name == "OOS") {
+            return redirect('#');
         }elseif ($request->process_name == "New Document") {
 
             $new = new SetDivision;

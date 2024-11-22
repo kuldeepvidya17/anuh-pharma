@@ -4,27 +4,28 @@ namespace App\Http\Controllers\rcms;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActionItem;
+use App\Models\Auditee;
+use App\Models\AuditProgram;
 use App\Models\Capa;
 use App\Models\CC;
+use App\Models\Deviation;
 use App\Models\EffectivenessCheck;
 use App\Models\Extension;
 use App\Models\InternalAudit;
-use App\Models\ManagementReview;
-use App\Models\RiskManagement;
 use App\Models\LabIncident;
-use App\Models\Auditee;
-use App\Models\AuditProgram;
-use App\Models\RootCauseAnalysis;
+use App\Models\ManagementReview;
+use App\Models\MarketComplaint;
 use App\Models\Observation;
-use App\Models\Deviation;
-use Helpers;
+use App\Models\RiskManagement;
+use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use Carbon\Carbon;
+use Helpers;
+use Illuminate\Http\Request;
+
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
-
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -65,6 +66,8 @@ class DashboardController extends Controller
         $datas11 = RootCauseAnalysis::orderByDesc('id')->get();
         $datas12 = Observation::orderByDesc('id')->get();
         $datas13 = Deviation::orderByDesc('id')->get();
+        $datas14 = MarketComplaint::orderByDesc('id')->get();
+
         //  dd($datas11);
 
         foreach ($datas as $data) {
@@ -347,7 +350,27 @@ class DashboardController extends Controller
                 "date_close" => $data->updated_at,
             ]);
         }
-        $table  = collect($table)->sortBy('record')->reverse()->toArray();
+        foreach ($datas14 as $data) {
+            $data->create = Carbon::parse($data->created_at)->format('d-M-Y h:i A');
+
+            array_push($table, [
+                "id" => $data->id,
+                "parent" => $data->parent_record ? $data->parent_record : "-",
+                "record" => $data->record,
+                "division_id" => $data->division_id,
+                "type" => "MarketComplaint",
+                "parent_id" => $data->parent_id? $data->parent_id : "-",
+                "parent_record" => $data->parent_record? $data->parent_record : "-",
+                "parent_type" => $data->parent_type,
+                "short_description" => $data->short_description ? $data->short_description : "-",
+                "initiator_id" => $data->initiator_id,
+                "due_date" => $data->due_date,
+                "stage" => $data->status,
+                "date_open" => $data->create,
+                "date_close" => $data->updated_at,
+            ]);
+        }
+        // $table  = collect($table)->sortBy('record')->reverse()->toArray();
         // return $table;
         // $paginatedData = json_encode($table);
 
@@ -766,6 +789,13 @@ class DashboardController extends Controller
             $data = Deviation::find($id);
             $single = "deviationSingleReport/". $data->id . "/show";
             $audit = " deviationAuditReport/". $data->id;
+            $parent="deviationparentchildReport/". $data->id;
+            $family="DeviationFamily/". $data->id;
+        }
+        elseif ($type == "MarketComplaint") {
+            $data = MarketComplaint::find($id);
+            $single = "MarketComplaintSingleReport/" . $data->id;
+            $audit = " marketAuditReport/". $data->id;
             $parent="deviationparentchildReport/". $data->id;
             $family="DeviationFamily/". $data->id;
         }

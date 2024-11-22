@@ -70,12 +70,13 @@ class ProcessSeeder extends Seeder
             "External Audit",
             "Internal Audit",
             "Audit Program",
-            "CAPA",
             "Change Control",
-            "New Document",
+            "OOS",
             "Lab Incident",
             "Effective Check",
-            "Deviation"
+            "Deviation",
+            "CAPA",
+            "MarketComplaint"
         ];
 
         // Loop through each process name
