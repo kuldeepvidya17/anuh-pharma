@@ -27,7 +27,9 @@ return new class extends Migration
             $table->string('parent_type')->nullable();
             $table->string('general_initiator_group')->nullable();
             $table->longText('short_description')->nullable();
-            $table->longText('problem_description')->nullable();
+            $table->longText('problem_descriptions')->nullable();
+            $table->longText('comments_new')->nullable();
+            
             $table->longText('initiated_through')->nullable();
             $table->text('initiated_through_req')->nullable();
             $table->text('repeat')->nullable();

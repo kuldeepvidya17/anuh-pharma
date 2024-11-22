@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Capa extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        
+        'closure_attachment',
+    ];
+
+    // Cast specific attributes to array
+    protected $casts = [
+        
+        'closure_attachment' => 'array',
+    ];
+
 }

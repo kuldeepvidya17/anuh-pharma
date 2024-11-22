@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CapaGrid extends Model
+class MarketComplaintGrids extends Model
 {
     use HasFactory;
-    protected $table ="capa_grids";
+    protected $table ="market_complaint_grids";
     protected $fillable = [
-        'capa_id',
+        'mc_id',
         'identifers',
         'data'
         ];
@@ -19,9 +19,9 @@ class CapaGrid extends Model
             'data' => 'array'
             // 'aainfo_product_name' => 'array',
                ];
-
-               public function Capa()
+    
+          public function MarketComplaint()
                {
-                   return $this->hasMany(Capa::class);
+                   return $this->hasMany(MarketComplaint::class);
                }
 }
