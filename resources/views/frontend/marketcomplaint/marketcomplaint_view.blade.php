@@ -266,8 +266,8 @@
                                                     name="assign_to"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
                                                     <option value="">Select a value</option>
                                                     @foreach ($users as $value)
-                                                        <option {{ $data->assign_to == $value->id ? 'selected' : '' }}
-                                                            value="{{ $value->id }}">{{ $value->name }}</option>
+                                                        <option {{ $data->assign_to == $value->name ? 'selected' : '' }}
+                                                            value="{{ $value->name }}">{{ $value->name }}</option>
                                                     @endforeach
                                                 </select>
 
@@ -616,10 +616,10 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="severity-level">Classification based on receipt of
-                                                    complaint</label>
+                                                <label for="severity-level">Classification Based on Receipt of
+                                                    Complaint</label>
                                                 <select name="severity_level_form">
-                                                    <option value="0">-- Select --</option>
+                                                    <option value="">-- Select --</option>
                                                     <option value="minor"
                                                         {{ $data->severity_level_form == 'minor' ? 'selected' : '' }}>Minor
                                                     </option>
@@ -635,8 +635,8 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
-                                                <label for="repeat">Acknowledgment sent to customer through marketing
-                                                    department by Head QA </label>
+                                                <label for="repeat">Acknowledgment Sent to Customer Through Marketing
+                                                    Department by Head QA </label>
 
                                                 <select name="acknowledgment_sent">
 
@@ -913,7 +913,7 @@
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Comments">Comments </label>
-                                                <textarea name="capa_qa_comments2" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->capa_qa_comments2 }}</textarea>
+                                                <textarea name="capa_qa_comments2" >{{ $data->capa_qa_comments2 }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1058,11 +1058,12 @@
                                                 <div><small class="text-primary">Identification of Cross functional
                                                         departments by QA for review of root cause of Market
                                                         complaint</small></div>
-                                                <select name="Identification_Cross_functional">
-                                                    <option value="">Enter Your Selection Here</option>
-                                                    <option value="Yes">Yes</option>
-                                                    <option value="No">No</option>
-                                                </select>
+                                                        <select name="identification_cross_functional">
+                                                            <option value="" {{ empty($data->identification_cross_functional) ? 'selected' : '' }}>Enter Your Selection Here</option>
+                                                            <option value="Yes" {{ $data->identification_cross_functional == "Yes" ? 'selected' : '' }}>Yes</option>
+                                                            <option value="No" {{ $data->identification_cross_functional == "No" ? 'selected' : '' }}>No</option>
+                                                        </select>
+                                                        
                                             </div>
                                         </div>
 
@@ -1070,67 +1071,128 @@
                                             <div class="group-input">
                                                 <label for="Corrective Action">Preliminary Investigation Report sent by QA
                                                     to Complainant on</label>
-                                                <textarea name="Preliminary_Investigation_Report"></textarea>
+                                                <textarea name="preliminary_investigation_report">{{ $data->preliminary_investigation_report }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="Closure Attachments">Attachment(if any)</label>
-                                                <div><small class="text-primary">Please Attach all relevant or supporting
-                                                        documents</small></div>
-                                                {{-- <input multiple type="file" id="myfile" name="closure_attachment[]"> --}}
+                                                <label for="Closure Attachments">Attachment (if any)</label>
+                                                <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
                                                 <div class="file-attachment-field">
-                                                    <div class="file-attachment-list" id="attachment"></div>
+                                                    <!-- List of Existing Attachments -->
+                                                    <div class="file-attachment-list" id="attachment">
+                                                        @if ($data->attachment)
+                                                            @foreach(json_decode($data->attachment) as $file)
+                                                                <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
+                                                                    <b>{{ $file }}</b>
+                                                                    <a href="{{ asset('upload/' . $file) }}" target="_blank">
+                                                                        <i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i>
+                                                                    </a>
+                                                                    <a type="button" class="remove-file" data-file-name="{{ $file }}">
+                                                                        <i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i>
+                                                                    </a>
+                                                                    <input type="hidden" name="existing_attachment[]" value="{{ $file }}">
+                                                                </h6>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                    <!-- Add New Attachments -->
                                                     <div class="add-btn">
                                                         <div>Add</div>
-                                                        <input type="file" id="myfile" name="attachment[]"
-                                                            oninput="addMultipleFiles(this, 'attachment')" multiple>
+                                                        <input type="file" 
+                                                               id="myfile" 
+                                                               name="attachment[]" 
+                                                               oninput="addMultipleFiles(this, 'attachment')" 
+                                                               multiple>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        <!-- Hidden field to track deleted files -->
+                                        <input type="hidden" id="deleted_attachment" name="deleted_attachment" value="">
+                                        
+                                        <!-- Script to Handle Remove File Logic -->
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const removeButtons = document.querySelectorAll('.remove-file');
+                                        
+                                                removeButtons.forEach(button => {
+                                                    button.addEventListener('click', function () {
+                                                        const fileName = this.getAttribute('data-file-name');
+                                                        const fileContainer = this.closest('.file-container');
+                                        
+                                                        // Hide the file container
+                                                        if (fileContainer) {
+                                                            fileContainer.style.display = 'none';
+                                        
+                                                            // Remove hidden input associated with this file
+                                                            const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                                                            if (hiddenInput) {
+                                                                hiddenInput.remove();
+                                                            }
+                                        
+                                                            // Add the file name to the deleted files list
+                                                            const deletedFilesInput = document.getElementById('deleted_attachment');
+                                                            let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                                                            deletedFiles.push(fileName);
+                                                            deletedFilesInput.value = deletedFiles.join(',');
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                        
                                         <div class="col-lg-6 new-date-data-field">
                                             <div class="group-input input-date">
-                                                <label for="Date Due"> Further Response Received from customer </label>
+                                                <label for="Date Due">Further Response Received from Customer</label>
                                                 <div class="calenderauditee">
-                                                    <input type="text" id="Further_Response_Received" readonly
-                                                        placeholder="DD-MMM-YYYY" />
-                                                    <input type="date" name="Further_Response_Received"
-                                                        min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                                        class="hide-input"
-                                                        oninput="handleDateInput(this, 'Further_Response_Received')" />
+                                                    <!-- Readonly Input to Show Selected Date -->
+                                                    <input type="text" 
+                                                           id="further_response_received" 
+                                                           readonly 
+                                                           placeholder="DD-MMM-YYYY" 
+                                                           value="{{ $data->further_response_received ? \Carbon\Carbon::parse($data->further_response_received)->format('d-M-Y') : '' }}" />
+                                        
+                                                    <!-- Date Picker Input -->
+                                                    <input type="date" 
+                                                           name="further_response_received" 
+                                                           class="hide-input" 
+                                                           min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" 
+                                                           value="{{ $data->further_response_received ?? '' }}" 
+                                                           oninput="handleDateInput(this, 'further_response_received')" />
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Preventive Action">Details of Response </label>
-                                                <textarea name="Details_of_Response"></textarea>
+                                                <textarea name="Details_of_Response">{{ $data->Details_of_Response }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="repeat">Further investigation / Additional testing
                                                     required</label>
-                                                <select name="Further_investigation_Additional_testing">
-                                                    <option value="">Enter Your Selection Here</option>
-                                                    <option value="Yes">Yes</option>
-                                                    <option value="No">No</option>
+                                                <select name="further_investigation_additional_testing">
+                                                    <option value="" {{ $data->further_investigation_additional_testing=="" ? 'selected': '' }}>Enter Your Selection Here</option>
+                                                    <option value="Yes" {{ $data->further_investigation_additional_testing=="Yes" ? 'selected': '' }}>Yes</option>
+                                                    <option value="No"  {{ $data->further_investigation_additional_testing=="No" ? 'selected': '' }}>No</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="repeat">Method / Tools to be used for investigation</label>
-                                                <select name="Method_Tools_to_be_used_for">
-                                                    <option value="">Enter Your Selection Here</option>
-                                                    <option value="Method / Tools to be used for">Method / Tools to be used
-                                                        for</option>
-                                                    <option value="5 Why’s">5 Why’s </option>
-                                                    <option value="BMCR and BPCR review">BMCR and BPCR review </option>
-                                                    <option value="others (Pl. specify)">others (Pl. specify) </option>
-
+                                                <select name="method_tools_to_be_used_for">
+                                                    <option value="" {{ $data->method_tools_to_be_used_for == '' ? 'selected' : '' }}>Enter Your Selection Here</option>
+                                                    <option value="Method / Tools to be used for" {{ $data->method_tools_to_be_used_for == 'Method / Tools to be used for' ? 'selected' : '' }}>Method / Tools to be used for</option>
+                                                    <option value="5 Why’s" {{ $data->method_tools_to_be_used_for == "5 Why’s" ? 'selected' : '' }}>5 Why’s</option>
+                                                    <option value="BMCR and BPCR review" {{ $data->method_tools_to_be_used_for == "BMCR and BPCR review" ? 'selected' : '' }}>BMCR and BPCR review</option>
+                                                    <option value="others (Pl. specify)" {{ $data->method_tools_to_be_used_for == "others (Pl. specify)" ? 'selected' : '' }}>others (Pl. specify)</option>
                                                 </select>
+                                                
                                             </div>
                                         </div>
 
@@ -1401,12 +1463,37 @@
                                             });
                                         </script>
 
+
+
+
                                 <div class="col-12">
                                 <div class="group-input">
                                     <label for="Corrective Action">Head Quality Comment</label>
                                     <textarea name="head_qulitiy_comment">{{$data->head_qulitiy_comment}}</textarea>
                                 </div>
-                            </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="severity-level">Re-Categorization of complaint after investigation</label>
+                                        <select name="re_categoruzation_of_complaint">
+                                            <option value="">-- Select --</option>
+                                            <option value="critical" {{ $data->re_categoruzation_of_complaint == "critical" ? 'selected' : '' }}>Critical</option>
+                                            <option value="major" {{ $data->re_categoruzation_of_complaint == "major" ? 'selected' : '' }}>Major</option>
+                                            <option value="minor" {{ $data->re_categoruzation_of_complaint == "minor" ? 'selected' : '' }}>Minor</option>
+                                            <option value="not applicable" {{ $data->re_categoruzation_of_complaint == "not applicable" ? 'selected' : '' }}>Not Applicable</option>
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+    
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Corrective Action">Reason For Re-Categorization (Head Quality):</label>
+                                        <textarea name="reson_for_re_cate">{{ $data->reson_for_re_cate }}</textarea>
+                                    </div>
+                                </div>
+    
 
                                                                     
 

@@ -770,7 +770,7 @@
                                         <label for="repeat">QA for Review of Root Cause of Market Complaint</label>
                                         <div><small class="text-primary">Identification of Cross functional departments by
                                                 QA for review of root cause of Market complaint</small></div>
-                                        <select name="Identification_Cross_functional">
+                                        <select name="identification_cross_functional">
                                             <option value="">Enter Your Selection Here</option>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
@@ -782,7 +782,7 @@
                                     <div class="group-input">
                                         <label for="Corrective Action">Preliminary Investigation Report sent by QA to
                                             Complainant on</label>
-                                        <textarea name="Preliminary_Investigation_Report"></textarea>
+                                        <textarea name="preliminary_investigation_report"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -804,24 +804,24 @@
                                     <div class="group-input input-date">
                                         <label for="Date Due"> Further Response Received from customer </label>
                                         <div class="calenderauditee">
-                                            <input type="text" id="Further_Response_Received" readonly
+                                            <input type="text" id="further_response_received" readonly
                                                 placeholder="DD-MMM-YYYY" />
-                                            <input type="date" name="Further_Response_Received"
+                                            <input type="date" name="further_response_received"
                                                 min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
-                                                oninput="handleDateInput(this, 'Further_Response_Received')" />
+                                                oninput="handleDateInput(this, 'further_response_received')" />
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div class="col-12">
+                                <div class="col-12">
                                     <div class="group-input">
                                         <label for="Preventive Action">Details of Response </label>
                                         <textarea name="Details_of_Response"></textarea>
                                     </div>
-                                </div> --}}
+                                </div>
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="repeat">Further investigation / Additional testing required</label>
-                                        <select name="Further_investigation_Additional_testing">
+                                        <select name="further_investigation_additional_testing">
                                             <option value="">Enter Your Selection Here</option>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
@@ -831,7 +831,7 @@
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="repeat">Method / Tools to be used for investigation</label>
-                                        <select name="Method_Tools_to_be_used_for">
+                                        <select name="method_tools_to_be_used_for">
                                             <option value="">Enter Your Selection Here</option>
                                             <option value="Method / Tools to be used for">Method / Tools to be used for
                                             </option>
@@ -1081,7 +1081,38 @@
                             </div>
 
 
+                            <div class="col-12">
+                                <div class="group-input">
+                                    <label for="severity-level">Re-Categorization of complaint after investigation</label>
+                                    <select name="re_categoruzation_of_complaint">
+                                        <option value="0">-- Select --</option>
+                                        <option value="critical">Critical</option>
+                                        <option value="major">Major</option>
+                                        <option value="minor">Minor</option>
+                                        <option value="not applicable">Not Applicable</option>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="col-12">
+                                <div class="group-input">
+                                    <label for="Corrective Action">Reason For Re-Categorization (Head Quality):</label>
+                                    <textarea name="reson_for_re_cate"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12 sub-head">
+                                Extension Justification
+                            </div>
+                            <div class="col-12">
+                                <div class="group-input">
+                                    <label for="due_date_extension">EXTENSION FOR DELAY IN CLOSURE OF MARKET COMPLAINT:
+                                        
+                                        </label>
+                                    <div><small class="text-primary">Justification for Delay</small></div>
+                                    <textarea name="due_date_extension"></textarea>
+                                </div>
+                            </div>
 
                             </div>
                             <div class="button-block">
@@ -3115,17 +3146,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12 sub-head">
-                                    Extension Justification
-                                </div>
-                                <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="due_date_extension">Due Date Extension Justification</label>
-                                        <div><small class="text-primary">Please Mention justification if due date is
-                                                crossed</small></div>
-                                        <textarea name="due_date_extension"></textarea>
-                                    </div>
-                                </div>
+                               
 
                             </div>
                             <div class="button-block">
