@@ -207,39 +207,48 @@
                     General Information
                 </div>
                 <table>
-                    <tr> {{ $data->created_at }} added by {{ $data->originator }}
+                    <tr>
+                        <th class="w-20">Deviation No.</th>
+                        <td class="w-30">
+                                {{ Helpers::getDivisionName($data->division_id) }}/DEV/{{ Helpers::year($data->created_at) }}/{{ $data->record  }}
+                        </td>
                         <th class="w-20">Site/Location Code</th>
                         <td class="w-30"> {{ Helpers::getDivisionName($data->division_id) }}</td>
+                    </tr>
+                    <tr>
                         <th class="w-20">Initiator</th>
                         <td class="w-30">{{ Helpers::getInitiatorName($data->initiator_id) }}</td>
                         </td>
-                    </tr>
-                    <tr>
+
                         <th class="w-20">Date of Initiation</th>
                         {{-- <td class="w-30">@if{{ Helpers::getdateFormat($data->intiation_date) }} @else Not Applicable @endif</td> --}}
                         {{-- <td class="w-30">@if (Helpers::getdateFormat($data->intiation_date)) {{ Helpers::getdateFormat($data->intiation_date) }} @else Not Applicable @endif</td> --}}
-                        <td class="w-30">{{ $data->created_at ? $data->created_at->format('d-m-Y') : '' }} </td>
-
-                        <th class="w-20">Due Date</th>
                         <td class="w-30">
-                            @if ($data->due_date)
-                            {{ \Carbon\Carbon::parse($data->due_date)->format('d-m-Y') }}
-                        @else
-                            Not Applicable
-                        @endif
+                            {{ $data->created_at ? \Carbon\Carbon::parse($data->created_at)->format('d-M-Y') : 'Not Applicable' }}
                         </td>
                     </tr>
                     <tr>
-                        <th class="w-20">Department</th>
+                        <th class="w-20">Due Date</th>
                         <td class="w-30">
-                            @if ($data->Initiator_Group)
-                                {{ Helpers::getFullDepartmentName($data->Initiator_Group) }}
+                            @if ($data->due_date)
+                                {{ \Carbon\Carbon::parse($data->due_date)->format('d-M-Y') }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <th class="w-20">Short Description</th>
+                        
+                        <th class="w-20">Department</th>
                         <td class="w-30">
+                            @if ($data->Initiator_Group)
+                                {{ $data->Initiator_Group }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="w-20">Short Description</th>
+                        <td class="w-30" colspan="3">
                             @if ($data->short_description)
                                 {{ $data->short_description }}
                             @else
@@ -250,62 +259,9 @@
                         {{-- <th class="w-20">Department Code</th> --}}
                         {{-- <td class="w-30">@if ($data->initiator_group_code){{ $data->initiator_group_code }} @else Not Applicable @endif</td> --}}
                     </tr>
-                   
-                    <tr>
-                        <th class="w-20"> Deviation Observed On</th>
-                        <td class="w-30">
-                            @if ($data->Deviation_date)
-                            {{ \Carbon\Carbon::parse($data->Deviation_date)->format('d-m-Y') }}
-                        @else
-                            Not Applicable
-                        @endif
-                        </td>
-                        <th class="w-20"> Deviation Observed On (Time)</th>
-                        <td class="w-30">
-                            @if ($data->deviation_time)
-                                {{ $data->deviation_time }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <th class="w-20"> Delay Justification</th>
-                        <td class="w-30"> @if ($data->Delay_Justification)
-                            {{ $data->Delay_Justification }}
-                        @else
-                            Not Applicable
-                        @endif</td>
-                        <th class="w-20">Deviation Observed by</th>
-                        @php
-                            $facilityIds = explode(',', $data->Facility);
-                            $users = $facilityIds ? DB::table('users')->whereIn('id', $facilityIds)->get() : [];
-                        @endphp
-
-                        <td>
-                            @if ($data->Facility)
-                            {{ $data->Facility }}
-                        @else
-                            Not Applicable
-                        @endif
-                        </td>
-
-
-                        {{-- <td class="w-30">@if ($data->Facility){{ $data->Facility }} @else Not Applicable @endif</td> --}}
-
-                    </tr>
 
                     <tr>
-                        <th class="w-20">Deviation Reported On </th>
-                        <td class="w-30">
-                            @if ($data->Deviation_reported_date)
-                            {{ \Carbon\Carbon::parse($data->Deviation_reported_date)->format('d-m-Y') }}
-                        @else
-                            Not Applicable
-                        @endif
-                        </td>
-                        <th class="w-20">Deviation Related To</th>
+                        <th class="w-20">Deviation Requested For</th>
                         <td class="w-30">
                             @if ($data->audit_type)
                                 {{ $data->audit_type }}
@@ -313,47 +269,93 @@
                                 Not Applicable
                             @endif
                         </td>
+                        <th class="w-20"> Name of Product</th>
+                        <td class="w-30">
+                            @if ($data->name_product)
+                                {{ $data->name_product }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <th class="w-20"> Stage of deviation</th>
+                        <td class="w-30">
+                            @if ($data->deviation_stage)
+                                {{ $data->deviation_stage }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
                     </tr>
                     <tr>
-
-                        <th class="w-20"> Others</th>
-                        <td class="w-30">
-                            @if ($data->others)
-                                {{ $data->others }}
+                        <th class="w-20">Description of Deviation</th>
+                        <td>
+                            @if ($data->Description_Deviation)
+                               {!! $data->Description_Deviation !!}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <th class="w-20">Facility/ Equipment/ Instrument/ System Details Required?</th>
+                     </tr>
+                     <tr>
+                        <th class="w-20">Date/shift of Deviation Occurrence/ Noticed </th>
                         <td class="w-30">
-                            @if ($data->Facility_Equipment)
-                                {{ $data->Facility_Equipment }}
+                            @if ($data->deviation_shift)
+                                {{ $data->deviation_shift }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-
                     </tr>
                     <tr>
-
-                        <th class="w-20">Document Details Required?</th>
+                        <th class="w-20">Existing Procedure (With References)</th>
                         <td class="w-30">
-                            @if ($data->Document_Details_Required)
-                                {{ $data->Document_Details_Required }}
+                            @if ($data->existing_procedure)
+                                {!! $data->existing_procedure !!}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <th class="w-20">Product/Batch Required?</th>
+                    </tr>
+                    <tr>
+                        <th class="w-20">Immediate Action Taken (In consultation with Quality Head/Designee)</th>
                         <td class="w-30">
-                            @if ($data->Product_Details_Required)
-                                {{ $data->Product_Details_Required }}
+                            @if ($data->Immediate_Action)
+                                {!! $data->Immediate_Action !!}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-
-
+                    </tr>
+                    <tr>
+                        <th class="w-20">Identification of Cross functional departments</th>
+                        <td class="w-30">
+                            @if ($data->identification_cross_funct)
+                                {{ $data->identification_cross_funct}}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Tools of Investigation and Root cause Determination</th>
+                        <td class="w-30">
+                            @if ($data->investigation_tools)
+                                {{ $data->investigation_tools }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="w-20">Summary of Investigation findings</th>
+                        <td class="w-30">
+                            @if ($data->summary)
+                                {!! $data->summary !!}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
                     </tr>
 
 
@@ -361,44 +363,336 @@
                     {{-- <th class="w-20">Name of Product & Batch No</th> --}}
                     {{-- <td class="w-30">@if ($data->Product_Batch){{ ($data->Product_Batch) }} @else Not Applicable @endif</td> --}}
                     {{-- </tr> --}}
-                 
+
 
                 </table>
                 <div class="block">
                     <table>
                         <tr>
-                            <th class="w-20">Description of Deviation</th>
+                            <th class="w-20">Root Cause (Based on outcome of investigation)</th>
                             <td class="w-80">
-                                @if ($data->Description_Deviation)
-                                    {{ strip_tags($data->Description_Deviation) }}
+                                @if ($data->Root)
+                                    {{ strip_tags($data->Root) }}
                                 @else
                                     Not Applicable
                                 @endif
                             </td>
-                           </tr>
-                            <tr>
-                                <th class="w-20">Immediate Action (if any)</th>
-                                <td class="w-80">
-                                    @if ($data->Immediate_Action)
-                                        {{ strip_tags($data->Immediate_Action) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="w-20">Preliminary Impact of Deviation</th>
-                                <td class="w-80">
-                                    @if ($data->Preliminary_Impact)
-                                        {{strip_tags($data->Preliminary_Impact) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-                            </tr>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Impact Assessment (In coordination with Quality Head / Designee)</th>
+                            <td class="w-80">
+                                @if ($data->Impact)
+                                    {{ strip_tags($data->Impact) }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Impact on Other Batches</th>
+                            <td class="w-80">
+                                @if ($data->Impact_other)
+                                    {{ $data->Impact_other }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+
+                            <th class="w-20">Batch no</th>
+                            <td class="w-80">
+                                @if ($data->batch_no)
+                                    {{ $data->batch_no }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Type of Deviation</th>
+                            <td class="w-80">
+                                @if ($data->deviation_type)
+                                    {{ $data->deviation_type }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+
+                            <th class="w-20">Risk Assessment (If required)</th>
+                            <td class="w-80">
+                                @if ($data->risk_assessment)
+                                    {{ $data->risk_assessment }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Corrective Action Taken (In coordination with QA)</th>
+                            <td class="w-80">
+                                @if ($data->Corrective_Action)
+                                    {!! $data->Corrective_Action !!}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <th class="w-20">Deviation Approval</th>
+                            <td class="w-80">
+                                @if ($data->deviation_approval)
+                                    {{ $data->deviation_approval }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Comments</th>
+                            <td class="w-80">
+                                @if ($data->comments)
+                                    {{ $data->comments }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Notification to Customer / Regulatory</th>
+                            <td class="w-80">
+                                @if ($data->notification)
+                                    {{ $data->notification }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Verification of Closure</th>
+                            <td class="w-80">
+                                @if ($data->closure_verification)
+                                    {{ $data->closure_verification }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Extension (if required) with justification from concerned department head
+                            </th>
+                            <td class="w-80">
+                                @if ($data->Extension_justification)
+                                    {{ $data->Extension_justification }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Feedback received from Customer / Regulatory</th>
+                            <td class="w-80">
+                                @if ($data->feedback)
+                                    {{ $data->feedback }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Comments (QA)</th>
+                            <td class="w-80">
+                                @if ($data->qa_comments)
+                                    {{ $data->qa_comments }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Closure evidences attached</th>
+                            <td class="w-80">
+                                @if ($data->closure_evidences)
+                                    {{ $data->closure_evidences }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+
+                            <th class="w-20">Closure evidence (pl. specify) enclosed</th>
+                            <td class="w-80">
+                                @if ($data->closure_enclosed)
+                                    {{ $data->closure_enclosed }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Closure comments</th>
+                            <td class="w-80">
+                                @if ($data->comments_closure)
+                                    {{ $data->comments_closure }}
+                                @else
+                                    Not Applicable
+                                @endif
+                            </td>
+                        </tr>
                     </table>
                 </div>
+
                 <div class="block">
+                    <div class="block-head">
+                        Product Details
+                    </div>
+                    <div class="border-table">
+                        <table>
+                            <tr class="table_bg">
+                                <th class="w-10">Batch Nos.</th>
+                                <th class="w-25">Mfg. Date</th>
+                                <th class="w-25">Exp. Date</th>
+                                <th class="w-25">Batch Size</th>
+                                <th class="w-25">Market</th>
+                                <th class="w-25">Remarks</th>
+                            </tr>
+                            @if (!empty($productDetailsData))
+                                @foreach ($productDetailsData as $detail)
+                                    <tr>
+                                        <td class="w-15">{{ $detail['batch_no'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-15">
+                                            {{ !empty($detail['mfg_date']) ? \Carbon\Carbon::parse($detail['mfg_date'])->format('d-M-Y') : 'Not Applicable' }}
+                                        </td>
+                                        <td class="w-15">
+                                            {{ !empty($detail['exp_date']) ? \Carbon\Carbon::parse($detail['exp_date'])->format('d-M-Y') : 'Not Applicable' }}
+                                        </td>
+                                        <td class="w-15">{{ $detail['batch_size'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-15">{{ $detail['market'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-15">{{ $detail['remarks'] ?? 'Not Applicable' }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6" class="text-center">No Product Details Available</td>
+                                </tr>
+                            @endif
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <div class="block-head">
+                        Previous History of Product-Specific or Similar Nature of Deviation (If any)
+                    </div>
+                    <div class="border-table">
+                        <table>
+                            <tr class="table_bg">
+                                <th class="w-10">Sr. No.</th>
+                                <th class="w-20">Deviation Date</th>
+                                <th class="w-20">Deviation Details</th>
+                                <th class="w-20">Action Taken</th>
+                                <th class="w-15">Status</th>
+                                <th class="w-15">Remark</th>
+                            </tr>
+                            @if (!empty($previousHistoryData))
+                                @foreach ($previousHistoryData as $index => $detail)
+                                    <tr>
+                                        <td class="w-10">{{ $index + 1 }}</td>
+                                        <td class="w-20">
+                                            {{ !empty($detail['deviation_date']) ? \Carbon\Carbon::parse($detail['deviation_date'])->format('d-M-Y') : 'Not Applicable' }}
+                                        </td>
+                                        <td class="w-20">{{ $detail['deviation_details'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-20">{{ $detail['action_taken'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-15">{{ $detail['status'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-15">{{ $detail['remark'] ?? 'Not Applicable' }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6" class="text-center">No Product Details Available</td>
+                                </tr>
+                            @endif
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="block">
+                    <div class="block-head">
+                        Actions Plan
+                    </div>
+                    <div class="border-table">
+                        <table>
+                            <tr class="table_bg">
+                                <th class="w-10">Sr. No.</th>
+                                <th class="w-25">Description of Action</th>
+                                <th class="w-25">Responsible Department</th>
+                                <th class="w-20">Planned Date</th>
+                                <th class="w-20">Remark</th>
+                            </tr>
+                            @if (!empty($actionsplanData))
+                                @foreach ($actionsplanData as $index => $detail)
+                                    <tr>
+                                        <td class="w-10">{{ $index + 1 }}</td>
+                                        <td class="w-25">{{ $detail['action_description'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-25">{{ $detail['responsible_department'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-20">
+                                            {{ !empty($detail['planned_date']) ? \Carbon\Carbon::parse($detail['planned_date'])->format('d-M-Y') : 'Not Applicable' }}
+                                        </td>
+                                        <td class="w-20">{{ $detail['actionremark'] ?? 'Not Applicable' }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">No Actions Plan Data Available</td>
+                                </tr>
+                            @endif
+                        </table>
+                    </div>
+                </div>
+                
+                
+                <div class="block">
+                    <div class="block-head">
+                        Tracking Sheet for Completion of Action Plan Impacted Due to Said Deviation
+                    </div>
+                    <div class="border-table">
+                        <table>
+                            <tr class="table_bg">
+                                <th class="w-10">Sr. No.</th>
+                                <th class="w-20">Description of Action</th>
+                                <th class="w-20">Responsible Department</th>
+                                <th class="w-15">Planned Date</th>
+                                <th class="w-15">Completion Date</th>
+                                <th class="w-20">Verified By / On (QA)</th>
+                                <th class="w-15">Remarks</th>
+                            </tr>
+                            @if (!empty($trackingplanData))
+                                @foreach ($trackingplanData as $index => $detail)
+                                    <tr>
+                                        <td class="w-10">{{ $index + 1 }}</td>
+                                        <td class="w-20">{{ $detail['action_des'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-20">{{ $detail['res_department'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-15">
+                                            {{ !empty($detail['plan_date']) ? \Carbon\Carbon::parse($detail['plan_date'])->format('d-M-Y') : 'Not Applicable' }}
+                                        </td>
+                                        <td class="w-15">
+                                            {{ !empty($detail['completion_date']) ? \Carbon\Carbon::parse($detail['completion_date'])->format('d-M-Y') : 'Not Applicable' }}
+                                        </td>
+                                        <td class="w-20">{{ $detail['verified_by'] ?? 'Not Applicable' }}</td>
+                                        <td class="w-15">{{ $detail['trackingsheetremark'] ?? 'Not Applicable' }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="7" class="text-center">No Tracking Plan Data Available</td>
+                                </tr>
+                            @endif
+                        </table>
+                    </div>
+                </div>
+                                
+
+
+
+                {{-- <div class="block">
                     <div class="block-head">
                         Facility/ Equipment/ Instrument/ System Details
                     </div>
@@ -480,9 +774,9 @@
                             @endif
                         </table>
                     </div>
-                </div>
+                </div> --}}
                 {{-- ==================================new Added=================== --}}
-                <div class="block">
+                {{-- <div class="block">
                     <div class="block-head">
                         Product/Batch Details
                     </div>
@@ -522,9 +816,9 @@
                             @endif
                         </table>
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="border-table">
+                {{-- <div class="border-table">
                     <div class="block-head">
                         Initial Attachments
                     </div>
@@ -550,7 +844,7 @@
                         @endif
 
                     </table>
-                </div>
+                </div> --}}
                 <!-- {{-- ==================================      --}} -->
 
                 <div class="block">
@@ -603,7 +897,7 @@
             </div>
             <div class="block">
                 <div class="block-head">
-                    QA Initial  Review
+                    QA Initial Review
                 </div>
                 <table>
                     <tr>
@@ -638,7 +932,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="w-20">QA Initial Remarks  </th>
+                        <th class="w-20">QA Initial Remarks </th>
                         <td class="w-80">
                             @if ($data->QAInitialRemark)
                                 {{ strip_tags($data->QAInitialRemark) }}
@@ -647,7 +941,7 @@
                             @endif
                         </td>
                     </tr>
-                  
+
                     <tr>
                         {{-- <th class="w-20">Customer Notification Required ?</th> --}}
                         {{-- <td class="w-30">@if ($data->Customer_notification){{$data->Customer_notification}}@else Not Applicable @endif</td> --}}
@@ -667,8 +961,8 @@
                     </td> --}}
                     </tr>
 
-                   
-                   
+
+
                 </table>
                 <div class="border-table">
                     <div class="block-head">
@@ -698,7 +992,7 @@
                     </table>
                 </div>
             </div>
-           
+
             <div class="block">
                 <div class="head">
                     <div class="block-head">
@@ -727,7 +1021,7 @@
                                 <td class="w-30">
                                     <div>
                                         @if ($data1->Production_person)
-                                        {{ DB::table('users')->where('id', $data1->Production_person)->value('name') }}
+                                            {{ DB::table('users')->where('id', $data1->Production_person)->value('name') }}
                                         @else
                                             Not Applicable
                                         @endif
@@ -749,12 +1043,12 @@
                                         @endif
                                     </div>
                                 </td>
-                               
+
                             </tr>
                         </table>
                         <table>
                             <tr>
-{{-- {{ dd($data1); }} --}}
+                                {{-- {{ dd($data1); }} --}}
                                 <th class="w-20">Production Review Completed By</th>
                                 <td class="w-30">
                                     <div>
@@ -770,17 +1064,17 @@
                                 <td class="w-30">
                                     <div>
                                         @if ($data1->production_on)
-                                        {{ \Carbon\Carbon::parse($data->production_on)->format('d-m-Y') }}
-                                    @else
-                                        Not Applicable
-                                    @endif
+                                            {{ \Carbon\Carbon::parse($data->production_on)->format('d-m-Y') }}
+                                        @else
+                                            Not Applicable
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
 
                         </table>
                     </div>
-                   
+
 
                     <div class="block">
                         <div class="head">
@@ -806,7 +1100,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Warehouse_notification)
-                                            {{ DB::table('users')->where('id', $data1->Warehouse_notification)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Warehouse_notification)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -827,7 +1121,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                   
+
                                 </tr>
                             </table>
                             <table>
@@ -847,16 +1141,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Warehouse_on)
-                                            {{ \Carbon\Carbon::parse($data->Warehouse_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Warehouse_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                     
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -882,7 +1176,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Quality_Control_Person)
-                                            {{ DB::table('users')->where('id', $data1->Quality_Control_Person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Quality_Control_Person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -903,7 +1197,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                   
+
                                 </tr>
                             </table>
                             <table>
@@ -932,7 +1226,7 @@
                                 </tr>
                             </table>
                         </div>
-                       
+
                     </div>
 
 
@@ -942,7 +1236,7 @@
                                 Quality Assurance
                             </div>
                             <table>
-{{-- {{ dd($data1); }} --}}
+                                {{-- {{ dd($data1); }} --}}
 
                                 <tr>
 
@@ -961,7 +1255,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->QualityAssurance_person)
-                                            {{ DB::table('users')->where('id', $data1->QualityAssurance_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->QualityAssurance_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -982,7 +1276,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                   
+
                                 </tr>
                             </table>
                             <table>
@@ -1002,16 +1296,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->QualityAssurance_on)
-                                            {{ \Carbon\Carbon::parse($data->QualityAssurance_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->QualityAssurance_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                      
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1037,7 +1331,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Engineering_person)
-                                            {{ DB::table('users')->where('id', $data1->Engineering_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Engineering_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1058,7 +1352,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    
+
                                 </tr>
                             </table>
                             <table>
@@ -1078,16 +1372,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Engineering_on)
-                                            {{ \Carbon\Carbon::parse($data->Engineering_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Engineering_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1113,7 +1407,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Analytical_Development_person)
-                                            {{ DB::table('users')->where('id', $data1->Analytical_Development_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Analytical_Development_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1134,7 +1428,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                  
+
                                 </tr>
                             </table>
                             <table>
@@ -1154,16 +1448,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Analytical_Development_on)
-                                            {{ \Carbon\Carbon::parse($data->Analytical_Development_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Analytical_Development_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                      
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1189,7 +1483,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Kilo_Lab_person)
-                                            {{ DB::table('users')->where('id', $data1->Kilo_Lab_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Kilo_Lab_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1201,7 +1495,7 @@
                                 <tr>
 
                                     <th class="w-20">Impact Assessment (By Process Development Laboratory / Kilo Lab)
-                                        </th>
+                                    </th>
                                     <td class="w-80">
                                         <div>
                                             @if ($data1->Kilo_Lab_assessment)
@@ -1211,7 +1505,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                  
+
                                 </tr>
                             </table>
                             <table>
@@ -1232,17 +1526,17 @@
                                     </th>
                                     <td class="w-30">
                                         <div>
-                                            @if ($data1->Kilo_Lab_attachment_on )
-                                            {{ \Carbon\Carbon::parse($data->Kilo_Lab_attachment_on )->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                            @if ($data1->Kilo_Lab_attachment_on)
+                                                {{ \Carbon\Carbon::parse($data->Kilo_Lab_attachment_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                      
+
                     </div>
 
                     <div class="block">
@@ -1269,7 +1563,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Technology_transfer_person)
-                                            {{ DB::table('users')->where('id', $data1->Technology_transfer_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Technology_transfer_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1290,7 +1584,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    
+
                                 </tr>
                             </table>
                             <table>
@@ -1310,16 +1604,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Technology_transfer_on)
-                                            {{ \Carbon\Carbon::parse($data->Technology_transfer_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Technology_transfer_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                      
+
                     </div>
 
                     <div class="block">
@@ -1346,7 +1640,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Environment_Health_Safety_person)
-                                            {{ DB::table('users')->where('id', $data1->Environment_Health_Safety_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Environment_Health_Safety_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1360,10 +1654,10 @@
                                     <th class="w-20">Impact Assessment (By Environment, Health & Safety)</th>
                                     <td class="w-80">
                                         <div>
-                                            {!!$data1->Health_Safety_assessment ? $data1->Health_Safety_assessment  : "Not Applicable"!!}
+                                            {!! $data1->Health_Safety_assessment ? $data1->Health_Safety_assessment : 'Not Applicable' !!}
                                         </div>
                                     </td>
-                                   
+
                                 </tr>
                             </table>
                             <table>
@@ -1383,16 +1677,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Environment_Health_Safety_on)
-                                            {{ \Carbon\Carbon::parse($data->Environment_Health_Safety_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Environment_Health_Safety_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                       
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1418,7 +1712,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Human_Resource_person)
-                                            {{ DB::table('users')->where('id', $data1->Human_Resource_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Human_Resource_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1439,7 +1733,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    
+
                                 </tr>
                             </table>
                             <table>
@@ -1459,18 +1753,18 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->production_on)
-                                            {{ \Carbon\Carbon::parse($data->production_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->production_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                       
+
                     </div>
-                   
+
                     <div class="block">
                         <div class="head">
                             <div class="block-head">
@@ -1496,7 +1790,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Information_Technology_person)
-                                            {{ DB::table('users')->where('id', $data1->Information_Technology_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Information_Technology_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1517,7 +1811,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    
+
                                 </tr>
                             </table>
                             <table>
@@ -1537,16 +1831,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Information_Technology_on)
-                                            {{ \Carbon\Carbon::parse($data->Information_Technology_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Information_Technology_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        
+
                     </div>
 
                     <div class="block">
@@ -1574,7 +1868,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Project_management_person)
-                                            {{ DB::table('users')->where('id', $data1->Project_management_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Project_management_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1595,7 +1889,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    
+
                                 </tr>
                             </table>
                             <table>
@@ -1615,16 +1909,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Project_management_on)
-                                            {{ \Carbon\Carbon::parse($data->Project_management_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Project_management_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                       
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1650,7 +1944,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other1_person)
-                                            {{ DB::table('users')->where('id', $data1->Other1_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Other1_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1660,7 +1954,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other1_Department_person)
-                                            {{ DB::table('c_f_t_departments')->where('id', $data1->Other1_Department_person)->value('name') }}
+                                                {{ DB::table('c_f_t_departments')->where('id', $data1->Other1_Department_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1680,7 +1974,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    
+
                                 </tr>
                                 <tr>
 
@@ -1698,16 +1992,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other1_on)
-                                            {{ \Carbon\Carbon::parse($data->Other1_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Other1_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                      
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1733,7 +2027,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other2_person)
-                                            {{ DB::table('users')->where('id', $data1->Other2_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Other2_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1743,7 +2037,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other2_Department_person)
-                                            {{ DB::table('c_f_t_departments')->where('id', $data1->Other2_Department_person)->value('name') }}
+                                                {{ DB::table('c_f_t_departments')->where('id', $data1->Other2_Department_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1763,7 +2057,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                   
+
                                 </tr>
                                 <tr>
 
@@ -1781,16 +2075,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other2_on)
-                                            {{ \Carbon\Carbon::parse($data->Other2_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Other2_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                       
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1816,7 +2110,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other3_person)
-                                            {{ DB::table('users')->where('id', $data1->Other3_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Other3_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1826,7 +2120,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other3_Department_person)
-                                            {{ DB::table('c_f_t_departments')->where('id', $data1->Other3_Department_person)->value('name') }}
+                                                {{ DB::table('c_f_t_departments')->where('id', $data1->Other3_Department_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1846,7 +2140,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                  
+
                                 </tr>
                                 <tr>
 
@@ -1864,16 +2158,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other3_on)
-                                            {{ \Carbon\Carbon::parse($data->Other3_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Other3_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                       
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1899,7 +2193,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other4_person)
-                                            {{ DB::table('users')->where('id', $data1->Other4_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Other4_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1909,7 +2203,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other4_Department_person)
-                                            {{ DB::table('c_f_t_departments')->where('id', $data1->Other4_Department_person)->value('name') }}
+                                                {{ DB::table('c_f_t_departments')->where('id', $data1->Other4_Department_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1929,7 +2223,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                   
+
                                 </tr>
                                 <tr>
 
@@ -1947,16 +2241,16 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other4_on)
-                                            {{ \Carbon\Carbon::parse($data->Other4_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Other4_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                     
+
                     </div>
                     <div class="block">
                         <div class="head">
@@ -1982,7 +2276,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other5_person)
-                                            {{ DB::table('users')->where('id', $data1->Other5_person)->value('name') }}
+                                                {{ DB::table('users')->where('id', $data1->Other5_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -1992,7 +2286,7 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other5_Department_person)
-                                            {{ DB::table('c_f_t_departments')->where('id', $data1->Other5_Department_person)->value('name') }}
+                                                {{ DB::table('c_f_t_departments')->where('id', $data1->Other5_Department_person)->value('name') }}
                                             @else
                                                 Not Applicable
                                             @endif
@@ -2012,7 +2306,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                   
+
                                 </tr>
                                 <tr>
 
@@ -2030,10 +2324,10 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other5_on)
-                                            {{ \Carbon\Carbon::parse($data->Other5_on)->format('d-m-Y') }}
-                                        @else
-                                            Not Applicable
-                                        @endif
+                                                {{ \Carbon\Carbon::parse($data->Other5_on)->format('d-m-Y') }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -2062,18 +2356,18 @@
                                             <td class="w-20">Not Applicable</td>
                                         </tr>
                                     @endif
-                
+
                                 </table>
                             </div>
                         </div>
-                      
+
                     </div>
                     <div class="block">
                         <div class="block-head">
-                            QA Secondary  Review
+                            QA Secondary Review
                         </div>
                         <table>
-        
+
                             <tr>
                                 <th class="w-20">Initial Deviation category</th>
                                 <td class="w-30">
@@ -2119,7 +2413,7 @@
                                     $customer = DB::table('customer-details')->where('id', $data->customers)->first();
                                     $customer_name = $customer ? $customer->customer_name : 'Not Applicable';
                                 @endphp --}}
-        
+
                                 {{-- <td>
                                 @if ($data->customers)
                                     {{ $customer_name }}
@@ -2128,7 +2422,7 @@
                                 @endif
                             </td> --}}
                             </tr>
-        
+
                             <tr>
                                 {{-- <th class="w-20">Related Records</th> --}}
                                 {{-- <td class="w-30">@if ($data->related_records){{$data->related_records }}@else Not Applicable @endif</td> --}}
@@ -2140,12 +2434,12 @@
                                         Not Applicable
                                     @endif
                                 </td>
-        
+
                             </tr>
-        
+
                         </table>
                     </div>
-        
+
                     <div class="border-table">
                         <div class="block-head">
                             QA Attachments
@@ -2169,7 +2463,7 @@
                                     <td class="w-20">Not Applicable</td>
                                 </tr>
                             @endif
-        
+
                         </table>
                     </div>
                     <!-- **************************INVESTIGATION TAB START******************************* -->
@@ -2185,7 +2479,11 @@
                                     </th>
                                     <td class="w-30">
                                         <div>
-                                            @if ($data->Discription_Event) {{ strip_tags($data->Discription_Event) }} @else Not Applicable @endif
+                                            @if ($data->Discription_Event)
+                                                {{ strip_tags($data->Discription_Event) }}
+                                            @else
+                                                Not Applicable
+                                            @endif
 
                                             {{-- @if ($investigationExtension && $investigationExtension->investigation_proposed_due_date) {{  Helpers::getdateFormat($investigationExtension->investigation_proposed_due_date)  }} @else Not Applicable @endif --}}
                                         </div>
@@ -2196,13 +2494,21 @@
                                     </th>
                                     <td class="w-30">
                                         <div>
-                                            @if ($data->objective) {{ strip_tags($data->objective) }} @else Not Applicable @endif
+                                            @if ($data->objective)
+                                                {{ strip_tags($data->objective) }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                     <th class="w-20">Corrective & Preventive Actions</th>
                                     <td class="w-30">
                                         <div>
-                                            @if ($data->scope) {{ strip_tags($data->scope) }} @else Not Applicable @endif
+                                            @if ($data->scope)
+                                                {{ strip_tags($data->scope) }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -2210,13 +2516,21 @@
                                     <th class="w-20">Investigation HOD remarks</th>
                                     <td class="w-80">
                                         <div>
-                                            @if ($data->imidiate_action) {{ strip_tags($data->imidiate_action) }} @else Not Applicable @endif
+                                            @if ($data->imidiate_action)
+                                                {{ strip_tags($data->imidiate_action) }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                     <th class="w-20">Investigation QA remarks</th>
                                     <td class="w-30">
                                         <div>
-                                            @if ($data->imidiate_action1) {{ strip_tags($data->imidiate_action1) }} @else Not Applicable @endif
+                                            @if ($data->imidiate_action1)
+                                                {{ strip_tags($data->imidiate_action1) }}
+                                            @else
+                                                Not Applicable
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -2233,7 +2547,7 @@
                                 <!-- {{-- </tr> --}} -->
                                 <tr>
 
-                                 
+
                             </table>
 
                             {{-- <div class="border-table" style="margin-bottom: 15px;">
@@ -2249,12 +2563,12 @@
                                         <th class="w-60">Remarks</th>
                                     </tr>
                                     <tbody>
-                                        @if($investigation_data && is_array($investigation_data->data))
+                                        @if ($investigation_data && is_array($investigation_data->data))
                                         @php
                                             $serialNumber = 1;
                                             $users = DB::table('users')->select('id', 'name')->get();
                                         @endphp
-                                            @foreach($investigation_data->data as $investigation_item)
+                                            @foreach ($investigation_data->data as $investigation_item)
                                                 <tr>
                                                     <td class="w-20">{{ $serialNumber++ }}</td>
                                                     @foreach ($users as $user)
@@ -2291,21 +2605,23 @@
                                     </tr>
 
                                     <tbody>
-                                    @if($root_cause_data && is_array($root_cause_data->data))
-                                        @php
-                                            $serialNumber = 1;
-                                        @endphp
-                                        @foreach($root_cause_data->data as $rootCause_data)
-                                            <tr>
-                                                <td class="w-20">{{ $serialNumber++ }}</td>
-                                                <td class="w-20">{{ $rootCause_data['Root_Cause_Category'] }}</td>
-                                                <td class="w-20">{{ $rootCause_data['Root_Cause_Sub_Category'] }}</td>
-                                                <td class="w-20">{{ $rootCause_data['ifother'] }}</td>
-                                                <td class="w-20">{{ $rootCause_data['probability'] }}</td>
-                                                <td class="w-20">{{ $rootCause_data['remarks'] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    @else
+                                        @if ($root_cause_data && is_array($root_cause_data->data))
+                                            @php
+                                                $serialNumber = 1;
+                                            @endphp
+                                            @foreach ($root_cause_data->data as $rootCause_data)
+                                                <tr>
+                                                    <td class="w-20">{{ $serialNumber++ }}</td>
+                                                    <td class="w-20">{{ $rootCause_data['Root_Cause_Category'] }}
+                                                    </td>
+                                                    <td class="w-20">
+                                                        {{ $rootCause_data['Root_Cause_Sub_Category'] }}</td>
+                                                    <td class="w-20">{{ $rootCause_data['ifother'] }}</td>
+                                                    <td class="w-20">{{ $rootCause_data['probability'] }}</td>
+                                                    <td class="w-20">{{ $rootCause_data['remarks'] }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
                                             <tr>
                                                 <td class="w-20">1</td>
                                                 <td class="w-20">Not Applicable</td>
@@ -2314,8 +2630,8 @@
                                                 <td class="w-20">Not Applicable</td>
                                                 <td class="w-20">Not Applicable</td>
                                             </tr>
-                                    @endif
-                                </tbody>
+                                        @endif
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -2359,11 +2675,11 @@
                                         <th class="w-60">Description</th>
                                     </tr>
                                     <tbody>
-                                        @if($why_data && is_array($why_data->data) && isset($why_data->data['why_1']))
+                                        @if ($why_data && is_array($why_data->data) && isset($why_data->data['why_1']))
                                         @php
                                             $serialNumber = 1;
                                         @endphp
-                                            @foreach($why_data->data['why_1'] as $whyData)
+                                            @foreach ($why_data->data['why_1'] as $whyData)
                                                 <tr>
                                                     <td class="w-20">{{ $serialNumber++ }}</td>
                                                     <td class="w-20">{{ $whyData }}</td>
@@ -2389,11 +2705,11 @@
                                         <th class="w-60">Description</th>
                                     </tr>
                                     <tbody>
-                                        @if($why_data && is_array($why_data->data) && isset($why_data->data['why_2']))
+                                        @if ($why_data && is_array($why_data->data) && isset($why_data->data['why_2']))
                                         @php
                                             $serialNumber = 1;
                                         @endphp
-                                            @foreach($why_data->data['why_2'] as $whyData)
+                                            @foreach ($why_data->data['why_2'] as $whyData)
                                                 <tr>
                                                     <td class="w-20">{{ $serialNumber++ }}</td>
                                                     <td class="w-20">{{ $whyData }}</td>
@@ -2419,11 +2735,11 @@
                                         <th class="w-60">Description</th>
                                     </tr>
                                     <tbody>
-                                        @if($why_data && is_array($why_data->data) && isset($why_data->data['why_3']))
+                                        @if ($why_data && is_array($why_data->data) && isset($why_data->data['why_3']))
                                         @php
                                             $serialNumber = 1;
                                         @endphp
-                                            @foreach($why_data->data['why_3'] as $whyData)
+                                            @foreach ($why_data->data['why_3'] as $whyData)
                                                 <tr>
                                                     <td class="w-20">{{ $serialNumber++ }}</td>
                                                     <td class="w-20">{{ $whyData }}</td>
@@ -2449,11 +2765,11 @@
                                         <th class="w-60">Description</th>
                                     </tr>
                                     <tbody>
-                                        @if($why_data && is_array($why_data->data) && isset($why_data->data['why_4']))
+                                        @if ($why_data && is_array($why_data->data) && isset($why_data->data['why_4']))
                                         @php
                                             $serialNumber = 1;
                                         @endphp
-                                            @foreach($why_data->data['why_4'] as $whyData)
+                                            @foreach ($why_data->data['why_4'] as $whyData)
                                                 <tr>
                                                     <td class="w-20">{{ $serialNumber++ }}</td>
                                                     <td class="w-20">{{ $whyData }}</td>
@@ -2479,11 +2795,11 @@
                                         <th class="w-60">Description</th>
                                     </tr>
                                     <tbody>
-                                        @if($why_data && is_array($why_data->data) && isset($why_data->data['why_5']))
+                                        @if ($why_data && is_array($why_data->data) && isset($why_data->data['why_5']))
                                         @php
                                             $serialNumber = 1;
                                         @endphp
-                                            @foreach($why_data->data['why_5'] as $whyData)
+                                            @foreach ($why_data->data['why_5'] as $whyData)
                                                 <tr>
                                                     <td class="w-20">{{ $serialNumber++ }}</td>
                                                     <td class="w-20">{{ $whyData }}</td>
@@ -2662,60 +2978,60 @@
                             </table>
                         </div> --}}
 
-                        <div class="block">
-                            <div class="block-head">
-                                QA Final Review
-                            </div>
-                            <table>
+                            <div class="block">
+                                <div class="block-head">
+                                    QA Final Review
+                                </div>
+                                <table>
 
-                                <tr>
-                                    <th class="w-20">QA Feedbacks</th>
-                                    <td class="w-30">
-                                        @if ($data->QA_Feedbacks)
-                                            {{ strip_tags($data->QA_Feedbacks) }}
-                                        @else
-                                            Not Applicable
-                                        @endif
-                                    </td>
-
-                            </table>
-                        </div>
-                        <div class="border-table">
-                            <div class="block-head">
-                                QA Attachments
-                            </div>
-                            <table>
-
-                                <tr class="table_bg">
-                                    <th class="w-20">S.N.</th>
-                                    <th class="w-60">Attachment</th>
-                                </tr>
-                                @if ($data->QA_attachments)
-                                    @foreach (json_decode($data->QA_attachments) as $key => $file)
-                                        <tr>
-                                            <td class="w-20">{{ $key + 1 }}</td>
-                                            <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
-                                                    target="_blank"><b>{{ $file }}</b></a> </td>
-                                        </tr>
-                                    @endforeach
-                                @else
                                     <tr>
-                                        <td class="w-20">1</td>
-                                        <td class="w-20">Not Applicable</td>
+                                        <th class="w-20">QA Feedbacks</th>
+                                        <td class="w-30">
+                                            @if ($data->QA_Feedbacks)
+                                                {{ strip_tags($data->QA_Feedbacks) }}
+                                            @else
+                                                Not Applicable
+                                            @endif
+                                        </td>
+
+                                </table>
+                            </div>
+                            <div class="border-table">
+                                <div class="block-head">
+                                    QA Attachments
+                                </div>
+                                <table>
+
+                                    <tr class="table_bg">
+                                        <th class="w-20">S.N.</th>
+                                        <th class="w-60">Attachment</th>
                                     </tr>
-                                @endif
+                                    @if ($data->QA_attachments)
+                                        @foreach (json_decode($data->QA_attachments) as $key => $file)
+                                            <tr>
+                                                <td class="w-20">{{ $key + 1 }}</td>
+                                                <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
+                                                        target="_blank"><b>{{ $file }}</b></a> </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td class="w-20">1</td>
+                                            <td class="w-20">Not Applicable</td>
+                                        </tr>
+                                    @endif
 
-                            </table>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- **************************INVESTIGATION TAB ENDS******************************** -->
-
+                        <!-- **************************INVESTIGATION TAB ENDS******************************** -->
 
 
-                    <!-- **************************QRM TAB START******************************* -->
 
-                    {{-- <div class="block">
+                        <!-- **************************QRM TAB START******************************* -->
+
+                        {{-- <div class="block">
                         <div class="head">
                             <div class="block-head">
                                 QRM
@@ -2913,11 +3229,11 @@
                                         <th class="w-60">Remark</th>
                                     </tr>
                                     <tbody>
-                                        @if($grid_data_matrix_qrms && is_array($grid_data_matrix_qrms->data))
+                                        @if ($grid_data_matrix_qrms && is_array($grid_data_matrix_qrms->data))
                                             @php
                                                 $serialNumber = 1;
                                             @endphp
-                                            @foreach($grid_data_matrix_qrms->data as $matrix_grid_data)
+                                            @foreach ($grid_data_matrix_qrms->data as $matrix_grid_data)
                                                 <tr>
                                                     <td>{{ $serialNumber }}</td>
                                                     <td>{{ $matrix_grid_data['risk_Assesment'] }}</td>
@@ -2943,12 +3259,12 @@
                         </div>
                     </div> --}}
 
-                    <!-- **************************QRM TAB ENDS******************************** -->
+                        <!-- **************************QRM TAB ENDS******************************** -->
 
 
-                    <!-- **************************CAAP TAB START******************************* -->
+                        <!-- **************************CAAP TAB START******************************* -->
 
-                    {{-- <div class="block">
+                        {{-- <div class="block">
                         <div class="head">
                             <div class="block-head">
                                 CAPA
@@ -3076,273 +3392,274 @@
                     </div> --}}
 
 
-                    {{-- Hod final review  --}}
-                    <div class="block">
-                        <div class="block-head">
-                            HOD final Review
-                        </div>
-                        <table>
+                        {{-- Hod final review  --}}
+                        <div class="block">
+                            <div class="block-head">
+                                HOD final Review
+                            </div>
+                            <table>
 
-                            <tr>
-                                <th class="w-20">HOD Final Remarks</th>
-                                <td class="w-30">
-                                    @if ($data->hod_final_remarks)
-                                        {{ strip_tags($data->hod_final_remarks) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-
-                        </table>
-                    </div>
-                    <div class="border-table">
-                        <div class="block-head">
-                            HOD Attachments
-                        </div>
-                        <table>
-
-                            <tr class="table_bg">
-                                <th class="w-20">S.N.</th>
-                                <th class="w-60">Attachment</th>
-                            </tr>
-                            @if ($data->hod_final_attachments)
-                                @foreach (json_decode($data->hod_final_attachments) as $key => $file)
-                                    <tr>
-                                        <td class="w-20">{{ $key + 1 }}</td>
-                                        <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
-                                                target="_blank"><b>{{ $file }}</b></a> </td>
-                                    </tr>
-                                @endforeach
-                            @else
                                 <tr>
-                                    <td class="w-20">1</td>
-                                    <td class="w-20">Not Applicable</td>
+                                    <th class="w-20">HOD Final Remarks</th>
+                                    <td class="w-30">
+                                        @if ($data->hod_final_remarks)
+                                            {{ strip_tags($data->hod_final_remarks) }}
+                                        @else
+                                            Not Applicable
+                                        @endif
+                                    </td>
+
+                            </table>
+                        </div>
+                        <div class="border-table">
+                            <div class="block-head">
+                                HOD Attachments
+                            </div>
+                            <table>
+
+                                <tr class="table_bg">
+                                    <th class="w-20">S.N.</th>
+                                    <th class="w-60">Attachment</th>
                                 </tr>
-                            @endif
-
-                        </table>
-                    </div>
-                    {{-- QA final Review  --}}
-                    <div class="block">
-                        <div class="block-head">
-                            QA Final Review
-                        </div>
-                        <table>
-
-                            <tr>
-                                <th class="w-20">QA Final Remarks</th>
-                                <td class="w-30">
-                                    @if ($data->qa_final_remarks)
-                                        {{ strip_tags($data->qa_final_remarks) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="border-table">
-                        <div class="block-head">
-                            QA Final Attachments
-                        </div>
-                        <table>
-
-                            <tr class="table_bg">
-                                <th class="w-20">S.N.</th>
-                                <th class="w-60">Attachment</th>
-                            </tr>
-                            @if ($data->qa_final_attachments)
-                                @foreach (json_decode($data->qa_final_attachments) as $key => $file)
+                                @if ($data->hod_final_attachments)
+                                    @foreach (json_decode($data->hod_final_attachments) as $key => $file)
+                                        <tr>
+                                            <td class="w-20">{{ $key + 1 }}</td>
+                                            <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
+                                                    target="_blank"><b>{{ $file }}</b></a> </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td class="w-20">{{ $key + 1 }}</td>
-                                        <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
-                                                target="_blank"><b>{{ $file }}</b></a> </td>
+                                        <td class="w-20">1</td>
+                                        <td class="w-20">Not Applicable</td>
                                     </tr>
-                                @endforeach
-                            @else
+                                @endif
+
+                            </table>
+                        </div>
+                        {{-- QA final Review  --}}
+                        <div class="block">
+                            <div class="block-head">
+                                QA Final Review
+                            </div>
+                            <table>
+
                                 <tr>
-                                    <td class="w-20">1</td>
-                                    <td class="w-20">Not Applicable</td>
+                                    <th class="w-20">QA Final Remarks</th>
+                                    <td class="w-30">
+                                        @if ($data->qa_final_remarks)
+                                            {{ strip_tags($data->qa_final_remarks) }}
+                                        @else
+                                            Not Applicable
+                                        @endif
+                                    </td>
                                 </tr>
-                            @endif
-
-                        </table>
-                    </div>
-                    <div class="block">
-                        <div class="block-head">
-                            QAH/Designee Approval
+                            </table>
                         </div>
+                        <div class="border-table">
+                            <div class="block-head">
+                                QA Final Attachments
+                            </div>
+                            <table>
 
-                        <table>
-
-                            <tr>
-                                <th class="w-20">Post Categorization Of Deviation</th>
-                                <td class="w-30">
-                                    @if ($data->qa_final_remarks)
-                                        {{ strip_tags($data->Post_Categorization) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-                                <th class="w-20">Justification for Revised Category</th>
-                                <td class="w-30">
-                                    @if ($data->qa_final_remarks)
-                                        {{ strip_tags($data->Investigation_Of_Review) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-                            </tr>
-                        </table>
-                        <table>
-
-                            <tr>
-                                <th class="w-20">Closure Comments</th>
-                                <td class="w-30">
-                                    @if ($data->Closure_Comments)
-                                        {{ strip_tags($data->Closure_Comments) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-                                <th class="w-20">Disposition of Batch</th>
-                                <td class="w-30">
-                                    @if ($data->Disposition_Batch)
-                                        {{ strip_tags($data->Disposition_Batch) }}
-                                    @else
-                                        Not Applicable
-                                    @endif
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="border-table">
-                        <div class="block-head">
-                            Closure Attachments
-                        </div>
-                        <table>
-
-                            <tr class="table_bg">
-                                <th class="w-20">S.N.</th>
-                                <th class="w-60">Attachment</th>
-                            </tr>
-                            @if ($data->closure_attachment)
-                                @foreach (json_decode($data->closure_attachment) as $key => $file)
+                                <tr class="table_bg">
+                                    <th class="w-20">S.N.</th>
+                                    <th class="w-60">Attachment</th>
+                                </tr>
+                                @if ($data->qa_final_attachments)
+                                    @foreach (json_decode($data->qa_final_attachments) as $key => $file)
+                                        <tr>
+                                            <td class="w-20">{{ $key + 1 }}</td>
+                                            <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
+                                                    target="_blank"><b>{{ $file }}</b></a> </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td class="w-20">{{ $key + 1 }}</td>
-                                        <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
-                                                target="_blank"><b>{{ $file }}</b></a> </td>
+                                        <td class="w-20">1</td>
+                                        <td class="w-20">Not Applicable</td>
                                     </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td class="w-20">1</td>
-                                    <td class="w-20">Not Applicable</td>
-                                </tr>
-                            @endif
+                                @endif
 
-                        </table>
+                            </table>
+                        </div>
+                        <div class="block">
+                            <div class="block-head">
+                                QAH/Designee Approval
+                            </div>
+
+                            <table>
+
+                                <tr>
+                                    <th class="w-20">Post Categorization Of Deviation</th>
+                                    <td class="w-30">
+                                        @if ($data->qa_final_remarks)
+                                            {{ strip_tags($data->Post_Categorization) }}
+                                        @else
+                                            Not Applicable
+                                        @endif
+                                    </td>
+                                    <th class="w-20">Justification for Revised Category</th>
+                                    <td class="w-30">
+                                        @if ($data->qa_final_remarks)
+                                            {{ strip_tags($data->Investigation_Of_Review) }}
+                                        @else
+                                            Not Applicable
+                                        @endif
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+
+                                <tr>
+                                    <th class="w-20">Closure Comments</th>
+                                    <td class="w-30">
+                                        @if ($data->Closure_Comments)
+                                            {{ strip_tags($data->Closure_Comments) }}
+                                        @else
+                                            Not Applicable
+                                        @endif
+                                    </td>
+                                    <th class="w-20">Disposition of Batch</th>
+                                    <td class="w-30">
+                                        @if ($data->Disposition_Batch)
+                                            {{ strip_tags($data->Disposition_Batch) }}
+                                        @else
+                                            Not Applicable
+                                        @endif
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="border-table">
+                            <div class="block-head">
+                                Closure Attachments
+                            </div>
+                            <table>
+
+                                <tr class="table_bg">
+                                    <th class="w-20">S.N.</th>
+                                    <th class="w-60">Attachment</th>
+                                </tr>
+                                @if ($data->closure_attachment)
+                                    @foreach (json_decode($data->closure_attachment) as $key => $file)
+                                        <tr>
+                                            <td class="w-20">{{ $key + 1 }}</td>
+                                            <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
+                                                    target="_blank"><b>{{ $file }}</b></a> </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="w-20">1</td>
+                                        <td class="w-20">Not Applicable</td>
+                                    </tr>
+                                @endif
+
+                            </table>
+                        </div>
                     </div>
+                </div>
+
+
+                <div class="block">
+                    <div class="block-head">
+                        Activity Log
+                    </div>
+                    <table>
+                        <tr>
+                            <th class="w-20">Submit By</th>
+                            <td class="w-30">{{ $data->submit_by }}</td>
+                            <th class="w-20">Submit On</th>
+                            <td class="w-30"> {{ \Carbon\Carbon::parse($data->submit_on)->format('d-m-Y') }}</td>
+                            <th class="w-20">Submit Comments</th>
+                            <td class="w-30">{{ $data->submit_comment }}</td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">HOD Review Complete By</th>
+                            <td class="w-30">{{ $data->HOD_Review_Complete_By }}</td>
+                            <th class="w-20">HOD Review Complete On</th>
+                            <td class="w-30">{{ $data->HOD_Review_Complete_On }}</td>
+                            <th class="w-20">HOD Review Comments</th>
+                            <td class="w-30">{{ $data->HOD_Review_Comments }}</td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">QA Initial Review Complete by</th>
+                            <td class="w-30">{{ $data->QA_Initial_Review_Complete_By }}</td>
+                            <th class="w-20">QA Initial Review Complete On</th>
+                            <td class="w-30">{{ Helpers::getdateFormat($data->QA_Initial_Review_Complete_On) }}
+                            </td>
+                            <th class="w-20">QA Initial Review Comments</th>
+                            <td class="w-30">{{ $data->QA_Initial_Review_Comments }}</td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">CFT Review Complete By</th>
+                            <td class="w-30">{{ $data->CFT_Review_Complete_By }}</td>
+                            <th class="w-20">CFT Review Complete On</th>
+                            <td class="w-30">{{ $data->CFT_Review_Complete_On }}</td>
+                            <th class="w-20">CFT Review Comments</th>
+                            <td class="w-30">{{ $data->CFT_Review_Comments }}</td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">QA Secondary Review Complete By</th>
+                            <td class="w-30"></td>
+                            <th class="w-20">QA Secondary Review Complete On</th>
+                            <td class="w-30"></td>
+                            <th class="w-20">QA Secondary Review Complete Comments</th>
+                            <td class="w-30"></td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">QAH Primary Approved Completed By</th>
+                            <td class="w-30"></td>
+                            <th class="w-20">QAH Primary Approved Completed On</th>
+                            <td class="w-30"></td>
+                            <th class="w-20">QAH Primary Approved Completed Comments</th>
+                            <td class="w-30"></td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">Initiator Update By</th>
+                            <td class="w-30">{{ $data->CFT_Review_Complete_By }}</td>
+                            <th class="w-20">Initiator Update On </th>
+                            <td class="w-30">{{ $data->CFT_Review_Complete_On }}</td>
+                            <th class="w-20">Initiator Update Comments</th>
+                            <td class="w-30">{{ $data->CFT_Review_Comments }}</td>
+                        </tr>
+                        <tr>
+                            <th class="w-20">HOD Final Review By </th>
+                            <td class="w-30">{{ $data->CFT_Review_Complete_By }}</td>
+                            <th class="w-20">HOD Final Review On </th>
+                            <td class="w-30">{{ $data->CFT_Review_Complete_On }}</td>
+                            <th class="w-20">HOD Final Review Comments</th>
+                            <td class="w-30">{{ $data->CFT_Review_Comments }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="w-20">QA Final Review Complete By</th>
+                            <td class="w-30">{{ $data->QA_Final_Review_Complete_By }}</td>
+                            <th class="w-20">QA Final Review Complete On</th>
+                            <td class="w-30">{{ $data->QA_Final_Review_Complete_On }}</td>
+                            <th class="w-20">QA Final Review Comments</th>
+                            <td class="w-30">{{ $data->QA_Final_Review_Comments }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="w-20">Approved By</th>
+                            <td class="w-30">{{ $data->Approved_By }}</td>
+                            <th class="w-20">Approved ON</th>
+                            <td class="w-30">{{ $data->Approved_On }}</td>
+                            <th class="w-20">Approved Comments</th>
+                            <td class="w-30">{{ $data->Approved_Comments }}</td>
+
+
+
+                    </table>
                 </div>
             </div>
 
-
-            <div class="block">
-                <div class="block-head">
-                    Activity Log
-                </div>
-                <table>
-                    <tr>
-                        <th class="w-20">Submit By</th>
-                        <td class="w-30">{{ $data->submit_by }}</td>
-                        <th class="w-20">Submit On</th>
-                        <td class="w-30"> {{ \Carbon\Carbon::parse($data->submit_on)->format('d-m-Y') }}</td>
-                        <th class="w-20">Submit Comments</th>
-                        <td class="w-30">{{ $data->submit_comment }}</td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">HOD Review Complete By</th>
-                        <td class="w-30">{{ $data->HOD_Review_Complete_By }}</td>
-                        <th class="w-20">HOD Review Complete On</th>
-                        <td class="w-30">{{ $data->HOD_Review_Complete_On }}</td>
-                        <th class="w-20">HOD Review Comments</th>
-                        <td class="w-30">{{ $data->HOD_Review_Comments }}</td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">QA Initial Review Complete by</th>
-                        <td class="w-30">{{ $data->QA_Initial_Review_Complete_By }}</td>
-                        <th class="w-20">QA Initial Review Complete On</th>
-                        <td class="w-30">{{ Helpers::getdateFormat($data->QA_Initial_Review_Complete_On) }}</td>
-                        <th class="w-20">QA Initial Review Comments</th>
-                        <td class="w-30">{{ $data->QA_Initial_Review_Comments }}</td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">CFT Review Complete By</th>
-                        <td class="w-30">{{ $data->CFT_Review_Complete_By }}</td>
-                        <th class="w-20">CFT Review Complete On</th>
-                        <td class="w-30">{{ $data->CFT_Review_Complete_On }}</td>
-                        <th class="w-20">CFT Review Comments</th>
-                        <td class="w-30">{{ $data->CFT_Review_Comments }}</td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">QA Secondary Review Complete By</th>
-                        <td class="w-30"></td>
-                        <th class="w-20">QA Secondary Review Complete On</th>
-                        <td class="w-30"></td>
-                        <th class="w-20">QA Secondary Review Complete Comments</th>
-                        <td class="w-30"></td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">QAH Primary Approved Completed By</th>
-                        <td class="w-30"></td>
-                        <th class="w-20">QAH Primary Approved Completed On</th>
-                        <td class="w-30"></td>
-                        <th class="w-20">QAH Primary Approved Completed Comments</th>
-                        <td class="w-30"></td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">Initiator Update By</th>
-                        <td class="w-30">{{ $data->CFT_Review_Complete_By }}</td>
-                        <th class="w-20">Initiator Update On </th>
-                        <td class="w-30">{{ $data->CFT_Review_Complete_On }}</td>
-                        <th class="w-20">Initiator Update Comments</th>
-                        <td class="w-30">{{ $data->CFT_Review_Comments }}</td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">HOD Final Review By </th>
-                        <td class="w-30">{{ $data->CFT_Review_Complete_By }}</td>
-                        <th class="w-20">HOD Final Review On </th>
-                        <td class="w-30">{{ $data->CFT_Review_Complete_On }}</td>
-                        <th class="w-20">HOD Final Review Comments</th>
-                        <td class="w-30">{{ $data->CFT_Review_Comments }}</td>
-                    </tr>
-
-                    <tr>
-                        <th class="w-20">QA Final Review Complete By</th>
-                        <td class="w-30">{{ $data->QA_Final_Review_Complete_By }}</td>
-                        <th class="w-20">QA Final Review Complete On</th>
-                        <td class="w-30">{{ $data->QA_Final_Review_Complete_On }}</td>
-                        <th class="w-20">QA Final Review Comments</th>
-                        <td class="w-30">{{ $data->QA_Final_Review_Comments }}</td>
-                    </tr>
-
-                    <tr>
-                        <th class="w-20">Approved By</th>
-                        <td class="w-30">{{ $data->Approved_By }}</td>
-                        <th class="w-20">Approved ON</th>
-                        <td class="w-30">{{ $data->Approved_On }}</td>
-                        <th class="w-20">Approved Comments</th>
-                        <td class="w-30">{{ $data->Approved_Comments }}</td>
-
-
-
-                </table>
-            </div>
         </div>
 
-    </div>
 
-  
 
 </body>
 
