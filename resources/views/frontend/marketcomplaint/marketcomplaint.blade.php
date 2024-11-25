@@ -131,10 +131,11 @@
                                     <div class="group-input">
                                         <label for="RLS Record Number">Record Number</label>
                                         <input disabled type="text" name="record_number"
-                                            value="{{ Helpers::getDivisionName(session()->get('division')) }}/CAPA/{{ date('Y') }}/{{ $record_number }}">
+                                            value="{{ Helpers::getDivisionName(session()->get('division')) }}/MC/{{ date('Y') }}/{{ $record_number }}">
                                         {{-- <div class="static">QMS-EMEA/CAPA/{{ date('Y') }}/{{ $record_number }}</div> --}}
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="Division Code">Site/Location Code</label>
@@ -414,6 +415,22 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Attachments">Initial Attachment</label>
+                                        <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
+                                        {{-- <input type="file" id="myfile" name="Attachments"> --}}
+                                        <div class="file-attachment-field">
+                                            <div class="file-attachment-list" id="attachments_gi"></div>
+                                            <div class="add-btn">
+                                                <div>Add</div>
+                                                <input type="file" id="attachments_gi" name="attachments_gi[]"
+                                                    oninput="addMultipleFiles(this, 'attachments_gi')" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="severity-level">Classification based on receipt of complaint</label>
@@ -653,6 +670,23 @@
 
                                 <div class="col-12">
                                     <div class="group-input">
+                                        <label for="Attachments2">Second Attachment</label>
+                                        <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
+                                        {{-- <input type="file" id="myfile" name="Attachments2"> --}}
+                                        <div class="file-attachment-field">
+                                            <div class="file-attachment-list" id="attachments_gi_2"></div>
+                                            <div class="add-btn">
+                                                <div>Add</div>
+                                                <input type="file" id="attachments_gi_2" name="attachments_gi_2[]"
+                                                    oninput="addMultipleFiles(this, 'attachments_gi_2')" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <div class="group-input">
                                         <label for="Comments">Comments </label>
                                         <textarea name="capa_qa_comments2"></textarea>
                                     </div>
@@ -785,6 +819,36 @@
                                         <textarea name="preliminary_investigation_report"></textarea>
                                     </div>
                                 </div>
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Attachments3">Third Attachment</label>
+                                        <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
+                                        <div class="file-attachment-field">
+                                            <div class="file-attachment-list" id="attachments_gi_3"></div>
+                                            <div class="add-btn">
+                                                <div>Add</div>
+                                                <input type="file" id="attachments_gi_3" name="attachments_gi_3[]" oninput="addMultipleFiles(this, 'attachments_gi_3')" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="firstAttachment">Attachment</label>
+                                        <div><small class="text-primary">Please attach the relevant document</small></div>
+                                        <div class="file-attachment-field">
+                                            <div class="file-attachment-list" id="attachments_first"></div>
+                                            <div class="add-btn">
+                                                <div>Add</div>
+                                                <input type="file" id="attachments_first" name="attachments_first"
+                                                    oninput="addSingleFile(this, 'attachments_first')" accept=".pdf,.doc,.docx,.jpg,.png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Closure Attachments">Attachment(if any)</label>
@@ -3195,13 +3259,13 @@
                                         <textarea name="qa_review"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="group-input">
                                         <label for="Closure Attachments">Closure Attachment</label>
                                         <div><small class="text-primary">Please Attach all relevant or supporting
                                                 documents</small></div>
                                         {{-- <input multiple type="file" id="myfile" name="closure_attachment[]"> --}}
-                                        <div class="file-attachment-field">
+                                        {{-- <div class="file-attachment-field">
                                             <div class="file-attachment-list" id="closure_attachment"></div>
                                             <div class="add-btn">
                                                 <div>Add</div>
@@ -3210,7 +3274,22 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div> --}}
+
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Attachments4">Fourth Attachment</label>
+                                        <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
+                                        <div class="file-attachment-field">
+                                            <div class="file-attachment-list" id="attachments_gi_4"></div>
+                                            <div class="add-btn">
+                                                <div>Add</div>
+                                                <input type="file" id="attachments_gi_4" name="attachments_gi_4[]" oninput="addMultipleFiles(this, 'attachments_gi_4')" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                
 
                                
 

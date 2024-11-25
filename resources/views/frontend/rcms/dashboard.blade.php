@@ -392,7 +392,7 @@
                                                     @endif
                                                     @elseif($datas->type == 'MarketComplaint')
                                                     <a href="{{ route('marketshow', $datas->id) }}" style="color: blue">
-                                                        {{ str_pad($total_count - $loop->index, 4, '0', STR_PAD_LEFT) }}
+                                                        {{ str_pad($datas->record, 4, '0', STR_PAD_LEFT) }}
                                                     </a>
                                                    
                                                     @if (!empty($datas->parent_id))

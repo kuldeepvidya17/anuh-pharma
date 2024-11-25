@@ -85,16 +85,26 @@
                                 Audit Trail </a> </button>
 
                         @if ($data->stage == 1 && (in_array(3, $userRoleIds) || in_array(18, $userRoleIds)))
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
+                            {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
                                 Propose Plan
-                            </button>
+                            </button> --}}
+
+                            <a href="#signature-modal"> <button class="button_theme1" data-bs-toggle="modal"
+                                data-bs-target="#signature-modal">
+                                Submit
+                            </button></a>
+                        <a href="#cancel-modal"> <button class="button_theme1" data-bs-toggle="modal"
+                                data-bs-target="#cancel-modal">
+                                Cancel
+                            </button></a>
                         @elseif($data->stage == 2 && (in_array(4, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#rejection-modal">
                                 More Info Required
                             </button>
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
-                                Approve Plan
-                            </button>
+                            <a href="#signature-modal"><button class="button_theme1" data-bs-toggle="modal"
+                                data-bs-target="#signature-modal">
+                                Complete Review
+                            </button></a>   
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">
                                 Cancel
                             </button>
@@ -103,7 +113,7 @@
                             </button> --}}
                         @elseif($data->stage == 3 && (in_array(7, $userRoleIds) || in_array(18, $userRoleIds)))
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#rejection-modal">
-                                QA More Info Required
+                                More Info Required
                             </button>
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
                                 Complete
@@ -218,7 +228,7 @@
 
                     <form action="{{ route('marketcomplaintupdate', $data->id) }}" method="post"
                         enctype="multipart/form-data">
-                        @csrf
+                        @csrf 
                         <div id="step-form">
 
                             <!-- General information content -->
@@ -229,7 +239,7 @@
                                             <div class="group-input">
                                                 <label for="RLS Record Number">Record Number</label>
                                                 <input disabled type="text" name="record_number"
-                                                    value="{{ Helpers::getDivisionName($data->division_id) }}/CAPA/{{ Helpers::year($data->created_at) }}/{{ $data->record }}">
+                                                    value="{{ Helpers::getDivisionName($data->division_id) }}/MC/{{ Helpers::year($data->created_at) }}/{{ $data->record }}">
                                                 {{-- <div class="static"></div> --}}
                                             </div>
                                         </div>
@@ -256,7 +266,7 @@
                                                     name="intiation_date">
                                                 <input type="hidden" value="{{ date('d-m-Y') }}" name="intiation_date">
                                             </div>
-                                        </div>
+                                        </div>  
                                         <div class="col-md-6">
                                             <div class="group-input">
                                                 <label for="search">
@@ -614,6 +624,63 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="col-12">
+                                            <div class="group-input">
+                                                <label for="Attachments">Initial Attachment</label>
+                                                <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
+                                                <div class="file-attachment-field">
+                                                    <div class="file-attachment-list" id="attachments_gi">
+                                                        @if ($data->attachments_gi)
+                                                            @foreach(json_decode($data->attachments_gi) as $file)
+                                                                <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
+                                                                    <b>{{ $file }}</b>
+                                                                    <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
+                                                                    <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                                                    <input type="hidden" name="existing_attachments_gi[]" value="{{ $file }}">
+                                                                </h6>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                    <div class="add-btn">
+                                                        <div>Add</div>
+                                                        <input type="file" id="myfile" name="attachments_gi[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'attachments_gi')" multiple>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hidden field to keep track of files to be deleted -->
+                                        <input type="hidden" id="deleted_attachments_gi" name="deleted_attachments_gi" value="">
+                                        
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const removeButtons = document.querySelectorAll('.remove-file');
+                                        
+                                                removeButtons.forEach(button => {
+                                                    button.addEventListener('click', function() {
+                                                        const fileName = this.getAttribute('data-file-name');
+                                                        const fileContainer = this.closest('.file-container');
+                                        
+                                                        // Hide the file container
+                                                        if (fileContainer) {
+                                                            fileContainer.style.display = 'none';
+                                                            // Remove hidden input associated with this file
+                                                            const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                                                            if (hiddenInput) {
+                                                                hiddenInput.remove();
+                                                            }
+                                        
+                                                            // Add the file name to the deleted files list
+                                                            const deletedFilesInput = document.getElementById('deleted_attachments_gi');
+                                                            let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                                                            deletedFiles.push(fileName);
+                                                            deletedFilesInput.value = deletedFiles.join(',');
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="severity-level">Classification Based on Receipt of
@@ -907,6 +974,62 @@
                                             });
                                         </script>
 
+                                                <div class="col-12">
+                                                    <div class="group-input">
+                                                        <label for="Attachments2">Second Attachment</label>
+                                                        <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
+                                                        <div class="file-attachment-field">
+                                                            <div class="file-attachment-list" id="attachments_gi_2">
+                                                                @if ($data->attachments_gi_2)
+                                                                    @foreach(json_decode($data->attachments_gi_2) as $file)
+                                                                        <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
+                                                                            <b>{{ $file }}</b>
+                                                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
+                                                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                                                            <input type="hidden" name="existing_attachments_gi_2[]" value="{{ $file }}">
+                                                                        </h6>
+                                                                    @endforeach
+                                                                @endif
+                                                            </div>
+                                                            <div class="add-btn">
+                                                                <div>Add</div>
+                                                                <input type="file" id="attachments_gi_2" name="attachments_gi_2[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'attachments_gi_2')" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Hidden field to keep track of files to be deleted for the second attachment -->
+                                                <input type="hidden" id="deleted_attachments_gi_2" name="deleted_attachments_gi_2" value="">
+
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        const removeButtons = document.querySelectorAll('.remove-file');
+
+                                                        removeButtons.forEach(button => {
+                                                            button.addEventListener('click', function() {
+                                                                const fileName = this.getAttribute('data-file-name');
+                                                                const fileContainer = this.closest('.file-container');
+
+                                                                // Hide the file container
+                                                                if (fileContainer) {
+                                                                    fileContainer.style.display = 'none';
+                                                                    // Remove hidden input associated with this file
+                                                                    const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                                                                    if (hiddenInput) {
+                                                                        hiddenInput.remove();
+                                                                    }
+
+                                                                    // Add the file name to the deleted files list for the second attachment
+                                                                    const deletedFilesInput = document.getElementById('deleted_attachments_gi_2');
+                                                                    let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                                                                    deletedFiles.push(fileName);
+                                                                    deletedFilesInput.value = deletedFiles.join(',');
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                </script>
 
 
 
@@ -1074,7 +1197,66 @@
                                                 <textarea name="preliminary_investigation_report">{{ $data->preliminary_investigation_report }}</textarea>
                                             </div>
                                         </div>
+
                                         <div class="col-12">
+                                            <div class="group-input">
+                                                <label for="Attachments3">Third Attachment</label>
+                                                <div><small class="text-primary">Uploaded Documents</small></div>
+                                                <div class="file-attachment-field">
+                                                    <div class="file-attachment-list" id="attachments_gi_3">
+                                                        @if ($data->attachments_gi_3)
+                                                            @foreach(json_decode($data->attachments_gi_3) as $file)
+                                                                <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
+                                                                    <b>{{ $file }}</b>
+                                                                    <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
+                                                                    <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                                                    <input type="hidden" name="existing_attachments_gi_3[]" value="{{ $file }}">
+                                                                </h6>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                    <div class="add-btn">
+                                                        <div>Add</div>
+                                                        <input type="file" id="attachments_gi_3" name="attachments_gi_3[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'attachments_gi_3')" multiple>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hidden field to keep track of files to be deleted -->
+                                        <input type="hidden" id="deleted_attachments_gi_3" name="deleted_attachments_gi_3" value="">
+                                        
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const removeButtons = document.querySelectorAll('.remove-file');
+                                        
+                                                removeButtons.forEach(button => {
+                                                    button.addEventListener('click', function() {
+                                                        const fileName = this.getAttribute('data-file-name');
+                                                        const fileContainer = this.closest('.file-container');
+                                        
+                                                        // Hide the file container
+                                                        if (fileContainer) {
+                                                            fileContainer.style.display = 'none';
+                                                            // Remove hidden input associated with this file
+                                                            const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                                                            if (hiddenInput) {
+                                                                hiddenInput.remove();
+                                                            }
+                                        
+                                                            // Add the file name to the deleted files list
+                                                            const deletedFilesInput = document.getElementById('deleted_attachments_gi_3');
+                                                            let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                                                            deletedFiles.push(fileName);
+                                                            deletedFilesInput.value = deletedFiles.join(',');
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                        
+                                        
+                                        {{-- <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Closure Attachments">Attachment (if any)</label>
                                                 <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
@@ -1107,7 +1289,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         
                                         <!-- Hidden field to track deleted files -->
                                         <input type="hidden" id="deleted_attachment" name="deleted_attachment" value="">
@@ -3730,112 +3912,68 @@
                                                 <label for="QA Review & Closure">QA Review & Closure</label>
                                                 <textarea name="qa_review" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->qa_review }}</textarea>
                                             </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="Closure Attachments">Closure Attachment</label>
-                                                <div><small class="text-primary">Please Attach all relevant or supporting
-                                                        documents</small></div>
-                                                {{-- <input type="file" id="myfile" name="closure_attachment"
-                                                    {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> --}}
-                                                <div class="file-attachment-field">
-                                                    <div class="file-attachment-list" id="closure_attachment1">
-                                                        @if ($data->closure_attachment)
-                                                            @foreach (json_decode($data->closure_attachment) as $file)
-                                                                <h6 type="button" class="file-container text-dark"
-                                                                    style="background-color: rgb(243, 242, 240);">
-                                                                    <b>{{ $file }}</b>
-                                                                    <a href="{{ asset('upload/' . $file) }}"
-                                                                        target="_blank"><i
-                                                                            class="fa fa-eye text-primary"
-                                                                            style="font-size:20px; margin-right:-10px;"></i></a>
-                                                                    <a type="button" class="remove-file"
-                                                                        data-file-name="{{ $file }}"><i
-                                                                            class="fa-solid fa-circle-xmark"
-                                                                            style="color:red; font-size:20px;"></i></a>
-                                                                </h6>
-                                                            @endforeach
-                                                        @endif
-                                                    </div>
-                                                    <div class="add-btn">
-                                                        <div>Add</div>
-                                                        <input
-                                                            {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                            type="file" id="myfile"
-                                                            name="closure_attachment[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                            oninput="addMultipleFiles(this, 'closure_attachment1')"
-                                                            multiple>
-                                                    </div>
+                                        </div> 
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="group-input">
+                                            <label for="Attachments4">Fourth Attachment</label>
+                                            <div><small class="text-primary">Uploaded Documents</small></div>
+                                            <div class="file-attachment-field">
+                                                <div class="file-attachment-list" id="attachments_gi_4">
+                                                    @if ($data->attachments_gi_4)
+                                                        @foreach(json_decode($data->attachments_gi_4) as $file)
+                                                            <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
+                                                                <b>{{ $file }}</b>
+                                                                <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
+                                                                <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                                                <input type="hidden" name="existing_attachments_gi_4[]" value="{{ $file }}">
+                                                            </h6>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                                <div class="add-btn">
+                                                    <div>Add</div>
+                                                    <input type="file" id="attachments_gi_4" name="attachments_gi_4[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'attachments_gi_4')" multiple>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- <div class="col-12 sub-head">
-                                                        Effectiveness Check Details -->
                                     </div>
-                                    <!-- <div class="col-12">
-                                                                <div class="group-input">
-                                                                    <label for="Effectiveness Check required">Effectiveness Check
-                                                                        required</label>
-                                                                    <select name="effect_check"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                                        {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>
-                                                                        <option value="">Enter Your Selection Here</option>
-                                                                        <option {{ $data->effect_check == 'yes' ? 'selected' : '' }}
-                                                                            value="yes">Yes</option>
-                                                                        <option {{ $data->effect_check == 'no' ? 'selected' : '' }}
-                                                                            value="no">No</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            {{-- <div class="col-6 new-date-data-field">
-                                            <div class="group-input input-date">
-                                                <label for="Effect.Check Creation Date">Effect.Check Creation
-                                                    Date</label>
-                                                <input type="date" name="effect_check_date"
-                                                    value="{{ $data->effect_check_date }}"> 
-                                                    <div class="calenderauditee">                                     
-                                                        <input type="text"  value="{{ $data->effect_check_date }}" id="effect_check_date"  readonly placeholder="DD-MMM-YYYY" />
-                                                        <input type="date" name="effect_check_date" value=""
-                                                        class="hide-input"
-                                                        oninput="handleDateInput(this, 'effect_check_date')"/>
-                                                    </div>
-                                            </div>
-                                        </div> --}}
-
-                                                            <div class="col-6 new-date-data-field">
-                                                                <div class="group-input input-date">
-                                                                    <label for="Effect Check Creation Date">Effectiveness Check Creation Date</label>
-                                                                    {{-- <input type="date" name="effect_check_date"> --}}
-                                                                    <div class="calenderauditee">
-                                                                        <input type="text"  id="effect_check_date" readonly
-                                                                            placeholder="DD-MMM-YYYY"value="{{ Helpers::getdateFormat($data->effect_check_date) }}"/>
-                                                                        <input type="date" name="effect_check_date" value=""class="hide-input"
-                                                                            oninput="handleDateInput(this,'effect_check_date')" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="group-input">
-                                                                    <label for="Effectiveness_checker">Effectiveness Checker</label>
-                                                                    <select name="Effectiveness_checker">{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                                        <option value="">Enter Your Selection Here</option>
-                                                                        @foreach ($users as $value)
-    <option
-                                                                                {{ $data->Effectiveness_checker == $value->id ? 'selected' : '' }}
-                                                                                value="{{ $value->id }}">{{ $value->name }}</option>
-    @endforeach
-
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <div class="group-input">
-                                                                    <label for="effective_check_plan">Effectiveness Check Plan</label>
-                                                                    <textarea name="effective_check_plan"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> {{ $data->effective_check_plan }}</textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 sub-head">
-                                                                Extension Justification
-                                                            </div> -->
+                                    
+                                    <!-- Hidden field to keep track of files to be deleted -->
+                                    <input type="hidden" id="deleted_attachments_gi_4" name="deleted_attachments_gi_4" value="">
+                                    
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const removeButtons = document.querySelectorAll('.remove-file');
+                                    
+                                            removeButtons.forEach(button => {
+                                                button.addEventListener('click', function() {
+                                                    const fileName = this.getAttribute('data-file-name');
+                                                    const fileContainer = this.closest('.file-container');
+                                    
+                                                    // Hide the file container
+                                                    if (fileContainer) {
+                                                        fileContainer.style.display = 'none';
+                                                        // Remove hidden input associated with this file
+                                                        const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                                                        if (hiddenInput) {
+                                                            hiddenInput.remove();
+                                                        }
+                                    
+                                                        // Add the file name to the deleted files list
+                                                        const deletedFilesInput = document.getElementById('deleted_attachments_gi_4');
+                                                        let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                                                        deletedFiles.push(fileName);
+                                                        deletedFilesInput.value = deletedFiles.join(',');
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    </script>
+                                    
+                                    
+                                  
                                     <div class="col-12">
                                         <div class="group-input">
                                             <label for="due_date_extension">Due Date Extension Justification</label>
