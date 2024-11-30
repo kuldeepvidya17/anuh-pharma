@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\rcms;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditReviewersDetails;
 use App\Models\MarketComplaint;
 use App\Models\MarketComplaintAuditTrial;
 use App\Models\MarketComplaintGrids;
@@ -10,6 +11,7 @@ use App\Models\RecordNumber;
 use App\Models\RoleGroup;
 use App\Models\User;
 use Carbon\Carbon;
+use Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +19,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use PDF;
-use Helpers;
 
 
 
@@ -1085,6 +1086,19 @@ public function audit_trail_filter_marketcomplaint(Request $request, $id)
     $responseHtml = view('frontend.labincident.lab_incident_filter', compact('audit', 'filter_request'))->render();
 
     return response()->json(['html' => $responseHtml]);
+}
+
+public function store_audit_review(Request $request, $id)
+{
+        $history = new AuditReviewersDetails;
+        $history->deviation_id = $id;
+        $history->user_id = Auth::user()->id;
+        $history->reviewer_comment = $request->reviewer_comment;
+        $history->reviewer_comment_by = Auth::user()->name;
+        $history->reviewer_comment_on = Carbon::now()->toDateString();
+        $history->save();
+
+    return redirect()->back();
 }
 
 

@@ -179,7 +179,7 @@ class CapaController extends Controller
         $implementationCorrectiveActionData->data = $request->implementation_corrective_action_details;
         $implementationCorrectiveActionData->save();
 
-        // dd($proposedPreventiveActionData);
+        // dd($implementationCorrectiveActionData);
 
 
 
@@ -223,7 +223,7 @@ class CapaController extends Controller
             $capa->closure_attachment = json_encode($files);
         }
 
-        $capa->update();
+       
         // dd($capa->due_date);
 
 
@@ -231,7 +231,7 @@ class CapaController extends Controller
         // -------audit trrail show start update -----------
         $fields = [
            
-            'short_description' => 'Short Description',
+           'short_description' => 'Short Description',
             'initiator_group' => 'Department',
             'initiator_group_code' => 'Department Group Code',
             'source_of_capa' => 'Source of CAPA',
@@ -240,33 +240,44 @@ class CapaController extends Controller
             'comments_cloasure' => 'Closure of the CAPA',
             'head_quality' => 'Head Quality / Designee',
             'justification' => 'Justification',
-            'effectiveness_verification_capa' => 'Effectiveness Verification of CAPA',
+            'effectiveness_verification_capa' => 'Effectiveness Verification Capa',
             'effectivenessRemark' => 'Remark',
-        
 
 
         ];
-        foreach ($fields as $field => $activity_type) {
-            $previous = $lastDocument->$field ?? '';
-            $current = $capa->$field ?? '';
+        $lastDocument = Capa::find($capa->id);
         
-            if (trim($previous) !== trim($current) || !empty($request->comment)) {
-                $history = new CapaAuditTrial;
-                $history->capa_id = $id;
+        // Loop through each field and create an audit trail entry
+        foreach ($fields as $field => $activity_type) {
+            $previousValue = $lastDocument->$field ?? null;
+            $currentValue = $capa->$field ?? null;
+        
+            // Check if the field value has changed
+            if ($previousValue !== $currentValue) {
+                $history = new CapaAuditTrial();
+                $history->capa_id = $capa->id;
                 $history->activity_type = $activity_type;
-                $history->previous = $previous;
-                $history->current = $current;
-                $history->comment = $request->comment;
+                $history->previous = $previousValue ?? "Null";
+                $history->current = $currentValue ?? "Null";
+                $history->comment = "Not Applicable";
                 $history->user_id = Auth::user()->id;
                 $history->user_name = Auth::user()->name;
                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastDocument->status;
-                $history->change_to = "Not Applicable";
-                $history->change_from = $lastDocument->status;
-                $history->action_name = 'Update';
+                $history->origin_state = $capa->status;
+                $history->change_to = "Opened";
+                $history->change_from = "Initiation";
+        
+                // Determine the action type (New or Update)
+                if (is_null($previousValue) || $previousValue === '') {
+                    $history->action_name = "New";
+                } else {
+                    $history->action_name = "Update";
+                }
+        
                 $history->save();
             }
         }
+        $capa->update();
         
 
 
@@ -298,8 +309,8 @@ class CapaController extends Controller
         $implementationCorrectiveActionData->capa_id = $griddata;
         $implementationCorrectiveActionData->identifer = 'ImplementationCorrectiveAction';
         $implementationCorrectiveActionData->data = $request->implementation_corrective_action_details;
-        $implementationCorrectiveActionData->update();
-
+        $implementationCorrectiveActionData->save();
+// dd($implementationCorrectiveActionData);
 
 
         toastr()->success("Record is updated Successfully");

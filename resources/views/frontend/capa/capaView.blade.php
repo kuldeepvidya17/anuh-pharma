@@ -400,15 +400,16 @@
                                                 <div><small class="text-primary">Please select related information</small></div>
                                                 <select name="source_of_capa" onchange="toggleOtherField(this.value)">
                                                     <option value="">Enter Your Selection Here</option>
-                                                    <option value="deviation">Deviation</option>
-                                                    <option value="Self_Inspection">Self Inspection</option>
-                                                    <option value="market_complaint">Market Complaint</option>
-                                                    <option value="oot">OOT</option>
-                                                    <option value="External_Regulatory">External / Regulatory Audit Observation</option>
-                                                    <option value="oos">OOS</option>
-                                                    <option value="Input_from_Employees">Input from the Employees</option>
-                                                    <option value="others">Others</option>
+                                                    <option value="deviation" {{ $data->source_of_capa == 'deviation' ? 'selected' : '' }}>Deviation</option>
+                                                    <option value="Self_Inspection" {{ $data->source_of_capa == 'Self_Inspection' ? 'selected' : '' }}>Self Inspection</option>
+                                                    <option value="market_complaint" {{ $data->source_of_capa == 'market_complaint' ? 'selected' : '' }}>Market Complaint</option>
+                                                    <option value="oot" {{ $data->source_of_capa == 'oot' ? 'selected' : '' }}>OOT</option>
+                                                    <option value="External_Regulatory" {{ $data->source_of_capa == 'External_Regulatory' ? 'selected' : '' }}>External / Regulatory Audit Observation</option>
+                                                    <option value="oos" {{ $data->source_of_capa == 'oos' ? 'selected' : '' }}>OOS</option>
+                                                    <option value="Input_from_Employees" {{ $data->source_of_capa == 'Input_from_Employees' ? 'selected' : '' }}>Input from the Employees</option>
+                                                    <option value="others" {{ $data->source_of_capa == 'others' ? 'selected' : '' }}>Others</option>
                                                 </select>
+                                                
                                             </div>
                                         </div>
                             
@@ -652,7 +653,7 @@
                                                     <button type="button" id="implementation_action_add">+</button>
                                                 </label>
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered" id="implementation_action_details" style="width: 100%;">
+                                                    <table class="table table-bordered" id="implementation_corrective_action_details" style="width: 100%;">
                                                         <thead>
                                                             <tr>
                                                                 <th style="width: 100px;">Row #</th>
@@ -667,11 +668,11 @@
                                                             @if (!empty($implementationCorrectiveActionData) && is_array($implementationCorrectiveActionData->data))
                                                                 @foreach ($implementationCorrectiveActionData->data as $index => $action)
                                                                     <tr>
-                                                                        <td><input disabled type="text" name="implementation_action_details[{{ $index }}][serial]" value="{{ $index + 1 }}"></td>
-                                                                        <td><input type="text" name="implementation_action_details[{{ $index }}][action_plan]" value="{{ $action['action_plan'] ?? '' }}"></td>
-                                                                        <td><input type="text" name="implementation_action_details[{{ $index }}][implemented_through]" value="{{ $action['implemented_through'] ?? '' }}"></td>
-                                                                        <td><input type="date" name="implementation_action_details[{{ $index }}][implemented_date]" value="{{ $action['implemented_date'] ?? '' }}"></td>
-                                                                        <td><input type="text" name="implementation_action_details[{{ $index }}][verification]" value="{{ $action['verification'] ?? '' }}"></td>
+                                                                        <td><input disabled type="text" name="implementation_corrective_action_details[{{ $index }}][serial]" value="{{ $index + 1 }}"></td>
+                                                                        <td><input type="text" name="implementation_corrective_action_details[{{ $index }}][action_plan]" value="{{ $action['action_plan'] ?? '' }}"></td>
+                                                                        <td><input type="text" name="implementation_corrective_action_details[{{ $index }}][implemented_through]" value="{{ $action['implemented_through'] ?? '' }}"></td>
+                                                                        <td><input type="date" name="implementation_corrective_action_details[{{ $index }}][implemented_date]" value="{{ $action['implemented_date'] ?? '' }}"></td>
+                                                                        <td><input type="text" name="implementation_corrective_action_details[{{ $index }}][verification]" value="{{ $action['verification'] ?? '' }}"></td>
                                                                         <td><button type="button" class="removeRowBtn">Remove</button></td>
                                                                     </tr>
                                                                 @endforeach
@@ -695,18 +696,18 @@
                                                     function generateImplementationActionRow(serialNumber) {
                                                         return (
                                                             '<tr>' +
-                                                            '<td><input disabled type="text" name="implementation_action_details[' + serialNumber +
+                                                            '<td><input disabled type="text" name="implementation_corrective_action_details[' + serialNumber +
                                                             '][serial]" value="' + (serialNumber + 1) + '"></td>' +
-                                                            '<td><input type="text" name="implementation_action_details[' + serialNumber + '][action_plan]"></td>' +
-                                                            '<td><input type="text" name="implementation_action_details[' + serialNumber + '][implemented_through]"></td>' +
-                                                            '<td><input type="date" name="implementation_action_details[' + serialNumber + '][implemented_date]"></td>' +
-                                                            '<td><input type="text" name="implementation_action_details[' + serialNumber + '][verification]"></td>' +
+                                                            '<td><input type="text" name="implementation_corrective_action_details[' + serialNumber + '][action_plan]"></td>' +
+                                                            '<td><input type="text" name="implementation_corrective_action_details[' + serialNumber + '][implemented_through]"></td>' +
+                                                            '<td><input type="date" name="implementation_corrective_action_details[' + serialNumber + '][implemented_date]"></td>' +
+                                                            '<td><input type="text" name="implementation_corrective_action_details[' + serialNumber + '][verification]"></td>' +
                                                             '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
                                                             '</tr>'
                                                         );
                                                     }
                                             
-                                                    var tableBody = $('#implementation_action_details tbody');
+                                                    var tableBody = $('#implementation_corrective_action_details tbody');
                                                     var rowCount = tableBody.children('tr').not('.no-data').length;
                                             
                                                     // Remove "No data found" row if it exists
@@ -724,8 +725,8 @@
                                                     $(this).closest('tr').remove();
                                             
                                                     // Check if table is empty after deletion, add "No data found" row if so
-                                                    if ($('#implementation_action_details tbody tr').length === 0) {
-                                                        $('#implementation_action_details tbody').append('<tr class="no-data"><td colspan="6">No data found</td></tr>');
+                                                    if ($('#implementation_corrective_action_details tbody tr').length === 0) {
+                                                        $('#implementation_corrective_action_details tbody').append('<tr class="no-data"><td colspan="6">No data found</td></tr>');
                                                     }
                                                 });
                                             });

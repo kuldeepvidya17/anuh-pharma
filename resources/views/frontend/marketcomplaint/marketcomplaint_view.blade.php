@@ -462,7 +462,7 @@
                                                         <tbody>
                                                             @if (!empty($productDetailsData) && is_array($productDetailsData->data))
                                                                 @foreach ($productDetailsData->data as $index => $detail)
-                                                                    <tr>
+                                                                     <tr>
                                                                         <td><input disabled type="text"
                                                                                 name="product_details[{{ $index }}][serial]"
                                                                                 value="{{ $index + 1 }}"></td>
@@ -3916,62 +3916,62 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <div class="group-input">
-                                            <label for="Attachments4">Fourth Attachment</label>
-                                            <div><small class="text-primary">Uploaded Documents</small></div>
-                                            <div class="file-attachment-field">
-                                                <div class="file-attachment-list" id="attachments_gi_4">
-                                                    @if ($data->attachments_gi_4)
-                                                        @foreach(json_decode($data->attachments_gi_4) as $file)
-                                                            <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
-                                                                <b>{{ $file }}</b>
-                                                                <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
-                                                                <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
-                                                                <input type="hidden" name="existing_attachments_gi_4[]" value="{{ $file }}">
-                                                            </h6>
-                                                        @endforeach
-                                                    @endif
-                                                </div>
-                                                <div class="add-btn">
-                                                    <div>Add</div>
-                                                    <input type="file" id="attachments_gi_4" name="attachments_gi_4[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'attachments_gi_4')" multiple>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Hidden field to keep track of files to be deleted -->
-                                    <input type="hidden" id="deleted_attachments_gi_4" name="deleted_attachments_gi_4" value="">
-                                    
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            const removeButtons = document.querySelectorAll('.remove-file');
-                                    
-                                            removeButtons.forEach(button => {
-                                                button.addEventListener('click', function() {
-                                                    const fileName = this.getAttribute('data-file-name');
-                                                    const fileContainer = this.closest('.file-container');
-                                    
-                                                    // Hide the file container
-                                                    if (fileContainer) {
-                                                        fileContainer.style.display = 'none';
-                                                        // Remove hidden input associated with this file
-                                                        const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
-                                                        if (hiddenInput) {
-                                                            hiddenInput.remove();
-                                                        }
-                                    
-                                                        // Add the file name to the deleted files list
-                                                        const deletedFilesInput = document.getElementById('deleted_attachments_gi_4');
-                                                        let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
-                                                        deletedFiles.push(fileName);
-                                                        deletedFilesInput.value = deletedFiles.join(',');
-                                                    }
-                                                });
-                                            });
-                                        });
-                                    </script>
-                                    
+    <div class="group-input">
+        <label for="Attachments4">Fourth Attachment</label>
+        <div><small class="text-primary">Uploaded Documents</small></div>
+        <div class="file-attachment-field">
+            <div class="file-attachment-list" id="attachments_gi_4">
+                @if ($data->attachments_gi_4)
+                    @foreach(json_decode($data->attachments_gi_4) as $file)
+                        <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
+                            <b>{{ $file }}</b>
+                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
+                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                            <input type="hidden" name="existing_attachments_gi_4[]" value="{{ $file }}">
+                        </h6>
+                    @endforeach
+                @endif
+            </div>
+            <div class="add-btn">
+                <div>Add</div>
+                <input type="file" id="attachments_gi_4" name="attachments_gi_4[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'attachments_gi_4')" multiple>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden field to keep track of files to be deleted -->
+<input type="hidden" id="deleted_attachments_gi_4" name="deleted_attachments_gi_4" value="">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeButtons = document.querySelectorAll('.remove-file');
+
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const fileName = this.getAttribute('data-file-name');
+                const fileContainer = this.closest('.file-container');
+
+                // Hide the file container
+                if (fileContainer) {
+                    fileContainer.style.display = 'none';
+                    // Remove hidden input associated with this file
+                    const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                    if (hiddenInput) {
+                        hiddenInput.remove();
+                    }
+
+                    // Add the file name to the deleted files list
+                    const deletedFilesInput = document.getElementById('deleted_attachments_gi_4');
+                    let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                    deletedFiles.push(fileName);
+                    deletedFilesInput.value = deletedFiles.join(',');
+                }
+            });
+        });
+    });
+</script>
+
                                     
                                   
                                     <div class="col-12">

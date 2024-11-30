@@ -20,6 +20,10 @@ return new class extends Migration
             $table->longText('due_date_extension')->nullable();
             $table->longText('re_categoruzation_of_complaint')->nullable();
             $table->longText('reson_for_re_cate')->nullable();
+            $table->longText('attachments_gi_2')->nullable();
+            $table->longText('attachments_gi_3')->nullable();
+            $table->longText('attachments_gi_4')->nullable();
+
 
         });
     }

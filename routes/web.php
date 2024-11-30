@@ -156,6 +156,8 @@ Route::get('CapaAuditTrial/{id}', [CapaController::class, 'CapaAuditTrial']);
 Route::get('auditDetailsCapa/{id}', [CapaController::class, 'auditDetailsCapa'])->name('showCapaAuditDetails');
 Route::post('capa_child/{id}', [CapaController::class, 'child_change_control'])->name('capa_child_changecontrol');
 Route::post('effectiveness_check/{id}', [CapaController::class, 'effectiveness_check'])->name('capa_effectiveness_check');
+Route::post('capaAuditTrial/{id}', [CapaController::class, 'store_audit_review'])->name('store_audit_review_mrket');
+
 
 // ==============================management review ==========================manage
 
